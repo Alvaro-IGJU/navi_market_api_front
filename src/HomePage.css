@@ -1,0 +1,44 @@
+/* Asegura que el video solo ocupa el espacio restante debajo del header */
+.homepage-container {
+    position: relative;
+    margin-top: 0; /* Sin espacio adicional */
+    height: calc(100vh - 71px); /* Altura total de la pantalla menos el header (ajusta 70px si tu header es más grande o más pequeño) */
+    overflow: hidden;
+  }
+  
+  .background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; /* Envía el video detrás del contenido */
+    filter: brightness(0.6);
+}
+  
+  .overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+  }
+  
+  .overlay h1 {
+    font-size: 6rem;
+    font-weight: 1000;
+  }
+  
+  .overlay p {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .overlay .btn {
+    font-size: 1.2rem;
+    background-color: #C7AA68;
+
+  }
+  
