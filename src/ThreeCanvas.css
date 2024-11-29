@@ -1,0 +1,10 @@
+
+/* Canvas de Three.js (ocupando todo el espacio de la sección) */
+.three-canvas-container {
+    width: 100%;
+    border: 1px solid black;
+  }
+
+  .three-canvas-container > canvas{
+    width: 100%;
+  }

@@ -1,44 +1,59 @@
-/* Asegura que el video solo ocupa el espacio restante debajo del header */
+/* Contenedor principal que cubre toda la página */
 .homepage-container {
-    position: relative;
-    margin-top: 0; /* Sin espacio adicional */
-    height: calc(100vh - 71px); /* Altura total de la pantalla menos el header (ajusta 70px si tu header es más grande o más pequeño) */
-    overflow: hidden;
-  }
-  
-  .background-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1; /* Envía el video detrás del contenido */
-    filter: brightness(0.6);
+  position: relative;
+  margin-top: 0;
+  min-height: 100vh; /* Altura mínima de la pantalla completa */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
-  
-  .overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: white;
-  }
-  
-  .overlay h1 {
-    font-size: 6rem;
-    font-weight: 1000;
-  }
-  
-  .overlay p {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-  }
-  
-  .overlay .btn {
-    font-size: 1.2rem;
-    background-color: #C7AA68;
 
-  }
-  
+/* Video de fondo en la parte superior */
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1; /* Enviar el video detrás del contenido superpuesto */
+  filter: brightness(0.6); /* Ajusta el brillo para mejorar la visibilidad del contenido */
+}
+
+/* Contenido sobre el video (texto y botón) */
+.overlay {
+  position: relative;
+  text-align: center;
+  color: white;
+  z-index: 1; /* Mantiene el contenido al frente */
+  margin-top: 15vh; /* Deja un margen superior para no tapar todo el video */
+}
+
+.overlay h1 {
+  font-size: 4rem; /* Tamaño del texto ajustado para buena visibilidad */
+  font-weight: 1000;
+  margin: 0;
+}
+
+.overlay p {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+/* Botón dentro del contenido de la superposición */
+.overlay .btn {
+  font-size: 1.2rem;
+  background-color: #C7AA68;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Efecto hover para el botón */
+.overlay .btn:hover {
+  background-color: #A68A50; /* Un tono ligeramente más oscuro para el efecto hover */
+}
+

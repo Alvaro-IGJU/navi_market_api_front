@@ -6,6 +6,7 @@ import AuthPage from './components/AuthPage';
 import Dashboard from './pages/Dashboard';
 import AuthProvider from './contexts/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
+import ThreeCanvasWrapper from './components/ThreeCanvasWrapper';
 
 const App = () => {
   return (
@@ -23,6 +24,8 @@ const App = () => {
               </PrivateRoute>
             }
           />
+          <Route path="/canvas" element={<ThreeCanvasWrapper />} />
+
         </Routes>
       </AuthProvider>
     </Router>
