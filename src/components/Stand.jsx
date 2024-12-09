@@ -10,7 +10,6 @@ const Stand = ({ position = [0, 0, 0], size = [1, 1, 1], color = "blue", areaRad
   useFrame(({ scene }) => {
     if (areaRef.current) {
       const character = scene.getObjectByName("Character"); // Assuming the character has this name
-      
       if (!character) return;
 
       const distance = Math.sqrt(
@@ -36,11 +35,29 @@ const Stand = ({ position = [0, 0, 0], size = [1, 1, 1], color = "blue", areaRad
     }
   });
 
+  const handleClick = () => {
+    if (isCharacterInside.current) {
+      console.log("Stand clicked!");
+    } else {
+      console.log("Character is not inside the area. Cannot click Stand.");
+    }
+  };
+
   return (
     <>
       {/* Stand */}
       <RigidBody type="fixed">
-        <mesh position={position}>
+        <mesh
+          position={position}
+          onClick={handleClick}
+          onPointerMove={(e) => {
+            if (isCharacterInside.current) {
+              document.body.style.cursor = "pointer"; // Change cursor to pointer
+            } else {
+              document.body.style.cursor = "default"; // Reset cursor
+            }
+          }}
+        >
           <boxGeometry args={size} />
           <meshStandardMaterial color={color} />
         </mesh>
