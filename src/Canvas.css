@@ -10,7 +10,6 @@ html, body, #root {
 .fullscreen-canvas {
   height: 100vh; /* Altura de toda la ventana */
   width: 100vw; /* Anchura de toda la ventana */
-  position: fixed; /* Fija el canvas en pantalla */
   top: 0;
   left: 0;
   display: flex;
