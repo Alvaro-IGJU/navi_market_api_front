@@ -6,12 +6,10 @@ const HomePage = () => {
   const [form, setForm] = useState({ email: '', message: '' });
   const [status, setStatus] = useState('');
 
-  // Manejar cambios en el formulario
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Enviar formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     emailjs
@@ -72,7 +70,7 @@ const HomePage = () => {
       </div>
 
       {/* Sección de contenido */}
-      <div id="content" className="container mx-auto mt-10 space-y-20 px-6  text-white rounded-lg py-8">
+      <div id="content" className="container mx-auto mt-10 space-y-20 px-6 text-white rounded-lg py-8">
         {/* Bloque 1 */}
         <div className="flex flex-col md:flex-row items-start md:space-x-8">
           <div className="md:w-1/2 p-4">
@@ -142,7 +140,7 @@ const HomePage = () => {
       </div>
 
       {/* Formulario */}
-      <div id="contact-form" className="container mx-auto px-6 py-16  text-white rounded-lg">
+      <div id="contact-form" className="container mx-auto px-6 py-16 text-white rounded-lg">
         <h2 className="text-3xl font-bold mb-8 text-center">Deja tu Mensaje</h2>
         <form onSubmit={handleSubmit} className="max-w-lg mx-auto space-y-6">
           <div>
@@ -193,9 +191,6 @@ const HomePage = () => {
             <div>
               <h3 className="text-xl font-semibold mb-4">Información de Contacto</h3>
               <p>
-                <strong>Próximos eventos:</strong>{' '}DEMO ADMA25
-              </p>
-              <p>
                 <strong>Email:</strong>{' '}
                 <a
                   href="mailto:info@navi-market.com"
@@ -219,7 +214,6 @@ const HomePage = () => {
               <p>
                 <strong>Dirección:</strong> C/ Pallars 73 08018 San Marti
               </p>
-            
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-4">Redes Sociales</h3>

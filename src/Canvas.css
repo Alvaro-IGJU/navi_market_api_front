@@ -1,19 +1,20 @@
 /* Asegura que toda la página ocupe el 100% del viewport */
 html, body, #root {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden; /* Oculta el scroll si no es necesario */
-  }
-  
-  .fullscreen-canvas {
-    height: 100vh; /* Altura de toda la ventana */
-    width: 100vw; /* Anchura de toda la ventana */
-    position: fixed; /* Fija el canvas en pantalla */
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: auto; /* Permite el scroll para el resto de la página */
+}
+
+/* Solo aplica estilos al canvas */
+.fullscreen-canvas {
+  height: 100vh; /* Altura de toda la ventana */
+  width: 100vw; /* Anchura de toda la ventana */
+  position: fixed; /* Fija el canvas en pantalla */
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: -1; /* Envía el canvas al fondo */
+}
