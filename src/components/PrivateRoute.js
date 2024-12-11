@@ -1,16 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 
 const PrivateRoute = ({ children }) => {
-  const { isAuthenticated } = useContext(AuthContext);
-  
-  // Si no está autenticado, redirige al formulario de inicio de sesión
-  if (!isAuthenticated) {
-    return <Navigate to="/auth" />;
+  const { isAuthenticated, isLoading, user } = useContext(AuthContext);
+
+  useEffect(() => {
+    console.log('PrivateRoute: User:', user, 'isAuthenticated:', isAuthenticated, 'isLoading:', isLoading);
+  }, [user, isAuthenticated, isLoading]);
+
+  if (isLoading) {
+    return <p>Cargando...</p>; // Mostrar mensaje de carga mientras se verifica la autenticación
   }
 
-  // Si está autenticado, renderiza la página protegida
+  if (!isAuthenticated) {
+    return <Navigate to="/auth" replace />;
+  }
+
   return children;
 };
 

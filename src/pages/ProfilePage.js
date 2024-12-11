@@ -16,8 +16,13 @@ const ProfilePage = () => {
   });
   const [positions, setPositions] = useState([]);
   const [sectors, setSectors] = useState([]);
+  const [passwordData, setPasswordData] = useState({
+    old_password: '',
+    new_password: '',
+  });
   const [message, setMessage] = useState('');
-  const [preview, setPreview] = useState(''); // Para mostrar la imagen actual o subida
+  const [passwordMessage, setPasswordMessage] = useState('');
+  const [preview, setPreview] = useState('');
 
   useEffect(() => {
     if (user) {
@@ -30,7 +35,7 @@ const ProfilePage = () => {
         sector: user.sector || '',
         profile_picture: user.profile_picture || '',
       });
-      setPreview(user.profile_picture || ''); // Muestra la imagen actual del usuario
+      setPreview(user.profile_picture || '');
     }
 
     const fetchOptions = async () => {
@@ -73,10 +78,15 @@ const ProfilePage = () => {
       const reader = new FileReader();
       reader.onload = () => {
         setFormData((prevData) => ({ ...prevData, profile_picture: reader.result }));
-        setPreview(reader.result); // Actualiza la vista previa
+        setPreview(reader.result);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setPasswordData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -97,11 +107,38 @@ const ProfilePage = () => {
       const response = await api.put('/users/profile/', formData, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-      setUser(response.data); // Actualiza los datos del usuario
+      setUser(response.data);
       setMessage('Perfil actualizado exitosamente.');
     } catch (error) {
       console.error('Error al actualizar el perfil:', error);
       setMessage('Error al actualizar el perfil.');
+    }
+  };
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    setPasswordMessage('');
+
+    let accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      accessToken = await renewAccessToken(localStorage.getItem('refreshToken'));
+    }
+
+    if (!accessToken) {
+      setPasswordMessage('No se pudo autenticar la solicitud.');
+      return;
+    }
+
+    try {
+      const response = await api.put('/users/change-password/', passwordData, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      setPasswordMessage(response.data.detail || 'Contraseña actualizada exitosamente.');
+    } catch (error) {
+      console.error('Error al cambiar la contraseña:', error);
+      setPasswordMessage(
+        error.response?.data?.detail || 'Error al cambiar la contraseña.'
+      );
     }
   };
 
@@ -209,6 +246,39 @@ const ProfilePage = () => {
           </button>
         </form>
         {message && <p className="mt-4 text-green-600">{message}</p>}
+
+        <h2 className="text-xl font-bold mt-8 mb-4">Cambiar Contraseña</h2>
+        <form onSubmit={handlePasswordSubmit}>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-bold mb-2">Contraseña Actual</label>
+            <input
+              type="password"
+              name="old_password"
+              value={passwordData.old_password}
+              onChange={handlePasswordChange}
+              className="w-full px-4 py-2 border rounded"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-bold mb-2">Nueva Contraseña</label>
+            <input
+              type="password"
+              name="new_password"
+              value={passwordData.new_password}
+              onChange={handlePasswordChange}
+              className="w-full px-4 py-2 border rounded"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          >
+            Cambiar Contraseña
+          </button>
+        </form>
+        {passwordMessage && <p className="mt-4 text-green-600">{passwordMessage}</p>}
       </div>
     </div>
   );

@@ -5,27 +5,33 @@ import api from '../api';
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    !!localStorage.getItem('accessToken')
-  );
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    const refreshToken = localStorage.getItem('refreshToken');
+    const fetchAuth = async () => {
+      const accessToken = localStorage.getItem('accessToken');
+      const refreshToken = localStorage.getItem('refreshToken');
 
-    if (accessToken) {
-      fetchUserInfo(accessToken).catch(() => {
-        if (refreshToken) {
-          renewAccessToken(refreshToken);
-        } else {
-          logout();
+      if (accessToken) {
+        try {
+          await fetchUserInfo(accessToken);
+        } catch {
+          if (refreshToken) {
+            await renewAccessToken(refreshToken);
+          } else {
+            logout();
+          }
         }
-      });
-    } else {
-      setIsAuthenticated(false);
-    }
+      } else {
+        setIsAuthenticated(false);
+      }
+      setIsLoading(false);
+    };
+
+    fetchAuth();
   }, []);
 
   const fetchUserInfo = async (token) => {
@@ -78,8 +84,9 @@ const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         isAuthenticated,
+        isLoading,
         user,
-        setUser, // Incluye setUser aquí
+        setUser,
         loginUser,
         logout,
         renewAccessToken,

@@ -56,6 +56,17 @@ const Header = () => {
                     Perfil
                   </Link>
                 </li>
+                {user?.is_superuser && (
+                  <li className="border-b border-gray-600">
+                    <Link
+                      to="/admin"
+                      className="block px-4 py-2 hover:bg-gray-600"
+                      onClick={closeDropdown}
+                    >
+                      Administración
+                    </Link>
+                  </li>
+                )}
                 <li>
                   <button
                     onClick={() => {
@@ -67,6 +78,7 @@ const Header = () => {
                     Cerrar Sesión
                   </button>
                 </li>
+                
               </ul>
             </div>
           ) : (

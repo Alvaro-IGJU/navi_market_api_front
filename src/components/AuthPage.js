@@ -6,8 +6,11 @@ import api from '../api';
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
-    email_or_username: '',
+    email: '',
+    username: '',
     password: '',
+    first_name: '',
+    last_name: '',
   });
   const [message, setMessage] = useState('');
   const { loginUser } = useContext(AuthContext);
@@ -24,13 +27,23 @@ const AuthPage = () => {
 
     try {
       if (isLogin) {
-        const response = await api.post('/users/login/', formData);
+        const response = await api.post('/users/login/', {
+          email_or_username: formData.email,
+          password: formData.password,
+        });
         const { tokens } = response.data;
         await loginUser(tokens);
         setMessage('Inicio de sesión exitoso');
         navigate('/dashboard');
       } else {
-        await api.post('/users/register/', formData);
+        const registerData = {
+          email: formData.email,
+          username: formData.username,
+          password: formData.password,
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+        };
+        await api.post('/users/register/', registerData);
         setMessage('Registro exitoso. Ahora puedes iniciar sesión.');
         setIsLogin(true);
       }
@@ -44,12 +57,46 @@ const AuthPage = () => {
     <div>
       <h1>{isLogin ? 'Iniciar Sesión' : 'Registrarse'}</h1>
       <form onSubmit={handleSubmit}>
+        {!isLogin && (
+          <>
+            <div>
+              <label>Nombre:</label>
+              <input
+                type="text"
+                name="first_name"
+                value={formData.first_name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <label>Apellido:</label>
+              <input
+                type="text"
+                name="last_name"
+                value={formData.last_name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <label>Usuario:</label>
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </>
+        )}
         <div>
           <label>Email:</label>
           <input
             type="email"
-            name="email_or_username"
-            value={formData.email_or_username}
+            name="email"
+            value={formData.email}
             onChange={handleChange}
             required
           />
