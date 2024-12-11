@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthContext'; // Importa AuthContext
-import api from '../api'; // Tu configuración de Axios
+import { AuthContext } from '../contexts/AuthContext';
+import api from '../api';
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -10,7 +10,7 @@ const AuthPage = () => {
     password: '',
   });
   const [message, setMessage] = useState('');
-  const { setIsAuthenticated, setUser } = useContext(AuthContext); // Extrae del contexto
+  const { loginUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,18 +25,10 @@ const AuthPage = () => {
     try {
       if (isLogin) {
         const response = await api.post('/users/login/', formData);
-
-        // Guarda el token en localStorage
-        const { tokens, user } = response.data; // Asegúrate de que el backend devuelva los datos correctos
-        localStorage.setItem('accessToken', tokens.access);
-        localStorage.setItem('refreshToken', tokens.refresh);
-
-        // Actualiza el estado de autenticación y el usuario en el contexto
-        setIsAuthenticated(true);
-        setUser(user);
-
+        const { tokens } = response.data;
+        await loginUser(tokens);
         setMessage('Inicio de sesión exitoso');
-        navigate('/dashboard'); // Redirige al dashboard
+        navigate('/dashboard');
       } else {
         await api.post('/users/register/', formData);
         setMessage('Registro exitoso. Ahora puedes iniciar sesión.');

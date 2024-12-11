@@ -1,69 +1,81 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthContext'; // Verifica esta ruta
-import '../Header.css';
+import { AuthContext } from '../contexts/AuthContext';
 
 const Header = () => {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
-  console.log('AuthContext in Header:', { isAuthenticated, user, logout });
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownOpen((prev) => !prev);
+  };
+
+  const closeDropdown = () => {
+    setDropdownOpen(false);
+  };
 
   return (
-    <header>
-      <nav className="navbar navbar-expand-lg navy-bg-blue ">
-        <div className="container">
-          <Link className="navbar-brand" to="/">NAVY MARKET</Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              {isAuthenticated ? (
-                <li className="nav-item dropdown">
-                  <a
-                    className="nav-link dropdown-toggle"
-                    href="#"
-                    id="navbarDropdown"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
+    <header className="bg-gray-800 text-white h-20">
+      <div className="container mx-auto px-4 py-4 flex items-center justify-between h-full">
+        <Link to="/" className="text-lg font-bold text-yellow-400">
+          NAVY MARKET
+        </Link>
+        <div className="flex items-center space-x-4">
+          {isAuthenticated ? (
+            <div
+              className="relative"
+              onMouseEnter={() => setDropdownOpen(true)}
+              onMouseLeave={closeDropdown}
+            >
+              <button
+                onClick={toggleDropdown}
+                className="flex items-center space-x-2 focus:outline-none"
+              >
+                <img
+                  src={user?.profile_picture || '/default-avatar.png'}
+                  alt="Perfil"
+                  className="w-8 h-8 rounded-full border border-yellow-400"
+                />
+                <span className="text-sm">
+                  {user?.first_name
+                    ? `${user.first_name} ${user.last_name || ''}`
+                    : 'Usuario'}
+                </span>
+              </button>
+              <ul
+                className={`absolute right-0 mt-2 w-48 bg-gray-700 text-white rounded shadow-lg transition-all ${
+                  dropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+                }`}
+              >
+                <li className="border-b border-gray-600">
+                  <Link
+                    to="/profile"
+                    className="block px-4 py-2 hover:bg-gray-600"
+                    onClick={closeDropdown}
                   >
-                    <img
-                      src={user?.profile_picture || '/default-avatar.png'}
-                      alt="Perfil"
-                      className="rounded-circle"
-                      width="30"
-                      height="30"
-                    />{' '}
-                    {user?.username || 'Usuario'}
-                  </a>
-                  <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li>
-                      <a className="dropdown-item" href="/profile">Perfil</a>
-                    </li>
-                    <li>
-                      <button className="dropdown-item" onClick={logout}>
-                        Cerrar Sesión
-                      </button>
-                    </li>
-                  </ul>
+                    Perfil
+                  </Link>
                 </li>
-              ) : (
-                <li className="nav-item">
-                  <Link className="nav-link" to="/auth">Iniciar Sesión</Link>
+                <li>
+                  <button
+                    onClick={() => {
+                      closeDropdown();
+                      logout();
+                    }}
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-600"
+                  >
+                    Cerrar Sesión
+                  </button>
                 </li>
-              )}
-            </ul>
-          </div>
+              </ul>
+            </div>
+          ) : (
+            <Link to="/auth" className="text-sm text-yellow-400 hover:underline">
+              Iniciar Sesión
+            </Link>
+          )}
         </div>
-      </nav>
+      </div>
     </header>
   );
 };

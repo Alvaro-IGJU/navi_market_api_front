@@ -4,8 +4,14 @@ import { AuthContext } from '../contexts/AuthContext';
 
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
+  
+  // Si no está autenticado, redirige al formulario de inicio de sesión
+  if (!isAuthenticated) {
+    return <Navigate to="/auth" />;
+  }
 
-  return isAuthenticated ? children : <Navigate to="/auth" />;
+  // Si está autenticado, renderiza la página protegida
+  return children;
 };
 
 export default PrivateRoute;

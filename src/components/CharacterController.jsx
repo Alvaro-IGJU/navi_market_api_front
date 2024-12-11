@@ -170,7 +170,9 @@ export const CharacterController = () => {
   })
 
   return (
+    
     <RigidBody colliders={false} lockRotations ref={rb} name="Character">
+      
       <group ref={container}>
         {/* Referencia para el objetivo de la cámara */}
         <group ref={cameraTarget} position-z={1.5} />

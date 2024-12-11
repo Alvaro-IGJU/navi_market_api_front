@@ -7,6 +7,7 @@ import Header from './components/Header';
 import AuthPage from './components/AuthPage';
 import Experience from './components/Experience';
 import Dashboard from './pages/Dashboard';
+import ProfilePage from './pages/ProfilePage';
 import AuthProvider from './contexts/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import './App.css'; // Asegúrate de importar el archivo CSS global
@@ -52,6 +53,14 @@ const App = () => {
             element={
               <PrivateRoute>
                 <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <ProfilePage />
               </PrivateRoute>
             }
           />
