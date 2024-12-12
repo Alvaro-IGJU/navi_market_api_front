@@ -91,7 +91,7 @@ const ProfilePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage('');
+    setMessage(''); // Reset previous message
 
     let accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
@@ -109,6 +109,11 @@ const ProfilePage = () => {
       });
       setUser(response.data);
       setMessage('Perfil actualizado exitosamente.');
+
+      // Hide message after 3 seconds
+      setTimeout(() => {
+        setMessage('');
+      }, 3000); // Hide after 3 seconds
     } catch (error) {
       console.error('Error al actualizar el perfil:', error);
       setMessage('Error al actualizar el perfil.');
@@ -117,7 +122,7 @@ const ProfilePage = () => {
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
-    setPasswordMessage('');
+    setPasswordMessage(''); // Reset password message
 
     let accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
@@ -134,6 +139,11 @@ const ProfilePage = () => {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       setPasswordMessage(response.data.detail || 'Contraseña actualizada exitosamente.');
+
+      // Hide password message after 3 seconds
+      setTimeout(() => {
+        setPasswordMessage('');
+      }, 3000); // Hide after 3 seconds
     } catch (error) {
       console.error('Error al cambiar la contraseña:', error);
       setPasswordMessage(
@@ -143,60 +153,42 @@ const ProfilePage = () => {
   };
 
   return (
-    <div>
+    <div className="bg-gray-900 min-h-screen text-gray-100">
       <Header />
-      <div className="max-w-3xl mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Actualizar Perfil</h1>
+      <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg mt-4 md:mt-4">
+        <h1 className="text-3xl font-bold mb-6 text-[#C7AA68]">Actualizar Perfil</h1>
+        {message && <p className="text-lg text-green-500">{message}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2">Nombre</label>
+            <label className="block font-semibold text-gray-200">Nombre</label>
             <input
               type="text"
               name="first_name"
               value={formData.first_name}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded"
+              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-[#212529] rounded focus:ring focus:ring-[#C7AA68]"
               required
             />
           </div>
+
           <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2">Apellido</label>
+            <label className="block font-semibold text-gray-200">Apellido</label>
             <input
               type="text"
               name="last_name"
               value={formData.last_name}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded"
+              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-[#212529] rounded focus:ring focus:ring-[#C7AA68]"
             />
           </div>
+
           <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded"
-              disabled
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2">Empresa</label>
-            <input
-              type="text"
-              name="company"
-              value={formData.company}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2">Cargo</label>
+            <label className="block font-semibold text-gray-200">Cargo</label>
             <select
               name="position"
               value={formData.position}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded"
+              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-[#212529] rounded focus:ring focus:ring-[#C7AA68]"
             >
               <option value="">Selecciona un cargo</option>
               {positions.map((position) => (
@@ -206,79 +198,62 @@ const ProfilePage = () => {
               ))}
             </select>
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2">Sector</label>
-            <select
-              name="sector"
-              value={formData.sector}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded"
-            >
-              <option value="">Selecciona un sector</option>
-              {sectors.map((sector) => (
-                <option key={sector.id} value={sector.id}>
-                  {sector.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2">Foto de Perfil</label>
+
+          <div className="mb-6">
+            <label className="block font-semibold text-gray-200 mb-2">Foto de Perfil</label>
             <input
               type="file"
-              accept="image/*"
               onChange={handleFileChange}
-              className="w-full px-4 py-2 border rounded"
+              accept="image/*" // Solo permite seleccionar imágenes
+              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-[#212529] rounded focus:ring focus:ring-[#C7AA68]"
             />
             {preview && (
               <img
                 src={preview}
-                alt="Vista previa"
-                className="mt-4 w-32 h-32 rounded-full object-cover"
+                alt="Preview"
+                className="mt-4 w-24 h-24 rounded-full border-2 border-[#C7AA68] object-cover"
               />
             )}
           </div>
+
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="w-full bg-[#C7AA68] text-gray-900 py-2 rounded hover:bg-[#9E8A52] transition duration-300"
           >
-            Actualizar
+            Actualizar Perfil
           </button>
         </form>
-        {message && <p className="mt-4 text-green-600">{message}</p>}
 
-        <h2 className="text-xl font-bold mt-8 mb-4">Cambiar Contraseña</h2>
-        <form onSubmit={handlePasswordSubmit}>
+        <h2 className="text-2xl font-bold mt-6 text-[#C7AA68]">Cambiar Contraseña</h2>
+        {passwordMessage && <p className="text-lg text-green-500">{passwordMessage}</p>}
+        <form onSubmit={handlePasswordSubmit} className="mt-4">
           <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2">Contraseña Actual</label>
+            <label className="block font-semibold text-gray-200">Contraseña Actual</label>
             <input
               type="password"
               name="old_password"
-              value={passwordData.old_password}
               onChange={handlePasswordChange}
-              className="w-full px-4 py-2 border rounded"
+              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-[#212529] rounded focus:ring focus:ring-[#C7AA68]"
               required
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2">Nueva Contraseña</label>
+          <div className="mb-6">
+            <label className="block font-semibold text-gray-200">Nueva Contraseña</label>
             <input
               type="password"
               name="new_password"
-              value={passwordData.new_password}
               onChange={handlePasswordChange}
-              className="w-full px-4 py-2 border rounded"
+              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-[#212529] rounded focus:ring focus:ring-[#C7AA68]"
               required
             />
           </div>
           <button
             type="submit"
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+            className="w-full bg-[#C7AA68] text-gray-900 py-2 rounded hover:bg-[#9E8A52] transition duration-300"
           >
             Cambiar Contraseña
           </button>
         </form>
-        {passwordMessage && <p className="mt-4 text-green-600">{passwordMessage}</p>}
       </div>
     </div>
   );

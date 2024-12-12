@@ -1,0 +1,154 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  background-color: #283941;
+  display: flex;
+  align-items: center; /* Centrado vertical */
+  justify-content: center; /* Centrado horizontal */
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  background-color: #fff;
+  border-radius: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 850px;
+  height: 500px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.form-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  transition: all 0.5s ease;
+}
+
+.sign-up {
+  left: 100%;
+}
+
+.sign-in {
+  left: 0;
+}
+
+.container.active .sign-up {
+  left: 0;
+}
+
+.container.active .sign-in {
+  left: -100%;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+input {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 100%;
+  outline: none;
+}
+
+button {
+  background-color: #283941;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #2c4b54;
+}
+
+.social-icons {
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon i {
+  font-size: 20px;
+}
+
+.toggle-container {
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, #c7aa68, #ce9e30);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+  transition: all 0.5s ease;
+}
+
+.toggle-panel {
+  display: none;
+  text-align: center;
+}
+
+.container.active .toggle-panel.toggle-left {
+  display: block;
+}
+
+.container.active .toggle-panel.toggle-right {
+  display: block;
+}
+
+button#register,
+button#login {
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 10px 20px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+button#register:hover,
+button#login:hover {
+  background-color: #fff;
+  color: #283941;
+}
