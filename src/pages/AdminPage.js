@@ -176,47 +176,44 @@ const AdminPage = () => {
         value={searchTerm}
         onChange={(e) => handleSearch(e, type)}
         placeholder={`Buscar ${type === 'positions' ? 'Cargos' : 'Sectores'}`}
-        className="mb-2 px-4 py-2 border rounded w-full"
+        className="mb-2 px-4 py-2 border border-[#212529] rounded w-full bg-gray-700 text-gray-100 focus:ring focus:ring-[#C7AA68]"
       />
       <button
         onClick={() => handleEditOrCreate(null, type)}
-        className="mb-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+        className="mb-2 bg-[#C7AA68] text-gray-900 px-4 py-2 rounded hover:bg-[#9E8A52] transition duration-300"
       >
         Crear {type === 'positions' ? 'Cargo' : 'Sector'}
       </button>
-      <div className="max-h-96 min-h-[12rem] overflow-y-auto border border-gray-300 rounded-lg">
+      <div className="max-h-96 min-h-[12rem] overflow-y-auto border border-[#212529] rounded-lg bg-gray-800">
         <table className="table-auto w-full border-collapse">
           <thead>
             <tr>
-              <th className="border border-gray-300 px-4 py-2">ID</th>
-              <th className="border border-gray-300 px-4 py-2">Nombre</th>
-              <th className="border border-gray-300 px-4 py-2">Acciones</th>
+              <th className="border border-[#212529] px-4 py-2 text-[#C7AA68]">ID</th>
+              <th className="border border-[#212529] px-4 py-2 text-[#C7AA68]">Nombre</th>
+              <th className="border border-[#212529] px-4 py-2 text-[#C7AA68]">Acciones</th>
             </tr>
           </thead>
           <tbody>
             {items.map((item) => (
               <tr key={item.id}>
-                <td className="border border-gray-300 px-4 py-2">{item.id}</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {item.title || item.name}
+                <td className="border border-[#212529] px-4 py-2">{item.id}</td>
+                <td className="border border-[#212529] px-4 py-2">{item.title || item.name}</td>
+                <td className="border border-[#212529] px-4 py-2">
+                  <div className="flex justify-around">
+                    <button
+                      onClick={() => handleEditOrCreate(item, type)}
+                      className="text-[#C7AA68] hover:underline"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item.id, type)}
+                      className="text-red-500 hover:underline"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
-                <div className="flex justify-around">
-                  <button
-                    onClick={() => handleEditOrCreate(item, type)}
-                    className="text-blue-500 hover:underline"
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item.id, type)}
-                    className="text-red-500 hover:underline"
-                  >
-                    Eliminar
-                  </button>
-                </div>
-              </td>
-
               </tr>
             ))}
           </tbody>
@@ -230,16 +227,16 @@ const AdminPage = () => {
   }
 
   return (
-    <div>
+    <div className="bg-gray-900 min-h-screen text-gray-100">
       <Header />
-      <div className="max-w-6xl mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Administración</h1>
+      <div className="max-w-6xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg mt-4 md:mt-4">
+        <h1 className="text-3xl font-bold mb-6 text-[#C7AA68]">Administración</h1>
         <section>
-          <h2 className="text-xl font-bold mb-2">Cargos</h2>
+          <h2 className="text-xl font-bold mb-4 text-[#C7AA68]">Cargos</h2>
           {renderTable(filteredPositions, 'positions', searchTermPositions)}
         </section>
         <section>
-          <h2 className="text-xl font-bold mb-2">Sectores</h2>
+          <h2 className="text-xl font-bold mb-4 text-[#C7AA68]">Sectores</h2>
           {renderTable(filteredSectors, 'sectors', searchTermSectors)}
         </section>
       </div>
