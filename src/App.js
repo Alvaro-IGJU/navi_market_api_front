@@ -14,6 +14,7 @@ import './App.css'; // Asegúrate de importar el archivo CSS global
 import './Canvas.css'; // Asegúrate de importar el archivo CSS global
 import { Stats, OrbitControls } from '@react-three/drei'
 import AdminPage from './pages/AdminPage';
+import CompanyPage from './pages/CompanyPage';
 
 
 const keyboardMap = [
@@ -69,7 +70,10 @@ const App = () => {
             <PrivateRoute>
               <AdminPage />
             </PrivateRoute>} />
-
+          <Route path="/company" element={
+          <PrivateRoute>
+            <CompanyPage />
+          </PrivateRoute>} />
           <Route path="/canvas" element={<CanvasWrapper />} />
         </Routes>
       </AuthProvider>

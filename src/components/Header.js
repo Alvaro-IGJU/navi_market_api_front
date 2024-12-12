@@ -67,6 +67,17 @@ const Header = () => {
                     </Link>
                   </li>
                 )}
+                {user?.role === "Company" && (
+                  <li className="border-b border-gray-600">
+                    <Link
+                      to="/company"
+                      className="block px-4 py-2 hover:bg-gray-600"
+                      onClick={closeDropdown}
+                    >
+                      Mi empresa
+                    </Link>
+                  </li>
+                )}
                 <li>
                   <button
                     onClick={() => {
