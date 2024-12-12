@@ -2,6 +2,9 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import api from '../api';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -12,7 +15,6 @@ const AuthPage = () => {
     first_name: '',
     last_name: '',
   });
-  const [message, setMessage] = useState('');
   const { loginUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -23,7 +25,6 @@ const AuthPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage('');
 
     try {
       if (isLogin) {
@@ -33,7 +34,7 @@ const AuthPage = () => {
         });
         const { tokens } = response.data;
         await loginUser(tokens);
-        setMessage('Inicio de sesión exitoso');
+        toast.success('Inicio de sesión exitoso');
         navigate('/dashboard');
       } else {
         const registerData = {
@@ -44,79 +45,110 @@ const AuthPage = () => {
           last_name: formData.last_name,
         };
         await api.post('/users/register/', registerData);
-        setMessage('Registro exitoso. Ahora puedes iniciar sesión.');
+        toast.success('Registro exitoso. Ahora puedes iniciar sesión.');
         setIsLogin(true);
       }
     } catch (error) {
       console.error(error);
-      setMessage('Error: ' + (error.response?.data?.detail || 'Algo salió mal.'));
+      toast.error(
+        'Error: ' +
+          (error.response?.data?.detail || 'Ha ocurrido un error inesperado.')
+      );
     }
   };
 
   return (
-    <div>
-      <h1>{isLogin ? 'Iniciar Sesión' : 'Registrarse'}</h1>
-      <form onSubmit={handleSubmit}>
-        {!isLogin && (
-          <>
-            <div>
-              <label>Nombre:</label>
-              <input
-                type="text"
-                name="first_name"
-                value={formData.first_name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Apellido:</label>
-              <input
-                type="text"
-                name="last_name"
-                value={formData.last_name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Usuario:</label>
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </>
-        )}
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Contraseña:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">{isLogin ? 'Iniciar Sesión' : 'Registrarse'}</button>
-      </form>
-      <p>{message}</p>
-      <button onClick={() => setIsLogin(!isLogin)}>
-        {isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia sesión'}
-      </button>
+    <div className="bg-gray-900 min-h-screen flex items-center justify-center text-gray-100">
+      <div className="w-full max-w-md bg-gray-800 p-6 rounded-lg shadow-lg overflow-hidden relative">
+        {/* Animación de Framer Motion */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={isLogin ? 'login' : 'register'}
+            initial={{ opacity: 0, x: 100 }} // Animación inicial
+            animate={{ opacity: 1, x: 0 }}   // Animación al estar presente
+            exit={{ opacity: 0, x: -100 }}   // Animación al salir
+            transition={{ duration: 0.6, ease: 'easeInOut' }}
+          >
+            <h1 className="text-3xl font-bold mb-6 text-center text-[#C7AA68]">
+              {isLogin ? 'Iniciar Sesión' : 'Registrarse'}
+            </h1>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {!isLogin && (
+                <>
+                  <div>
+                    <label className="block mb-1 text-[#C7AA68]">Nombre:</label>
+                    <input
+                      type="text"
+                      name="first_name"
+                      value={formData.first_name}
+                      onChange={handleChange}
+                      required
+                      className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-1 text-[#C7AA68]">Apellido:</label>
+                    <input
+                      type="text"
+                      name="last_name"
+                      value={formData.last_name}
+                      onChange={handleChange}
+                      required
+                      className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-1 text-[#C7AA68]">Usuario:</label>
+                    <input
+                      type="text"
+                      name="username"
+                      value={formData.username}
+                      onChange={handleChange}
+                      required
+                      className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
+                    />
+                  </div>
+                </>
+              )}
+              <div>
+                <label className="block mb-1 text-[#C7AA68]">Email:</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-[#C7AA68]">Contraseña:</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-[#C7AA68] text-gray-900 py-2 rounded hover:bg-[#9E8A52] transition duration-300"
+              >
+                {isLogin ? 'Iniciar Sesión' : 'Registrarse'}
+              </button>
+            </form>
+            <button
+              onClick={() => setIsLogin(!isLogin)}
+              className="w-full mt-4 text-sm text-[#C7AA68] hover:underline focus:outline-none"
+            >
+              {isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia sesión'}
+            </button>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+      <ToastContainer />
     </div>
   );
 };
