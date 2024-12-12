@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import Header from '../components/Header';
 import api from '../api';
+import { use } from 'react';
 
 const ProfilePage = () => {
   const { user, setUser, renewAccessToken } = useContext(AuthContext);
@@ -25,6 +26,7 @@ const ProfilePage = () => {
   const [preview, setPreview] = useState('');
 
   useEffect(() => {
+    console.log(user)
     if (user) {
       setFormData({
         first_name: user.first_name || '',
@@ -56,7 +58,7 @@ const ProfilePage = () => {
           api.get('/users/positions/', { headers }),
           api.get('/users/sectors/', { headers }),
         ]);
-
+          
         setPositions(positionsResponse.data);
         setSectors(sectorsResponse.data);
       } catch (error) {
@@ -182,6 +184,22 @@ const ProfilePage = () => {
             />
           </div>
 
+          <div className="mb-4">
+            <label className="block font-semibold text-gray-200">Sector</label>
+            <select
+              name="sector"
+              value={formData.sector}
+              onChange={handleChange}
+              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-[#212529] rounded focus:ring focus:ring-[#C7AA68]"
+            >
+              <option value="">Selecciona un sector</option>
+              {sectors.map((sector) => (
+                <option key={sector.id} value={sector.id}>
+                  {sector.name}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="mb-4">
             <label className="block font-semibold text-gray-200">Cargo</label>
             <select
