@@ -17,6 +17,7 @@ import AdminPage from './pages/AdminPage';
 import CompanyPage from './pages/CompanyPage';
 import AdminCreateCompanyUserPage from './pages/AdminCreateCompanyUserPage'; // Importa el nuevo componente
 import AdminEventsPage from './pages/AdminEventsPage';
+import AdminStandsPage from './pages/AdminStandsPage';
 
 const keyboardMap = [
   { name: "forward", keys: ["ArrowUp", "KeyW"] },
@@ -86,6 +87,14 @@ const App = () => {
             element={
               <PrivateRoute>
                 <AdminEventsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/stands"
+            element={
+              <PrivateRoute>
+                <AdminStandsPage />
               </PrivateRoute>
             }
           />
