@@ -15,31 +15,31 @@ import './Canvas.css'; // Asegúrate de importar el archivo CSS global
 import { Stats, OrbitControls } from '@react-three/drei'
 import AdminPage from './pages/AdminPage';
 import CompanyPage from './pages/CompanyPage';
-
+import AdminCreateCompanyUserPage from './pages/AdminCreateCompanyUserPage'; // Importa el nuevo componente
 
 const keyboardMap = [
-  {name: "forward", keys:["ArrowUp", "KeyW"]},
-  {name: "backward", keys:["ArrowDown", "KeyS"]},
-  {name: "left", keys:["ArrowLeft", "KeyA"]},
-  {name: "right", keys:["ArrowRight", "KeyD"]},
-  {name: "run", keys:["Shift"]},
-
+  { name: "forward", keys: ["ArrowUp", "KeyW"] },
+  { name: "backward", keys: ["ArrowDown", "KeyS"] },
+  { name: "left", keys: ["ArrowLeft", "KeyA"] },
+  { name: "right", keys: ["ArrowRight", "KeyD"] },
+  { name: "run", keys: ["Shift"] },
 ];
-
 
 const CanvasWrapper = () => (
   <div className="fullscreen-canvas"> {/* Clase para ocupar toda la pantalla */}
-  <KeyboardControls map={keyboardMap}>
-    <Canvas camera={{ position: [0, 0.5, 5], fov: 42 }} style={{
-      touchAction: "none",
-    }}>
-      <color attach="background" args={["#f5f3ee"]} />
-      <fog attach="fog" args={["#f5f3ee", 10, 50]} />
+    <KeyboardControls map={keyboardMap}>
+      <Canvas
+        camera={{ position: [0, 0.5, 5], fov: 42 }}
+        style={{
+          touchAction: "none",
+        }}
+      >
+        <color attach="background" args={["#f5f3ee"]} />
+        <fog attach="fog" args={["#f5f3ee", 10, 50]} />
         <Experience /> {/* Componente que contiene elementos 3D */}
-        
         <Stats />
-    </Canvas>
-  </KeyboardControls>
+      </Canvas>
+    </KeyboardControls>
   </div>
 );
 
@@ -71,10 +71,15 @@ const App = () => {
               <AdminPage />
             </PrivateRoute>} />
           <Route path="/company" element={
-          <PrivateRoute>
-            <CompanyPage />
-          </PrivateRoute>} />
+            <PrivateRoute>
+              <CompanyPage />
+            </PrivateRoute>} />
           <Route path="/canvas" element={<CanvasWrapper />} />
+          <Route path="/admin/create-company-user" element={
+            <PrivateRoute>
+              <AdminCreateCompanyUserPage />
+            </PrivateRoute>
+          } />
         </Routes>
       </AuthProvider>
     </Router>
