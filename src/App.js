@@ -16,6 +16,7 @@ import { Stats, OrbitControls } from '@react-three/drei'
 import AdminPage from './pages/AdminPage';
 import CompanyPage from './pages/CompanyPage';
 import AdminCreateCompanyUserPage from './pages/AdminCreateCompanyUserPage'; // Importa el nuevo componente
+import AdminEventsPage from './pages/AdminEventsPage';
 
 const keyboardMap = [
   { name: "forward", keys: ["ArrowUp", "KeyW"] },
@@ -80,6 +81,14 @@ const App = () => {
               <AdminCreateCompanyUserPage />
             </PrivateRoute>
           } />
+          <Route
+            path="/admin/events"
+            element={
+              <PrivateRoute>
+                <AdminEventsPage />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </AuthProvider>
     </Router>
