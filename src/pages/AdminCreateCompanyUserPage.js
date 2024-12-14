@@ -2,12 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../api'; // Configura Axios con tu base URL
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AdminCreateCompanyUserPage = () => {
   const { user } = useContext(AuthContext); // Contexto de autenticación
   const navigate = useNavigate(); // Navegación para redirección
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
   const [generatedPassword, setGeneratedPassword] = useState('');
 
   useEffect(() => {
@@ -19,39 +20,51 @@ const AdminCreateCompanyUserPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage('');
     setGeneratedPassword('');
-  
+
     try {
-      const response = await api.post('/users/admin/create-company-user/', { email }, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
-      });
-  
-      setMessage(response.data.message);
+      const response = await api.post(
+        '/users/admin/create-company-user/',
+        { email },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+        }
+      );
+
       setGeneratedPassword(response.data.password);
+      // Corregido: Mostrar email correctamente en la notificación
+      toast.success(`Usuario creado correctamente. Correo enviado a ${email}.`);
     } catch (error) {
       if (error.response) {
         if (error.response.status === 409) {
-          setMessage('El usuario ya existe.');
+          toast.error('El usuario ya existe.');
         } else {
-          setMessage(error.response.data.error || 'Error al crear el usuario.');
+          toast.error(error.response.data.error || 'Error al crear el usuario.');
         }
       } else {
-        setMessage('Error al conectar con el servidor.');
+        toast.error('Error al conectar con el servidor.');
       }
     }
   };
 
   return (
-    <div className="bg-gray-900 min-h-screen text-gray-100">
-      <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg mt-4">
-        <h1 className="text-3xl font-bold mb-6 text-[#C7AA68]">Crear Usuario de Empresa</h1>
-        {message && <p className={`text-lg ${generatedPassword ? 'text-green-500' : 'text-red-500'}`}>{message}</p>}
+    <div className="bg-gray-900 min-h-screen text-gray-100 flex items-center justify-center">
+      <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg">
+        {/* Título principal */}
+        <h1 className="text-3xl font-bold mb-6 text-[#C7AA68] text-center">
+          Crear Usuario de Empresa
+        </h1>
+
+        {/* Mostrar contraseña generada */}
         {generatedPassword && (
           <div className="mt-4 p-4 bg-green-800 text-gray-100 rounded">
-            <p><strong>Contraseña Generada:</strong> {generatedPassword}</p>
+            <p>
+              <strong>Contraseña Generada:</strong> {generatedPassword}
+            </p>
           </div>
         )}
+
+        {/* Formulario */}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block font-semibold text-gray-200">Email</label>
@@ -61,6 +74,7 @@ const AdminCreateCompanyUserPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded focus:ring focus:ring-[#C7AA68]"
+              placeholder="empresa@correo.com"
               required
             />
           </div>
@@ -72,6 +86,8 @@ const AdminCreateCompanyUserPage = () => {
           </button>
         </form>
       </div>
+      {/* Toast Container para notificaciones */}
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
     </div>
   );
 };
