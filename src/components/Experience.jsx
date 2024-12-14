@@ -1,9 +1,10 @@
 import React, { useRef } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Environment, OrbitControls } from "@react-three/drei";
+import { Environment, OrbitControls, useGLTF } from "@react-three/drei";
 import { Physics, RigidBody } from "@react-three/rapier";
 import { CharacterController } from "./CharacterController";
 import Stand from "./Stand";
+import Base from "./Base";
 
 const Experience = () => {
   const characterRef = useRef();
@@ -14,18 +15,13 @@ const Experience = () => {
       <Environment preset="sunset" />
 
       {/* Simulación física */}
-      <Physics debug>
-        {/* Suelo */}
-        <RigidBody type="fixed">
-          <mesh position={[0, -1, 0]}>
-            <boxGeometry args={[10, 1, 10]} />
-            <meshStandardMaterial color="gray" />
-          </mesh>
-        </RigidBody>
+      <Physics >
+        {/* Modelo base */}
+          <Base position={[-3, -2, 2]} scale={[1, 1, 1]}/>
 
         {/* Stand con contador */}
-        <Stand position={[-3, 0, 2]} size={[1, 1, 1]} color="blue" characterRef={characterRef} />
-        <Stand position={[4, 0, 2]} size={[1, 1, 1]} color="red" characterRef={characterRef} />
+        <Stand position={[-3, -1, 2]} size={[1, 1, 1]} color="blue" characterRef={characterRef} />
+        <Stand position={[4, -1, 2]} size={[1, 1, 1]} color="red" characterRef={characterRef} />
 
         {/* Personaje */}
         <CharacterController characterRef={characterRef} />

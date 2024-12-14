@@ -182,12 +182,12 @@ export const CharacterController = () => {
 
         {/* Referencia para el personaje */}
         <group ref={character} >
-          <Avatar scale={0.3} position-y={-0.25} animation={animation} />
+          <Avatar scale={0.4} position-y={-0.25} animation={animation} />
         </group>
       </group>
 
       {/* Collider en forma de cápsula para el personaje */}
-      <CapsuleCollider args={[0.08, 0.15]} />
+      <CapsuleCollider args={[0.2, 0.18]}/>
     </RigidBody>
   );
 };
