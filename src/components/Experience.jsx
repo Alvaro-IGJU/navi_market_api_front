@@ -29,7 +29,7 @@ const Experience = () => {
           id: stand.id,
           position,
           rotation,
-          size: [1, 1, 1],
+          size: [3, 3, 3],
           color: stand.color || "blue",
         };
       });

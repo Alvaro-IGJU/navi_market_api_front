@@ -8,9 +8,9 @@ const Stand = ({
   id,
   position = [0, 0, 0],
   rotation = [0, 0, 0],
-  size = [1, 1, 1],
+  size = [3, 3, 3],
   color = "blue",
-  areaRadius = 3,
+  areaRadius = 8,
 }) => {
 
   const { posX, posY, posZ, rotX, rotY, rotZ } = useControls(`Stand ${id}`, {
@@ -18,7 +18,7 @@ const Stand = ({
     posY: { value: -1, min: -100, max: 10, step: 0.1 },
     posZ: { value: 10, min: -100, max: 100, step: 0.1 },
     rotX: { value: 0, min: -Math.PI, max: Math.PI, step: 0.01 },
-    rotY: { value: 0, min: -Math.PI, max: Math.PI, step: 0.01 },
+    rotY: { value: 0, min: -Math.PI,  max: Math.PI, step: 0.01 },
     rotZ: { value: 10, min: -Math.PI, max: Math.PI, step: 0.01 },
   });
   const isCharacterInside = useRef(false);
@@ -136,7 +136,7 @@ const Stand = ({
 
   return (
     // <group position={[posX, posY, posZ]} rotation={[rotX, rotY, rotZ]}>
-     <group position={position} rotation={rotation}> 
+     <group position={position} rotation={rotation} > 
       {/* Stand */}
       <RigidBody type="fixed">
         <mesh>
@@ -154,7 +154,7 @@ const Stand = ({
       {/* Mailbox */}
       <RigidBody type="fixed">
         <mesh
-          position={[-0.5, -0.5, 1]}
+          position={[-0.5, -0.5, 3]}
           onClick={() => handleClick("mailbox")}
         >
           <boxGeometry args={[0.2, 0.2, 0.2]} />
@@ -164,7 +164,7 @@ const Stand = ({
 
       {/* Laptop */}
       <RigidBody type="fixed">
-        <mesh position={[-0.2, 0, 1]} onClick={() => handleClick("info_pc")}>
+        <mesh position={[-0.2, 0, 3]} onClick={() => handleClick("info_pc")}>
           <boxGeometry args={[0.3, 0.1, 0.2]} />
           <meshStandardMaterial color="gray" />
         </mesh>
@@ -172,7 +172,7 @@ const Stand = ({
 
       {/* Screen */}
       <RigidBody type="fixed">
-        <mesh position={[0.2, 0.2, 1]} onClick={() => handleClick("play_video")}>
+        <mesh position={[0.2, 0.2, 3]} onClick={() => handleClick("play_video")}>
           <boxGeometry args={[0.4, 0.3, 0.1]} />
           <meshStandardMaterial color="black" />
         </mesh>
@@ -181,7 +181,7 @@ const Stand = ({
       {/* Catalog */}
       <RigidBody type="fixed">
         <mesh
-          position={[0.5, -0.5, 1]}
+          position={[0.5, -0.5, 3]}
           onClick={() => handleClick("download_catalog")}
         >
           <boxGeometry args={[0.2, 0.05, 0.3]} />
@@ -192,7 +192,7 @@ const Stand = ({
       {/* Phone */}
       <RigidBody type="fixed">
         <mesh
-          position={[0.7, -0.3, 1]}
+          position={[0.7, -0.3, 3]}
           onClick={() => handleClick("schedule_meeting")}
         >
           <boxGeometry args={[0.1, 0.2, 0.1]} />
