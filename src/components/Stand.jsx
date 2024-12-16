@@ -2,14 +2,30 @@ import React, { useRef, useEffect } from "react";
 import { RigidBody } from "@react-three/rapier";
 import { useFrame } from "@react-three/fiber";
 import api from "../api";
+import { useControls } from "leva";
 
-const Stand = ({ id, position = [0, 0, 0], size = [1, 1, 1], color = "blue", areaRadius = 3 }) => {
+const Stand = ({
+  id,
+  position = [0, 0, 0],
+  rotation = [0, 0, 0],
+  size = [1, 1, 1],
+  color = "blue",
+  areaRadius = 3,
+}) => {
+
+  const { posX, posY, posZ, rotX, rotY, rotZ } = useControls(`Stand ${id}`, {
+    posX: { value: -17, min: -100, max: 100, step: 0.1 },
+    posY: { value: -1, min: -100, max: 10, step: 0.1 },
+    posZ: { value: 10, min: -100, max: 100, step: 0.1 },
+    rotX: { value: 0, min: -Math.PI, max: Math.PI, step: 0.01 },
+    rotY: { value: 0, min: -Math.PI, max: Math.PI, step: 0.01 },
+    rotZ: { value: 10, min: -Math.PI, max: Math.PI, step: 0.01 },
+  });
   const isCharacterInside = useRef(false);
   const timeInside = useRef(0);
   const interactionId = useRef(null);
   const areaRef = useRef();
 
-  // Start interaction when entering the stand area
   const startInteraction = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -27,7 +43,6 @@ const Stand = ({ id, position = [0, 0, 0], size = [1, 1, 1], color = "blue", are
     }
   };
 
-  // Update time spent in the stand area
   const updateInteractionDuration = async () => {
     if (!interactionId.current) return;
 
@@ -40,14 +55,15 @@ const Stand = ({ id, position = [0, 0, 0], size = [1, 1, 1], color = "blue", are
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log(`Duration updated for interaction ${interactionId.current}: ${timeInside.current} seconds`);
+      console.log(
+        `Duration updated for interaction ${interactionId.current}: ${timeInside.current} seconds`
+      );
       timeInside.current = 0;
     } catch (error) {
       console.error("Error updating interaction duration:", error.response || error);
     }
   };
 
-  // End interaction when leaving the stand area
   const endInteraction = async () => {
     if (!interactionId.current) return;
 
@@ -56,7 +72,6 @@ const Stand = ({ id, position = [0, 0, 0], size = [1, 1, 1], color = "blue", are
     console.log("Interaction ended.");
   };
 
-  // Handle specific object interactions
   const sendInteraction = async (interactionType) => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -120,17 +135,18 @@ const Stand = ({ id, position = [0, 0, 0], size = [1, 1, 1], color = "blue", are
   };
 
   return (
-    <>
+    // <group position={[posX, posY, posZ]} rotation={[rotX, rotY, rotZ]}>
+     <group position={position} rotation={rotation}> 
       {/* Stand */}
       <RigidBody type="fixed">
-        <mesh position={position}>
+        <mesh>
           <boxGeometry args={size} />
           <meshStandardMaterial color={color} />
         </mesh>
       </RigidBody>
 
       {/* Detection Area */}
-      <mesh position={position} ref={areaRef}>
+      <mesh ref={areaRef}>
         <sphereGeometry args={[areaRadius, 32, 32]} />
         <meshStandardMaterial color="green" transparent opacity={0.2} />
       </mesh>
@@ -138,7 +154,7 @@ const Stand = ({ id, position = [0, 0, 0], size = [1, 1, 1], color = "blue", are
       {/* Mailbox */}
       <RigidBody type="fixed">
         <mesh
-          position={[position[0] - 0.5, position[1] - 0.5, position[2] + 1]}
+          position={[-0.5, -0.5, 1]}
           onClick={() => handleClick("mailbox")}
         >
           <boxGeometry args={[0.2, 0.2, 0.2]} />
@@ -148,10 +164,7 @@ const Stand = ({ id, position = [0, 0, 0], size = [1, 1, 1], color = "blue", are
 
       {/* Laptop */}
       <RigidBody type="fixed">
-        <mesh
-          position={[position[0] - 0.2, position[1], position[2] + 1]}
-          onClick={() => handleClick("info_pc")}
-        >
+        <mesh position={[-0.2, 0, 1]} onClick={() => handleClick("info_pc")}>
           <boxGeometry args={[0.3, 0.1, 0.2]} />
           <meshStandardMaterial color="gray" />
         </mesh>
@@ -159,10 +172,7 @@ const Stand = ({ id, position = [0, 0, 0], size = [1, 1, 1], color = "blue", are
 
       {/* Screen */}
       <RigidBody type="fixed">
-        <mesh
-          position={[position[0] + 0.2, position[1] + 0.2, position[2] + 1]}
-          onClick={() => handleClick("play_video")}
-        >
+        <mesh position={[0.2, 0.2, 1]} onClick={() => handleClick("play_video")}>
           <boxGeometry args={[0.4, 0.3, 0.1]} />
           <meshStandardMaterial color="black" />
         </mesh>
@@ -171,7 +181,7 @@ const Stand = ({ id, position = [0, 0, 0], size = [1, 1, 1], color = "blue", are
       {/* Catalog */}
       <RigidBody type="fixed">
         <mesh
-          position={[position[0] + 0.5, position[1] - 0.5, position[2] + 1]}
+          position={[0.5, -0.5, 1]}
           onClick={() => handleClick("download_catalog")}
         >
           <boxGeometry args={[0.2, 0.05, 0.3]} />
@@ -182,14 +192,14 @@ const Stand = ({ id, position = [0, 0, 0], size = [1, 1, 1], color = "blue", are
       {/* Phone */}
       <RigidBody type="fixed">
         <mesh
-          position={[position[0] + 0.7, position[1] - 0.3, position[2] + 1]}
+          position={[0.7, -0.3, 1]}
           onClick={() => handleClick("schedule_meeting")}
         >
           <boxGeometry args={[0.1, 0.2, 0.1]} />
           <meshStandardMaterial color="red" />
         </mesh>
       </RigidBody>
-    </>
+    </group>
   );
 };
 

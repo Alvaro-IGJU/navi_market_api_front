@@ -21,7 +21,7 @@ const CanvasWrapper = () => (
         }}
       >
         <color attach="background" args={["#f5f3ee"]} />
-        <fog attach="fog" args={["#f5f3ee", 10, 50]} />
+        {/* <fog attach="fog" args={["#f5f3ee", 10, 50]} /> */}
         <Experience /> {/* Componente que contiene elementos 3D */}
         <Stats />
       </Canvas>

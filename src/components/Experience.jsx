@@ -4,16 +4,17 @@ import { Physics } from "@react-three/rapier";
 import { CharacterController } from "./CharacterController";
 import Stand from "./Stand";
 import Base from "./Base";
-import api from "../api"; // Axios configurado
-import { AuthContext } from "../contexts/AuthContext"; // Contexto de autenticación
+import api from "../api";
+import { AuthContext } from "../contexts/AuthContext";
+import { getStandCoordinates } from "../utils/standPositions"; // Archivo para coordenadas de stands
+import { getBasePosition } from "../utils/basePosition"; // Archivo para coordenadas de la base
 
 const Experience = () => {
   const characterRef = useRef();
   const { user } = useContext(AuthContext);
   const [stands, setStands] = useState([]);
 
-  // Cambia este ID según el evento actual
-  const eventId = 2; // ID del evento actual
+  const eventId = 1;
 
   const fetchStands = async () => {
     try {
@@ -22,14 +23,16 @@ const Experience = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // Validar coordenadas y preparar los datos para los `stands`
-      const standsData = response.data.map((stand) => ({
-        id: stand.id,
-        // position: stand.coordinates ? Object.values(stand.coordinates) : [0, -2, 0], // Default [0, 0, 0]
-        position: [0, -1, 0], // Default [0, 0, 0]
-        size: [1, 1, 1], // Tamaño por defecto
-        color: stand.color || "blue", // Color predeterminado si no hay en la API
-      }));
+      const standsData = response.data.map((stand) => {
+        const { position, rotation } = getStandCoordinates(stand.position);
+        return {
+          id: stand.id,
+          position,
+          rotation,
+          size: [1, 1, 1],
+          color: stand.color || "blue",
+        };
+      });
       setStands(standsData);
       console.log("Stands cargados:", standsData);
     } catch (error) {
@@ -63,39 +66,25 @@ const Experience = () => {
 
   useEffect(() => {
     if (user) {
-      // Registrar visita al montar el componente
       registerVisit();
-      // Cargar stands al montar el componente
       fetchStands();
     }
 
-    const handleUnload = (event) => {
-      // Ejecutar closeVisit cuando el usuario cierre la pestaña o navegue fuera de la página
+    const handleUnload = () => {
       closeVisit();
-      event.preventDefault();
     };
 
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "hidden") {
-        // No hacemos nada al cambiar de pestaña
-        return;
-      }
-    };
-
-    // Escuchar el evento `beforeunload` para cerrar la visita al cerrar la pestaña
     window.addEventListener("beforeunload", handleUnload);
-    // Escuchar el evento `pagehide` para cerrar la visita al navegar fuera
     window.addEventListener("pagehide", handleUnload);
-    // Escuchar cambios en la visibilidad
-    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
-      // Limpiar eventos
       window.removeEventListener("beforeunload", handleUnload);
       window.removeEventListener("pagehide", handleUnload);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [user]);
+
+  // Obtener posición y escala de la base desde el archivo de configuración
+  const baseConfig = getBasePosition();
 
   return (
     <>
@@ -103,21 +92,23 @@ const Experience = () => {
       <Environment preset="sunset" />
 
       {/* Simulación física */}
-      <Physics>
+      <Physics debug>
         {/* Modelo base */}
-        <Base position={[-3, -2, 2]} scale={[1, 0.4, 1]} />
+        <Base position={baseConfig.position} scale={baseConfig.scale} />
 
         {/* Renderizar stands dinámicamente */}
         {stands.map((stand) => (
           <Stand
-            key={stand.id} // React key
-            id={stand.id}  // Pass stand.id explicitly
-            position={stand.coordinates || [0, -1, 0]} // Use coordinates if available
-            size={[1, 1, 1]} // Default size
-            color={stand.color || "blue"} // Default color if none is provided
-            characterRef={characterRef} // Pass character reference
-        />
+          key={stand.id}
+          id={stand.id}
+          position={stand.position}
+          rotation={stand.rotation}
+          size={stand.size}
+          color={stand.color}
+          characterRef={characterRef}
+          />
         ))}
+
 
         {/* Personaje */}
         <CharacterController characterRef={characterRef} />
