@@ -21,39 +21,40 @@ export function Base(props) {
       <mesh geometry={nodes.Cube005.geometry} material={materials.BRONCE} position={[-13.295, -0.097, -12.913]} rotation={[Math.PI, -0.806, Math.PI]} />
       <mesh geometry={nodes.Cube007.geometry} material={materials.BRONCE} position={[13.536, -0.097, -12.517]} rotation={[-Math.PI, 0.834, -Math.PI]} />
       <mesh geometry={nodes.Cube008.geometry} material={materials.BRONCE} position={[-13.311, -0.15, 13.003]} rotation={[0, -0.794, 0]} />
-      <group position={[-0.023, -6.019, 0.275]} rotation={[0, 0.411, 0]} scale={0.76}>
+      <group position={[-0.023, -6.465, 0.275]} rotation={[0, 0.411, 0]} scale={[0.76, 1.517, 0.76]}>
         <mesh geometry={nodes.Cylinder001_1.geometry} material={materials['Material.001']} />
-        <mesh geometry={nodes.Cylinder001_2.geometry} material={materials['Material.002']} />
+        <mesh geometry={nodes.Cylinder001_2.geometry} material={materials['Material.002']}  />
         <mesh geometry={nodes.Cylinder001_3.geometry} material={materials['Material.003']} />
-        <mesh geometry={nodes.Cylinder001_4.geometry} material={materials.Material} />
+        <mesh geometry={nodes.Cylinder001_4.geometry}  material={materials.Material} />
       </group>
-      <mesh geometry={nodes.Cube006.geometry} material={materials.BRONCE} position={[5.568, -6.003, 13.102]} rotation={[0, 0.411, 0]} scale={0.76} />
-      <mesh geometry={nodes.Cube009.geometry} material={materials.BRONCE} position={[-5.607, -6.003, -12.536]} rotation={[Math.PI, -0.397, Math.PI]} scale={0.76} />
-      <mesh geometry={nodes.Cube010.geometry} material={materials.BRONCE} position={[-12.96, -6.003, 5.717]} rotation={[0, -1.16, 0]} scale={0.76} />
-      <mesh geometry={nodes.Cube011.geometry} material={materials.BRONCE} position={[12.776, -6.003, -5.501]} rotation={[-Math.PI, 1.16, -Math.PI]} scale={0.76} />
-      <mesh geometry={nodes.Cube012.geometry} material={materials.BRONCE} position={[13.265, -6.003, 4.985]} rotation={[0, 1.221, 0]} scale={0.76} />
-      <mesh geometry={nodes.Cube013.geometry} material={materials.BRONCE} position={[-13.198, -6.003, -4.68]} rotation={[Math.PI, -1.217, Math.PI]} scale={0.76} />
-      <mesh geometry={nodes.Cube014.geometry} material={materials.BRONCE} position={[5.602, -6.003, -12.548]} rotation={[-Math.PI, 0.423, -Math.PI]} scale={0.76} />
-      <mesh geometry={nodes.Cube015.geometry} material={materials.BRONCE} position={[-5.344, -6.003, 13.368]} rotation={[0, -0.383, 0]} scale={0.76} />
-      <group position={[-0.116, -10.44, 0.305]} rotation={[0, 0.787, 0]} scale={0.542}>
+      <mesh geometry={nodes.Cube006.geometry} material={materials.BRONCE} position={[5.568, -6.434, 13.102]} rotation={[0, 0.411, 0]} scale={[0.76, 1.517, 0.76]} />
+      <mesh geometry={nodes.Cube009.geometry} material={materials.BRONCE} position={[-5.607, -6.434, -12.536]} rotation={[Math.PI, -0.397, Math.PI]} scale={[0.76, 1.517, 0.76]} />
+      <mesh geometry={nodes.Cube010.geometry} material={materials.BRONCE} position={[-12.96, -6.434, 5.717]} rotation={[0, -1.16, 0]} scale={[0.76, 1.517, 0.76]} />
+      <mesh geometry={nodes.Cube011.geometry} material={materials.BRONCE} position={[12.776, -6.434, -5.501]} rotation={[-Math.PI, 1.16, -Math.PI]} scale={[0.76, 1.517, 0.76]} />
+      <mesh geometry={nodes.Cube012.geometry} material={materials.BRONCE} position={[13.265, -6.434, 4.985]} rotation={[0, 1.221, 0]} scale={[0.76, 1.517, 0.76]} />
+      <mesh geometry={nodes.Cube013.geometry} material={materials.BRONCE} position={[-13.198, -6.434, -4.68]} rotation={[Math.PI, -1.217, Math.PI]} scale={[0.76, 1.517, 0.76]} />
+      <mesh geometry={nodes.Cube014.geometry} material={materials.BRONCE} position={[5.602, -6.434, -12.548]} rotation={[-Math.PI, 0.423, -Math.PI]} scale={[0.76, 1.517, 0.76]} />
+      <mesh geometry={nodes.Cube015.geometry} material={materials.BRONCE} position={[-5.344, -6.434, 13.368]} rotation={[0, -0.383, 0]} scale={[0.76, 1.517, 0.76]} />
+      <group position={[-0.116, -15.16, 0.305]} rotation={[0, 0.787, 0]} scale={[0.542, 1.33, 0.542]}>
         <mesh geometry={nodes.Cylinder002_1.geometry} material={materials['Material.001']} />
         <mesh geometry={nodes.Cylinder002_2.geometry} material={materials['Material.002']} />
         <mesh geometry={nodes.Cylinder002_3.geometry} material={materials['Material.003']} />
         <mesh geometry={nodes.Cylinder002_4.geometry} material={materials.Material} />
       </group>
-      <mesh geometry={nodes.Cube016.geometry} material={materials.BRONCE} position={[6.958, -10.429, 7.35]} rotation={[0, 0.787, 0]} scale={0.542} />
-      <mesh geometry={nodes.Cube017.geometry} material={materials.BRONCE} position={[-7.182, -10.429, -6.731]} rotation={[Math.PI, -0.773, Math.PI]} scale={0.542} />
-      <mesh geometry={nodes.Cube018.geometry} material={materials.BRONCE} position={[-7.274, -10.429, 7.31]} rotation={[0, -0.783, 0]} scale={0.542} />
-      <mesh geometry={nodes.Cube019.geometry} material={materials.BRONCE} position={[6.862, -10.429, -6.884]} rotation={[-Math.PI, 0.783, -Math.PI]} scale={0.542} />
-      <mesh geometry={nodes.Cube020.geometry} material={materials.BRONCE} position={[9.937, -10.429, -0.055]} rotation={[-Math.PI, 1.544, -Math.PI]} scale={0.542} />
-      <mesh geometry={nodes.Cube021.geometry} material={materials.BRONCE} position={[-10.159, -10.429, 0.473]} rotation={[0, -1.548, 0]} scale={0.542} />
-      <mesh geometry={nodes.Cube022.geometry} material={materials.BRONCE} position={[0.253, -10.429, -9.679]} rotation={[-Math.PI, 0.046, -Math.PI]} scale={0.542} />
-      <mesh geometry={nodes.Cube023.geometry} material={materials.BRONCE} position={[-0.213, -10.429, 10.389]} rotation={[0, -0.007, 0]} scale={0.542} />
+      <mesh geometry={nodes.Cube016.geometry} material={materials.BRONCE} position={[6.958, -15.133, 7.35]} rotation={[0, 0.787, 0]} scale={[0.542, 1.33, 0.542]} />
+      <mesh geometry={nodes.Cube017.geometry} material={materials.BRONCE} position={[-7.182, -15.133, -6.731]} rotation={[Math.PI, -0.773, Math.PI]} scale={[0.542, 1.33, 0.542]} />
+      <mesh geometry={nodes.Cube018.geometry} material={materials.BRONCE} position={[-7.274, -15.133, 7.31]} rotation={[0, -0.783, 0]} scale={[0.542, 1.33, 0.542]} />
+      <mesh geometry={nodes.Cube019.geometry} material={materials.BRONCE} position={[6.862, -15.133, -6.884]} rotation={[-Math.PI, 0.783, -Math.PI]} scale={[0.542, 1.33, 0.542]} />
+      <mesh geometry={nodes.Cube020.geometry} material={materials.BRONCE} position={[9.937, -15.133, -0.055]} rotation={[-Math.PI, 1.544, -Math.PI]} scale={[0.542, 1.33, 0.542]} />
+      <mesh geometry={nodes.Cube021.geometry} material={materials.BRONCE} position={[-10.159, -15.133, 0.473]} rotation={[0, -1.548, 0]} scale={[0.542, 1.33, 0.542]} />
+      <mesh geometry={nodes.Cube022.geometry} material={materials.BRONCE} position={[0.253, -15.133, -9.679]} rotation={[-Math.PI, 0.046, -Math.PI]} scale={[0.542, 1.33, 0.542]} />
+      <mesh geometry={nodes.Cube023.geometry} material={materials.BRONCE} position={[-0.213, -15.133, 10.389]} rotation={[0, -0.007, 0]} scale={[0.542, 1.33, 0.542]} />
       <mesh geometry={nodes.Cylinder_1.geometry} material={materials['Material.001']} />
       <mesh geometry={nodes.Cylinder_2.geometry} material={materials['Material.002']} />
       <mesh geometry={nodes.Cylinder_3.geometry} material={materials['Material.003']} />
       <mesh geometry={nodes.Cylinder_4.geometry} material={materials.Material} />
-    </RigidBody>
+      </RigidBody>
+    
     </group>
   )
 }
