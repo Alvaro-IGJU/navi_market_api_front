@@ -92,7 +92,7 @@ const Experience = () => {
       <Environment preset="sunset" />
 
       {/* Simulación física */}
-      <Physics debug>
+      <Physics >
         {/* Modelo base */}
         <Base position={baseConfig.position} scale={baseConfig.scale} />
 
