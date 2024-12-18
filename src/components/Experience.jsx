@@ -50,7 +50,7 @@ const Experience = ({ eventId }) => {
     <>
       <Environment preset="sunset" />
 
-      <Physics debug>
+      <Physics >
         <Base position={baseConfig.position} scale={baseConfig.scale} />
         {stands.map((stand) => (
           <Stand
