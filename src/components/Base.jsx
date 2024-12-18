@@ -5,8 +5,8 @@ Command: npx gltfjsx@6.5.3 public/models/base.glb -o src/components/Base.jsx -r 
 
 import React, { useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
 import { RigidBody } from '@react-three/rapier';
+import { useFrame } from '@react-three/fiber';
 
 export function Base(props) {
   const { nodes, materials } = useGLTF('/models/base.glb');
@@ -15,41 +15,39 @@ export function Base(props) {
   // Rotate the mesh in the Y-axis
   useFrame(() => {
     if (rotatingMeshRef.current) {
-      rotatingMeshRef.current.rotation.y += 0.003; // Adjust rotation speed if needed
+      rotatingMeshRef.current.rotation.y += 0.002; // Adjust rotation speed if needed
     }
   });
 
   return (
     <group {...props} dispose={null}>
       <RigidBody type="fixed" name="ground" colliders="trimesh">
+        <mesh geometry={nodes.Cube.geometry} material={materials.BRONCE} position={[0, -0.063, 18.422]} />
+        <mesh geometry={nodes.Cube001.geometry} material={materials.BRONCE} position={[0, -0.038, -18.401]} rotation={[-Math.PI, 0.014, -Math.PI]} />
+        <mesh geometry={nodes.Cube002.geometry} material={materials.BRONCE} position={[-18.478, -0.063, -0.238]} rotation={[0, -1.571, 0]} />
+        <mesh geometry={nodes.Cube003.geometry} material={materials.BRONCE} position={[18.486, -0.132, -0.663]} rotation={[-Math.PI, 1.551, -Math.PI]} />
+        <mesh geometry={nodes.Cube004.geometry} material={materials.BRONCE} position={[13.56, -0.063, 12.675]} rotation={[0, 0.81, 0]} />
+        <mesh geometry={nodes.Cube005.geometry} material={materials.BRONCE} position={[-13.295, -0.063, -12.913]} rotation={[Math.PI, -0.806, Math.PI]} />
+        <mesh geometry={nodes.Cube007.geometry} material={materials.BRONCE} position={[13.536, -0.063, -12.517]} rotation={[-Math.PI, 0.834, -Math.PI]} />
+        
+        {/* Rotating Mesh */}
+        <mesh
+          ref={rotatingMeshRef} // Attach reference for rotation
+          geometry={nodes.Cylinder001.geometry}
+          material={materials['material agua']}
+          position={[0, -1.452, 0]}
+          scale={[1.01, 2.012, 1.01]}
+        />
 
-      <mesh geometry={nodes.Cube.geometry} material={materials.BRONCE} position={[0, -0.063, 18.422]} />
-      <mesh geometry={nodes.Cube001.geometry} material={materials.BRONCE} position={[0, -0.038, -18.401]} rotation={[-Math.PI, 0.014, -Math.PI]} />
-      <mesh geometry={nodes.Cube002.geometry} material={materials.BRONCE} position={[-18.478, -0.063, -0.238]} rotation={[0, -1.571, 0]} />
-      <mesh geometry={nodes.Cube003.geometry} material={materials.BRONCE} position={[18.486, -0.132, -0.663]} rotation={[-Math.PI, 1.551, -Math.PI]} />
-      <mesh geometry={nodes.Cube004.geometry} material={materials.BRONCE} position={[13.56, -0.063, 12.675]} rotation={[0, 0.81, 0]} />
-      <mesh geometry={nodes.Cube005.geometry} material={materials.BRONCE} position={[-13.295, -0.063, -12.913]} rotation={[Math.PI, -0.806, Math.PI]} />
-      <mesh geometry={nodes.Cube007.geometry} material={materials.BRONCE} position={[13.536, -0.063, -12.517]} rotation={[-Math.PI, 0.834, -Math.PI]} />
-      
-      {/* Rotating mesh */}
-      <mesh
-        ref={rotatingMeshRef} // Attach reference for rotation
-        geometry={nodes.Cylinder001.geometry}
-        material={materials['material agua']}
-        position={[0, -1.452, 0]}
-        scale={[1.049, 1.45, 1.049]}
-      />
-
-      <mesh geometry={nodes.Cube006.geometry} material={materials.BRONCE} position={[-13.049, -0.063, 13.108]} rotation={[0, -0.776, 0]} />
-      <mesh geometry={nodes.Cylinder_1.geometry} material={materials['Material.001']} />
-      <mesh geometry={nodes.Cylinder_2.geometry} material={materials['Material.002']} />
-      <mesh geometry={nodes.Cylinder_3.geometry} material={materials['Material.003']} />
-      <mesh geometry={nodes.Cylinder_4.geometry} material={materials.Material} />
+        <mesh geometry={nodes.Cube006.geometry} material={materials.BRONCE} position={[-13.049, -0.063, 13.108]} rotation={[0, -0.776, 0]} />
+        <mesh geometry={nodes.Cylinder_1.geometry} material={materials['Material.001']} />
+        <mesh geometry={nodes.Cylinder_2.geometry} material={materials['Material.002']} />
+        <mesh geometry={nodes.Cylinder_3.geometry} material={materials['Material.003']} />
+        <mesh geometry={nodes.Cylinder_4.geometry} material={materials.Material} />
       </RigidBody>
     </group>
   );
 }
-
 export default Base;
 
 useGLTF.preload('/models/base.glb');
