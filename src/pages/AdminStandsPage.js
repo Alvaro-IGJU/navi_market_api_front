@@ -4,24 +4,30 @@ import { useNavigate } from 'react-router-dom';
 import api from '../api';
 
 const AdminStandsPage = () => {
-  const { user } = useContext(AuthContext); // Obtener usuario autenticado del contexto
-  const navigate = useNavigate(); // Para redirección
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [stands, setStands] = useState([]);
-  const [events, setEvents] = useState([]); // Lista de eventos disponibles
-  const [companies, setCompanies] = useState([]); // Lista de empresas disponibles
+  const [events, setEvents] = useState([]);
+  const [companies, setCompanies] = useState([]);
   const [newStand, setNewStand] = useState({
     event: '',
     company: '',
     name: '',
     description: '',
-    position: '', // Cambiado a 'position'
+    position: '',
+    type: '', // Nuevo campo
   });
   const [message, setMessage] = useState('');
 
+  const standTypes = [
+    { value: 'basic', label: 'Básico' },
+    { value: 'premium', label: 'Premium' },
+    { value: 'vip', label: 'VIP' },
+  ]; // Opciones de tipo de stand
+
   useEffect(() => {
-    // Verificar si el usuario es admin, si no, redirigir
     if (!user?.is_superuser) {
-      navigate('/'); // Redirigir al inicio si no es admin
+      navigate('/');
       return;
     }
 
@@ -29,19 +35,16 @@ const AdminStandsPage = () => {
       try {
         const token = localStorage.getItem('accessToken');
 
-        // Obtener eventos
         const eventsResponse = await api.get('/events/', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setEvents(eventsResponse.data);
 
-        // Obtener empresas
         const companiesResponse = await api.get('/companies/admin/companies', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setCompanies(companiesResponse.data);
 
-        // Obtener stands
         const standsResponse = await api.get('/events/stands/', {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -70,7 +73,7 @@ const AdminStandsPage = () => {
       });
       setStands((prevStands) => [...prevStands, response.data]);
       setMessage('Stand creado con éxito.');
-      setNewStand({ event: '', company: '', name: '', description: '', position: '' });
+      setNewStand({ event: '', company: '', name: '', description: '', position: '', type: '' });
     } catch (error) {
       console.error('Error al crear el stand:', error);
       setMessage(error.response?.data?.detail || 'Error al crear el stand.');
@@ -134,6 +137,23 @@ const AdminStandsPage = () => {
             </select>
           </div>
           <div className="mb-4">
+            <label className="block text-gray-200">Tipo de Stand</label>
+            <select
+              name="type"
+              value={newStand.type}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded"
+              required
+            >
+              <option value="">Selecciona un tipo</option>
+              {standTypes.map((type) => (
+                <option key={type.value} value={type.value}>
+                  {type.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="mb-4">
             <label className="block text-gray-200">Nombre del Stand</label>
             <input
               type="text"
@@ -177,7 +197,7 @@ const AdminStandsPage = () => {
         <ul>
           {stands.map((stand) => (
             <li key={stand.id} className="bg-gray-700 p-4 mb-2 rounded">
-              <strong>{stand.name}</strong> - Evento: {stand.event.name} - Empresa: {stand.company.name} - Posición: {stand.position}
+              <strong>{stand.name}</strong> - Evento: {stand.event.name} - Empresa: {stand.company.name} - Tipo: {stand.type} - Posición: {stand.position}
               <p>{stand.description}</p>
               <button
                 onClick={() => handleDelete(stand.id)}

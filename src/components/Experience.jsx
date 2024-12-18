@@ -6,13 +6,20 @@ import Stand from "./Stand";
 import Base from "./Base";
 import api from "../api";
 import { AuthContext } from "../contexts/AuthContext";
-import { getStandCoordinates } from "../utils/standPositions"; // Archivo para coordenadas de stands
-import { getBasePosition } from "../utils/basePosition"; // Archivo para coordenadas de la base
+import { getStandCoordinates } from "../utils/standPositions";
+import { getBasePosition } from "../utils/basePosition";
 
 const Experience = ({ eventId }) => {
   const characterRef = useRef();
   const { user } = useContext(AuthContext);
   const [stands, setStands] = useState([]);
+
+  // Mapear tipos de stand a colores
+  const typeToColor = {
+    basic: "blue",    // Tipo básico - azul
+    premium: "red",   // Tipo premium - rojo
+    vip: "yellow",    // Tipo VIP - amarillo
+  };
 
   const fetchStands = async () => {
     try {
@@ -28,9 +35,10 @@ const Experience = ({ eventId }) => {
           position,
           rotation,
           size: [3, 3, 3],
-          color: stand.color || "blue",
+          color: typeToColor[stand.type] || "gray", // Asignar color basado en el tipo o gris por defecto
         };
       });
+
       setStands(standsData);
       console.log("Stands cargados:", standsData);
     } catch (error) {
@@ -81,7 +89,6 @@ const Experience = ({ eventId }) => {
     };
   }, [eventId, user]);
 
-  // Obtener posición y escala de la base desde el archivo de configuración
   const baseConfig = getBasePosition();
 
   return (
