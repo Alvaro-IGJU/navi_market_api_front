@@ -1,8 +1,9 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { RigidBody } from "@react-three/rapier";
 import { useFrame } from "@react-three/fiber";
 import api from "../api";
 import { useControls } from "leva";
+import ChatBot from "./ChatBot";
 
 const Stand = ({
   id,
@@ -12,19 +13,20 @@ const Stand = ({
   color = "blue",
   areaRadius = 8,
 }) => {
-
   const { posX, posY, posZ, rotX, rotY, rotZ } = useControls(`Stand ${id}`, {
-    posX: { value: -17, min: -100, max: 100, step: 0.1 },
-    posY: { value: -1, min: -100, max: 10, step: 0.1 },
-    posZ: { value: 10, min: -100, max: 100, step: 0.1 },
-    rotX: { value: 0, min: -Math.PI, max: Math.PI, step: 0.01 },
-    rotY: { value: 0, min: -Math.PI,  max: Math.PI, step: 0.01 },
-    rotZ: { value: 10, min: -Math.PI, max: Math.PI, step: 0.01 },
+    posX: { value: position[0], min: -100, max: 100, step: 0.1 },
+    posY: { value: position[1], min: -100, max: 10, step: 0.1 },
+    posZ: { value: position[2], min: -100, max: 100, step: 0.1 },
+    rotX: { value: rotation[0], min: -Math.PI, max: Math.PI, step: 0.01 },
+    rotY: { value: rotation[1], min: -Math.PI, max: Math.PI, step: 0.01 },
+    rotZ: { value: rotation[2], min: -Math.PI, max: Math.PI, step: 0.01 },
   });
+
   const isCharacterInside = useRef(false);
+  const areaRef = useRef();
+  const [canInteract, setCanInteract] = useState(false); // Controla si se puede interactuar con el ChatBot
   const timeInside = useRef(0);
   const interactionId = useRef(null);
-  const areaRef = useRef();
 
   const startInteraction = async () => {
     try {
@@ -94,19 +96,21 @@ const Stand = ({
       if (!character) return;
 
       const distance = Math.sqrt(
-        Math.pow(character.position.x - position[0], 2) +
-          Math.pow(character.position.y - position[1], 2) +
-          Math.pow(character.position.z - position[2], 2)
+        Math.pow(character.position.x - posX, 2) +
+          Math.pow(character.position.y - posY, 2) +
+          Math.pow(character.position.z - posZ, 2)
       );
 
       const insideArea = distance <= areaRadius;
 
       if (insideArea && !isCharacterInside.current) {
         isCharacterInside.current = true;
+        setCanInteract(true); // Permite interactuar con el ChatBot
         console.log("Character entered the area.");
         startInteraction();
       } else if (!insideArea && isCharacterInside.current) {
         isCharacterInside.current = false;
+        setCanInteract(false); // Desactiva la interacción con el ChatBot
         console.log("Character left the area.");
         endInteraction();
       }
@@ -135,8 +139,7 @@ const Stand = ({
   };
 
   return (
-    // <group position={[posX, posY, posZ]} rotation={[rotX, rotY, rotZ]}>
-     <group position={position} rotation={rotation} > 
+    <group position={[posX, posY, posZ]} rotation={[rotX, rotY, rotZ]}>
       {/* Stand */}
       <RigidBody type="fixed">
         <mesh>
@@ -147,7 +150,7 @@ const Stand = ({
 
       {/* Detection Area */}
       <mesh ref={areaRef}>
-        <sphereGeometry args={[areaRadius, 32, 32]} />
+        {/* <sphereGeometry args={[areaRadius, 32, 32]} /> */}
         <meshStandardMaterial color="green" transparent opacity={0.2} />
       </mesh>
 
@@ -199,6 +202,10 @@ const Stand = ({
           <meshStandardMaterial color="red" />
         </mesh>
       </RigidBody>
+
+      {/* ChatBot */}
+      {/* {canInteract && <ChatBot position={[0, 0.1, 5]} standId={id} />} */}
+      { <ChatBot canInteract = {canInteract} position={[0, 0.1, 5]} standId={id} />}
     </group>
   );
 };
