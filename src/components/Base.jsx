@@ -10,7 +10,7 @@ export function Base(props) {
   // Rotate the mesh in the Y-axis
   useFrame(() => {
     if (rotatingMeshRef.current) {
-      rotatingMeshRef.current.rotation.y += 0.01; // Adjust rotation speed as needed
+      rotatingMeshRef.current.rotation.y += 0.05; // Adjust rotation speed as needed
     }
   });
 
