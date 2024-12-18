@@ -35,7 +35,11 @@ const AuthPage = () => {
         const { tokens } = response.data;
         await loginUser(tokens);
         toast.success('Inicio de sesión exitoso');
-        navigate('/dashboard');
+        if(response.data.role === "Company"){
+          navigate('/dashboard');
+        }else{
+          navigate('/events');
+        }
       } else {
         const registerData = {
           email: formData.email,

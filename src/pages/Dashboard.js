@@ -1,44 +1,53 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
+import { useNavigate } from "react-router-dom"; // Para redirección
 import Header from "../components/Header";
 import EventInteractionsChart from "../components/EventInteractionsChart";
-import StandInteractionsChart from "../components/StandInteractionsChart";
 import EventVisitsChart from "../components/EventVisitsChart"; // Nuevo componente
 import api from "../api";
+import { AuthContext } from "../contexts/AuthContext"; // Contexto de autenticación
 
 const Dashboard = () => {
-  const [stands, setStands] = useState([]);
-  const [selectedStand, setSelectedStand] = useState(null);
+  const { user } = useContext(AuthContext); // Obtener usuario desde el contexto
+  const navigate = useNavigate(); // Redirección
   const [totalTime, setTotalTime] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const hasFetched = useRef(false); // Controlar llamadas duplicadas
+  const companyId = user?.company_relation;
 
-  const companyId = 1; // ID de la empresa actual
+  // Verificar si el usuario tiene el rol adecuado
+  useEffect(() => {
+    if (user?.role !== "Company") {
+      navigate("/"); // Redirigir a la página de inicio u otra página
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("accessToken");
-        const response = await api.get(`/interactions/companies/${companyId}/interactions/`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+    if (companyId && !hasFetched.current) {
+      const fetchData = async () => {
+        try {
+          const token = localStorage.getItem("accessToken");
+          console.log("Se ejecuta");
+          const response = await api.get(`/interactions/companies/${companyId}/interactions/`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
 
-        const standsDetails = response.data.stands_details;
-        const totalDuration = response.data.interaction_details.reduce(
-          (sum, item) => sum + item.total_duration,
-          0
-        );
+          const totalDuration = response.data.interaction_details.reduce(
+            (sum, item) => sum + item.total_duration,
+            0
+          );
+          setTotalTime(totalDuration);
+          setLoading(false);
+        } catch (err) {
+          console.error("Error al obtener los datos:", err);
+          setError("No se pudieron cargar las estadísticas.");
+          setLoading(false);
+        }
+      };
 
-        setStands(standsDetails);
-        setTotalTime(totalDuration);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error al obtener los datos:", err);
-        setError("No se pudieron cargar las estadísticas.");
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+      fetchData();
+      hasFetched.current = true; // Evita múltiples llamadas
+    }
   }, [companyId]);
 
   if (loading) return <p className="text-gray-300">Cargando datos...</p>;
@@ -66,51 +75,6 @@ const Dashboard = () => {
           <h2 className="text-xl font-semibold mb-4 text-[#C7AA68]">Interacciones Generales</h2>
           <EventInteractionsChart companyId={companyId} />
         </div>
-
-        {/* Tabla de Stands */}
-        <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-4">
-          <h2 className="text-xl font-semibold text-[#C7AA68] mb-4">Interacciones por Stand</h2>
-          <table className="w-full text-left table-auto mb-4">
-            <thead>
-              <tr className="text-gray-400">
-                <th className="px-4 py-2">Nombre del Stand</th>
-                <th className="px-4 py-2">Evento</th>
-                <th className="px-4 py-2">Total Interacciones</th>
-                <th className="px-4 py-2">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {stands.map((stand) => (
-                <tr key={stand.stand_id} className="border-b border-gray-700">
-                  <td className="px-4 py-2">{stand.stand_name}</td>
-                  <td className="px-4 py-2">{stand.event_name}</td>
-                  <td className="px-4 py-2">{stand.total_interactions}</td>
-                  <td className="px-4 py-2">
-                    <button
-                      onClick={() => setSelectedStand(stand)}
-                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-                    >
-                      Ver Detalle
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Dashboard específico del stand */}
-        {selectedStand && (
-          <StandInteractionsChart
-            standName={selectedStand.stand_name}
-            interactions={selectedStand.interaction_details}
-            totalDuration={selectedStand.interaction_details.reduce(
-              (sum, item) => sum + item.total_duration,
-              0
-            )}
-            onClose={() => setSelectedStand(null)}
-          />
-        )}
       </div>
     </>
   );

@@ -15,6 +15,7 @@ import AdminCreateCompanyUserPage from './pages/AdminCreateCompanyUserPage';
 import AdminEventsPage from './pages/AdminEventsPage';
 import AdminStandsPage from './pages/AdminStandsPage';
 import CanvasWrapper from './components/CanvasWrapper'; // Nuevo componente importado
+import ListEventsPage from './pages/ListEventsPage';
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
               </PrivateRoute>
             }
           />
+          <Route path="/events" element={<ListEventsPage />} />
           <Route
             path="/profile"
             element={

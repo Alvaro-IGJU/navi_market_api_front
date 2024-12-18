@@ -9,12 +9,10 @@ import { AuthContext } from "../contexts/AuthContext";
 import { getStandCoordinates } from "../utils/standPositions"; // Archivo para coordenadas de stands
 import { getBasePosition } from "../utils/basePosition"; // Archivo para coordenadas de la base
 
-const Experience = () => {
+const Experience = ({ eventId }) => {
   const characterRef = useRef();
   const { user } = useContext(AuthContext);
   const [stands, setStands] = useState([]);
-
-  const eventId = 1;
 
   const fetchStands = async () => {
     try {
@@ -65,7 +63,7 @@ const Experience = () => {
   };
 
   useEffect(() => {
-    if (user) {
+    if (eventId && user) {
       registerVisit();
       fetchStands();
     }
@@ -81,7 +79,7 @@ const Experience = () => {
       window.removeEventListener("beforeunload", handleUnload);
       window.removeEventListener("pagehide", handleUnload);
     };
-  }, [user]);
+  }, [eventId, user]);
 
   // Obtener posición y escala de la base desde el archivo de configuración
   const baseConfig = getBasePosition();
@@ -92,23 +90,22 @@ const Experience = () => {
       <Environment preset="sunset" />
 
       {/* Simulación física */}
-      <Physics >
+      <Physics>
         {/* Modelo base */}
         <Base position={baseConfig.position} scale={baseConfig.scale} />
 
         {/* Renderizar stands dinámicamente */}
         {stands.map((stand) => (
           <Stand
-          key={stand.id}
-          id={stand.id}
-          position={stand.position}
-          rotation={stand.rotation}
-          size={stand.size}
-          color={stand.color}
-          characterRef={characterRef}
+            key={stand.id}
+            id={stand.id}
+            position={stand.position}
+            rotation={stand.rotation}
+            size={stand.size}
+            color={stand.color}
+            characterRef={characterRef}
           />
         ))}
-
 
         {/* Personaje */}
         <CharacterController characterRef={characterRef} />

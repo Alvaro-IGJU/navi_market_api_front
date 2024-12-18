@@ -22,7 +22,7 @@ export function Base(props) {
       <mesh geometry={nodes.Cube007.geometry} material={materials.BRONCE} position={[13.536, -0.097, -12.517]} rotation={[-Math.PI, 0.834, -Math.PI]} />
       <mesh geometry={nodes.Cube008.geometry} material={materials.BRONCE} position={[-13.311, -0.15, 13.003]} rotation={[0, -0.794, 0]} />
       <group position={[-0.023, -6.465, 0.275]} rotation={[0, 0.411, 0]} scale={[0.76, 1.517, 0.76]}>
-        <mesh geometry={nodes.Cylinder001_1.geometry} material={materials['Material.001']} />
+        <mesh geometry={nodes.Cylinder001_1.geometry} material-roughness={1} material-metalness={1} material={materials['Material.001']} />
         <mesh geometry={nodes.Cylinder001_2.geometry} material={materials['Material.002']}  />
         <mesh geometry={nodes.Cylinder001_3.geometry} material={materials['Material.003']} />
         <mesh geometry={nodes.Cylinder001_4.geometry}  material={materials.Material} />

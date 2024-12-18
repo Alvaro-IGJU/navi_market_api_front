@@ -18,7 +18,7 @@ const Header = () => {
     <header className="bg-gray-800 text-white h-20">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between h-full">
         <Link to="/" className="text-lg font-bold text-yellow-400">
-          NAVY MARKET
+          NAVI MARKET
         </Link>
         <div className="flex items-center space-x-4">
           {isAuthenticated ? (
