@@ -15,7 +15,7 @@ const Stand = ({
   size = [3, 3, 3],
   type,
   areaRadius = 8,
-  pdf
+  catalog_pdf
 }) => {
   const { posX, posY, posZ, rotX, rotY, rotZ } = useControls(`Stand ${id}`, {
     posX: { value: position[0], min: -100, max: 100, step: 0.1 },
@@ -95,16 +95,15 @@ const Stand = ({
   };
 
   const downloadPDF = () => {
-    console.log("PDF",pdf)
 
     try {
-      if (!pdf) {
+      if (!catalog_pdf) {
         console.error("No PDF data available.");
         return;
       }
 
       // Crear un Blob desde el Base64
-      const binary = atob(pdf);
+      const binary = atob(catalog_pdf);
       const array = new Uint8Array(binary.length);
       for (let i = 0; i < binary.length; i++) {
         array[i] = binary.charCodeAt(i);
@@ -183,7 +182,7 @@ const Stand = ({
       {/* Stand */}
         {/* Stand */}
       {type === 'basic' &&  <StandBasic scale={[10,10,10]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} /> }
-      {type === 'premium' && <StandPremium scale={[10,10,10]} size={size} position={[0, -1, 0]} rotation={[0, 1, 0]} /> }
+      {type === 'premium' && <StandPremium scale={[10,10,10]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} /> }
       {type === 'vip' &&<StandVip scale={[1,1,1]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />}
 
       {/* Detection Area */}

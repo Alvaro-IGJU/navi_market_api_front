@@ -16,7 +16,8 @@ const AdminStandsPage = () => {
     description: "",
     position: "",
     type: "",
-    pdf: null, // Campo para almacenar el PDF en base64
+    catalog_pdf: null, // Catálogo en PDF (Base64)
+    prompts_pdf: null, // Prompts en PDF (Base64)
   });
   const [message, setMessage] = useState("");
 
@@ -64,37 +65,20 @@ const AdminStandsPage = () => {
     setNewStand((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = (e, fieldName) => {
     const file = e.target.files[0];
     if (file) {
-      console.log("Archivo seleccionado:", file);
-      console.log("Tipo de archivo:", file.type);
       if (file.type !== "application/pdf") {
         alert("Por favor, selecciona un archivo PDF.");
         return;
       }
 
-      // Límite de tamaño (5 MB)
-      // if (file.size > 5 * 1024 * 1024) {
-
-      //   alert("El archivo es demasiado grande. Selecciona uno de menos de 5 MB.");
-      //   return;
-      // }
-
       const reader = new FileReader();
-
-      // Mensaje para depurar el proceso
-      console.log("Iniciando lectura del archivo...");
-
       reader.onload = () => {
-        console.log("Lectura completada. Resultado Base64:");
-        console.log(reader.result); // Muestra el resultado completo para depuración
         const base64Data = reader.result.split(",")[1];
-        console.log("Base64 sin encabezado:", base64Data);
-
         setNewStand((prevData) => ({
           ...prevData,
-          pdf: base64Data,
+          [fieldName]: base64Data, // Guardar el archivo PDF codificado en Base64 en el campo correspondiente
         }));
       };
 
@@ -103,7 +87,7 @@ const AdminStandsPage = () => {
         alert("Hubo un problema al leer el archivo. Intenta de nuevo.");
       };
 
-      reader.readAsDataURL(file); // Convierte el archivo a Base64
+      reader.readAsDataURL(file); // Convertir el archivo a Base64
     }
   };
 
@@ -112,8 +96,8 @@ const AdminStandsPage = () => {
     setMessage("");
     try {
       const token = localStorage.getItem("accessToken");
-      console.log("Datos enviados:", newStand);
 
+      // Enviar la solicitud al backend con los PDF en Base64
       const response = await api.post("/events/stands/create/", newStand, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -126,7 +110,8 @@ const AdminStandsPage = () => {
         description: "",
         position: "",
         type: "",
-        pdf: null,
+        catalog_pdf: null,
+        prompts_pdf: null,
       });
     } catch (error) {
       console.error("Error al crear el stand:", error);
@@ -244,7 +229,16 @@ const AdminStandsPage = () => {
             <input
               type="file"
               accept="application/pdf"
-              onChange={handleFileChange}
+              onChange={(e) => handleFileChange(e, "catalog_pdf")}
+              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-200">Archivo Prompts (PDF)</label>
+            <input
+              type="file"
+              accept="application/pdf"
+              onChange={(e) => handleFileChange(e, "prompts_pdf")}
               className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded"
             />
           </div>
@@ -273,7 +267,6 @@ const AdminStandsPage = () => {
         </ul>
       </div>
     </div>
-   
   );
 };
 

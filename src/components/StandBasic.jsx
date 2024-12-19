@@ -5,23 +5,19 @@ Command: npx gltfjsx@6.5.3 public/models/StandBasic.glb -o src/components/StandB
 
 import React from 'react'
 import { useGLTF } from '@react-three/drei'
-import { RigidBody } from '@react-three/rapier'
 
 export function StandBasic(props) {
   const { nodes, materials } = useGLTF('/models/StandBasic.glb')
   return (
     <group {...props} dispose={null}>
-      <RigidBody type="fixed">
-      
-      <mesh geometry={nodes.Base_Stand1.geometry} material={nodes.Base_Stand1.material} position={[-1.75, 0.327, 0.042]} scale={0.197} />
-      <mesh geometry={nodes.TV.geometry} material={nodes.TV.material} position={[-1.801, 0.252, 0.002]} scale={0.197} />
-      <mesh geometry={nodes.Repisa.geometry} material={nodes.Repisa.material} position={[-1.795, 0.135, 0.09]} scale={[0.02, 0.004, 0.054]} />
-      <mesh geometry={nodes.Repisa001.geometry} material={nodes.Repisa001.material} position={[-1.795, 0.135, -0.01]} scale={[0.02, 0.004, 0.054]} />
-      <mesh geometry={nodes.Repisa002.geometry} material={nodes.Repisa002.material} position={[-1.795, 0.135, -0.11]} scale={[0.02, 0.004, 0.054]} />
-      </RigidBody>
-
+      <mesh geometry={nodes.Base_Stand1.geometry} material={nodes.Base_Stand1.material} scale={0.197} />
+      <mesh geometry={nodes.TV.geometry} material={nodes.TV.material} position={[-0.052, -0.042, -0.041]} scale={0.197} />
+      <mesh geometry={nodes.Repisa.geometry} material={nodes.Repisa.material} position={[-0.046, -0.159, 0.047]} scale={[0.02, 0.004, 0.054]} />
+      <mesh geometry={nodes.Repisa001.geometry} material={nodes.Repisa001.material} position={[-0.046, -0.159, -0.053]} scale={[0.02, 0.004, 0.054]} />
+      <mesh geometry={nodes.Repisa002.geometry} material={nodes.Repisa002.material} position={[-0.046, -0.159, -0.153]} scale={[0.02, 0.004, 0.054]} />
     </group>
   )
 }
+
 export default StandBasic;
 useGLTF.preload('/models/StandBasic.glb')

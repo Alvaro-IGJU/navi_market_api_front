@@ -14,12 +14,6 @@ const Experience = ({ eventId }) => {
   const { user } = useContext(AuthContext);
   const [stands, setStands] = useState([]);
 
-  // Mapear tipos de stand a colores
-  const typeToColor = {
-    basic: "blue",    // Tipo básico - azul
-    premium: "red",   // Tipo premium - rojo
-    vip: "yellow",    // Tipo VIP - amarillo
-  };
 
   const fetchStands = async () => {
     try {
@@ -36,7 +30,7 @@ const Experience = ({ eventId }) => {
           rotation,
           size: [3, 3, 3],
           type: stand.type, // Asignar color basado en el tipo o gris por defecto
-          pdf: stand.pdf
+          catalog_pdf: stand.catalog_pdf
         };
       });
 
@@ -114,7 +108,7 @@ const Experience = ({ eventId }) => {
             size={stand.size}
             type={stand.type}
             characterRef={characterRef}
-            pdf = {stand.pdf}
+            catalog_pdf = {stand.catalog_pdf}
           />
         ))}
 
