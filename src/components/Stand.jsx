@@ -239,8 +239,9 @@ const Stand = ({
         </mesh>
       </RigidBody>
 
-      {/* ChatBot */}
-      {canInteract && <ChatBot position={[0, 0.1, 5]} standId={id} />}
+        {/* ChatBot */}
+      {/* {canInteract && <ChatBot position={[0, 0.1, 5]} standId={id} />} */}
+      { <ChatBot canInteract = {canInteract} position={[0, 0.1, 5]} standId={id} />}
     </group>
   );
 };
