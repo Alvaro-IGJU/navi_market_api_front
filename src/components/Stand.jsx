@@ -4,13 +4,16 @@ import { useFrame } from "@react-three/fiber";
 import api from "../api";
 import { useControls } from "leva";
 import ChatBot from "./ChatBot";
+import StandBasic from "./StandBasic";
+import StandPremium from "./StandPremium";
+import StandVip from "./StandVip";
 
 const Stand = ({
   id,
   position = [0, 0, 0],
   rotation = [0, 0, 0],
   size = [3, 3, 3],
-  color = "blue",
+  type,
   areaRadius = 8,
   pdf
 }) => {
@@ -178,12 +181,10 @@ const Stand = ({
   return (
     <group position={[posX, posY, posZ]} rotation={[rotX, rotY, rotZ]}>
       {/* Stand */}
-      <RigidBody type="fixed">
-        <mesh>
-          <boxGeometry args={size} />
-          <meshStandardMaterial color={color} />
-        </mesh>
-      </RigidBody>
+        {/* Stand */}
+      {type === 'basic' &&  <StandBasic scale={[10,10,10]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} /> }
+      {type === 'premium' && <StandPremium scale={[10,10,10]} size={size} position={[0, -1, 0]} rotation={[0, 1, 0]} /> }
+      {type === 'vip' &&<StandVip scale={[1,1,1]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />}
 
       {/* Detection Area */}
       <mesh ref={areaRef}>

@@ -35,7 +35,7 @@ const Experience = ({ eventId }) => {
           position,
           rotation,
           size: [3, 3, 3],
-          color: typeToColor[stand.type] || "gray", // Asignar color basado en el tipo o gris por defecto
+          type: stand.type, // Asignar color basado en el tipo o gris por defecto
           pdf: stand.pdf
         };
       });
@@ -112,7 +112,7 @@ const Experience = ({ eventId }) => {
             position={stand.position}
             rotation={stand.rotation}
             size={stand.size}
-            color={stand.color}
+            type={stand.type}
             characterRef={characterRef}
             pdf = {stand.pdf}
           />
