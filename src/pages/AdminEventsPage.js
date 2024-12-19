@@ -7,7 +7,14 @@ const AdminEventsPage = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
-  const [newEvent, setNewEvent] = useState({ name: '', start_date: '', end_date: '', description: '', image: '' });
+  const [newEvent, setNewEvent] = useState({
+    name: '',
+    start_date: '',
+    end_date: '',
+    description: '',
+    image: '',
+    max_stands: 10, // Valor predeterminado para el número máximo de stands
+  });
   const [message, setMessage] = useState('');
   const [editingEvent, setEditingEvent] = useState(null);
 
@@ -42,7 +49,7 @@ const AdminEventsPage = () => {
       reader.onload = () => {
         setNewEvent((prevData) => ({ ...prevData, image: reader.result }));
       };
-      reader.readAsDataURL(file); // Convierte la imagen a base64
+      reader.readAsDataURL(file);
     }
   };
 
@@ -76,7 +83,14 @@ const AdminEventsPage = () => {
         setMessage('Evento creado con éxito.');
       }
 
-      setNewEvent({ name: '', start_date: '', end_date: '', description: '', image: '' });
+      setNewEvent({
+        name: '',
+        start_date: '',
+        end_date: '',
+        description: '',
+        image: '',
+        max_stands: 10,
+      });
       setEditingEvent(null);
     } catch (error) {
       console.error('Error al guardar el evento:', error);
@@ -165,6 +179,17 @@ const AdminEventsPage = () => {
               className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded"
             />
           </div>
+          <div>
+            <label className="block text-gray-200">Número Máximo de Stands</label>
+            <input
+              type="number"
+              name="max_stands"
+              value={newEvent.max_stands}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded"
+              required
+            />
+          </div>
           <button
             type="submit"
             className="w-full mt-2 bg-[#C7AA68] text-gray-900 py-2 rounded hover:bg-[#9E8A52] transition duration-300"
@@ -181,6 +206,9 @@ const AdminEventsPage = () => {
               {event.image && (
                 <img src={event.image} alt="Event" className="w-full h-auto rounded" />
               )}
+              <p>
+                <strong>Número Máximo de Stands:</strong> {event.max_stands}
+              </p>
               <button
                 onClick={() => handleEdit(event)}
                 className="bg-blue-500 text-gray-100 px-4 py-1 rounded mt-2 mr-2"

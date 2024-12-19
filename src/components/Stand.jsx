@@ -12,6 +12,7 @@ const Stand = ({
   size = [3, 3, 3],
   color = "blue",
   areaRadius = 8,
+  pdf
 }) => {
   const { posX, posY, posZ, rotX, rotY, rotZ } = useControls(`Stand ${id}`, {
     posX: { value: position[0], min: -100, max: 100, step: 0.1 },
@@ -90,6 +91,51 @@ const Stand = ({
     }
   };
 
+  const downloadPDF = () => {
+    console.log("PDF",pdf)
+
+    try {
+      if (!pdf) {
+        console.error("No PDF data available.");
+        return;
+      }
+
+      // Crear un Blob desde el Base64
+      const binary = atob(pdf);
+      const array = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        array[i] = binary.charCodeAt(i);
+      }
+      const blob = new Blob([array], { type: "application/pdf" });
+
+      // Crear un enlace de descarga
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "catalogo.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      console.log("PDF descargado exitosamente.");
+    } catch (error) {
+      console.error("Error descargando el PDF:", error);
+    }
+  };
+
+  const handleClick = (interactionType) => {
+    if (isCharacterInside.current) {
+      console.log(`Interaction triggered: ${interactionType}`);
+      if (interactionType === "download_catalog") {
+        downloadPDF(); // Llama a la función para descargar el PDF
+      } else {
+        sendInteraction(interactionType);
+      }
+    } else {
+      console.log("Character is not inside the area. Cannot interact.");
+    }
+  };
+
   useFrame(({ scene }) => {
     if (areaRef.current) {
       const character = scene.getObjectByName("Character");
@@ -129,15 +175,6 @@ const Stand = ({
     };
   }, []);
 
-  const handleClick = (interactionType) => {
-    if (isCharacterInside.current) {
-      console.log(`Interaction triggered: ${interactionType}`);
-      sendInteraction(interactionType);
-    } else {
-      console.log("Character is not inside the area. Cannot interact.");
-    }
-  };
-
   return (
     <group position={[posX, posY, posZ]} rotation={[rotX, rotY, rotZ]}>
       {/* Stand */}
@@ -150,7 +187,6 @@ const Stand = ({
 
       {/* Detection Area */}
       <mesh ref={areaRef}>
-        {/* <sphereGeometry args={[areaRadius, 32, 32]} /> */}
         <meshStandardMaterial color="green" transparent opacity={0.2} />
       </mesh>
 
@@ -204,8 +240,7 @@ const Stand = ({
       </RigidBody>
 
       {/* ChatBot */}
-      {/* {canInteract && <ChatBot position={[0, 0.1, 5]} standId={id} />} */}
-      { <ChatBot canInteract = {canInteract} position={[0, 0.1, 5]} standId={id} />}
+      {canInteract && <ChatBot position={[0, 0.1, 5]} standId={id} />}
     </group>
   );
 };
