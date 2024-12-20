@@ -17,9 +17,9 @@ const Stand = ({
   areaRadius = 8,
   catalog_pdf,
   characterRef,
-  isInteracting, 
+  isInteracting,
   setIsInteracting,
-  getPlayerCamera
+  getPlayerCamera,
 }) => {
   const { posX, posY, posZ, rotX, rotY, rotZ } = useControls(`Stand ${id}`, {
     posX: { value: position[0], min: -100, max: 100, step: 0.1 },
@@ -32,7 +32,7 @@ const Stand = ({
 
   const isCharacterInside = useRef(false);
   const areaRef = useRef();
-  const [canInteract, setCanInteract] = useState(false); // Controla si se puede interactuar con el ChatBot
+  const [canInteract, setCanInteract] = useState(false);
   const timeInside = useRef(0);
   const interactionId = useRef(null);
 
@@ -99,14 +99,12 @@ const Stand = ({
   };
 
   const downloadPDF = () => {
+    if (!catalog_pdf) {
+      console.error("No PDF data available.");
+      return;
+    }
 
     try {
-      if (!catalog_pdf) {
-        console.error("No PDF data available.");
-        return;
-      }
-
-      // Crear un Blob desde el Base64
       const binary = atob(catalog_pdf);
       const array = new Uint8Array(binary.length);
       for (let i = 0; i < binary.length; i++) {
@@ -114,7 +112,6 @@ const Stand = ({
       }
       const blob = new Blob([array], { type: "application/pdf" });
 
-      // Crear un enlace de descarga
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -130,11 +127,10 @@ const Stand = ({
   };
 
   const handleClick = (interactionType) => {
-    console.log(characterRef)
     if (isCharacterInside.current) {
       console.log(`Interaction triggered: ${interactionType}`);
       if (interactionType === "download_catalog") {
-        downloadPDF(); // Llama a la función para descargar el PDF
+        downloadPDF();
       } else {
         sendInteraction(interactionType);
       }
@@ -158,18 +154,18 @@ const Stand = ({
 
       if (insideArea && !isCharacterInside.current) {
         isCharacterInside.current = true;
-        setCanInteract(true); // Permite interactuar con el ChatBot
+        setCanInteract(true);
         console.log("Character entered the area.");
         startInteraction();
       } else if (!insideArea && isCharacterInside.current) {
         isCharacterInside.current = false;
-        setCanInteract(false); // Desactiva la interacción con el ChatBot
+        setCanInteract(false);
         console.log("Character left the area.");
         endInteraction();
       }
 
       if (insideArea) {
-        timeInside.current += 1 / 60; // Assuming 60 FPS
+        timeInside.current += 1 / 60;
       }
     }
   });
@@ -184,29 +180,27 @@ const Stand = ({
 
   return (
     <group position={[posX, posY, posZ]} rotation={[rotX, rotY, rotZ]}>
-      {/* Stand */}
-        {/* Stand */}
-      {type === 'basic' &&  <StandBasic scale={[10,10,10]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} /> }
-      {type === 'premium' && <StandPremium scale={[10,10,10]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} /> }
-      {type === 'vip' &&<StandVip scale={[1,1,1]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />}
+      {type === "basic" && (
+        <StandBasic scale={[10, 10, 10]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
+      )}
+      {type === "premium" && (
+        <StandPremium scale={[10, 10, 10]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
+      )}
+      {type === "vip" && (
+        <StandVip scale={[1, 1, 1]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
+      )}
 
-      {/* Detection Area */}
       <mesh ref={areaRef}>
         <meshStandardMaterial color="green" transparent opacity={0.2} />
       </mesh>
 
-      {/* Mailbox */}
       <RigidBody type="fixed">
-        <mesh
-          position={[-0.5, -0.5, 3]}
-          onClick={() => handleClick("mailbox")}
-        >
+        <mesh position={[-0.5, -0.5, 3]} onClick={() => handleClick("mailbox")}>
           <boxGeometry args={[0.2, 0.2, 0.2]} />
           <meshStandardMaterial color="yellow" />
         </mesh>
       </RigidBody>
 
-      {/* Laptop */}
       <RigidBody type="fixed">
         <mesh position={[-0.2, 0, 3]} onClick={() => handleClick("info_pc")}>
           <boxGeometry args={[0.3, 0.1, 0.2]} />
@@ -214,7 +208,6 @@ const Stand = ({
         </mesh>
       </RigidBody>
 
-      {/* Screen */}
       <RigidBody type="fixed">
         <mesh position={[0.2, 0.2, 3]} onClick={() => handleClick("play_video")}>
           <boxGeometry args={[0.4, 0.3, 0.1]} />
@@ -222,40 +215,28 @@ const Stand = ({
         </mesh>
       </RigidBody>
 
-      {/* Catalog */}
       <RigidBody type="fixed">
-        <mesh
-          position={[0.5, -0.5, 3]}
-          onClick={() => handleClick("download_catalog")}
-        >
+        <mesh position={[0.5, -0.5, 3]} onClick={() => handleClick("download_catalog")}>
           <boxGeometry args={[0.2, 0.05, 0.3]} />
           <meshStandardMaterial color="green" />
         </mesh>
       </RigidBody>
 
-      {/* Phone */}
       <RigidBody type="fixed">
-        <mesh
-          position={[0.7, -0.3, 3]}
-          onClick={() => handleClick("schedule_meeting")}
-        >
+        <mesh position={[0.7, -0.3, 3]} onClick={() => handleClick("schedule_meeting")}>
           <boxGeometry args={[0.1, 0.2, 0.1]} />
           <meshStandardMaterial color="red" />
         </mesh>
       </RigidBody>
 
-        {/* ChatBot */}
-      {/* {canInteract && <ChatBot position={[0, 0.1, 5]} standId={id} />} */}
-      { <ChatBot 
-        canInteract = {canInteract} 
-        position={[0, 0.1, 5]} 
-        standId={id} 
-        isCharacterInside={isCharacterInside} 
-        characterRef={characterRef} 
-        isInteracting={isInteracting} 
+      <ChatBot
+        canInteract={canInteract}
+        position={[0, 0.1, 5]}
+        standId={id}
+        isInteracting={isInteracting}
         setIsInteracting={setIsInteracting}
-        getPlayerCamera={getPlayerCamera} // Pasar getPlayerCamera a ChatBot
-        />}
+        getPlayerCamera={getPlayerCamera}
+      />
     </group>
   );
 };

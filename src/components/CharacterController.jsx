@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
+import React, { useEffect, useRef, useState, forwardRef } from "react";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
 import { Avatar } from "./Avatar";
 import { Vector3 } from "three";
@@ -7,6 +7,7 @@ import { useFrame } from "@react-three/fiber";
 import { useKeyboardControls } from "@react-three/drei";
 import { degToRad, MathUtils } from "three/src/math/MathUtils.js";
 import { getAvatarInitialPosition } from "../utils/avatarPosition"; // Importar la posición inicial
+import { useCameraManager } from "./CameraManager"; // Importar el CameraManager
 
 const normalizeAngle = (angle) => {
   while (angle > Math.PI) angle -= 2 * Math.PI;
@@ -44,6 +45,7 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
   const rb = useRef();
   const container = useRef();
   const character = useRef();
+  const { playerCameraRef } = useCameraManager(); // Obtener la referencia de la cámara del jugador
   const [animation, setAnimation] = useState("Idle");
 
   const characterRotationTarget = useRef(0);
@@ -58,20 +60,15 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
 
   const initialPosition = getAvatarInitialPosition(eventId);
 
-  useImperativeHandle(ref, () => ({
-    rigidBody: rb.current,
-    teleport: (position) => {
-      if (rb.current) {
-        rb.current.setTranslation(position, true);
-      }
-    },
-    getPlayerCamera: () => currentCameraRef.current, // Exponer la cámara actual
-  }));
-  const currentCameraRef = useRef();
+  useEffect(() => {
+    if (playerCameraRef.current) {
+      console.log("Player camera initialized:", playerCameraRef.current);
+    }
+  }, [playerCameraRef]);
 
   useFrame(({ camera, mouse }) => {
     if (isInteracting) {
-      // Detener control de la cámara cuando el jugador está interactuando
+      // Si hay interacción, detener actualizaciones del CharacterController
       return;
     }
 
@@ -109,17 +106,18 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
     }
 
     container.current.rotation.y = MathUtils.lerp(container.current.rotation.y, rotationTarget.current, 0.1);
-    cameraPosition.current.getWorldPosition(cameraWorldPosition.current);
-    camera.position.lerp(cameraWorldPosition.current, 0.1);
 
-    if (cameraTarget.current) {
-      cameraTarget.current.getWorldPosition(cameraLookAtWorldPosition.current);
-      cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 0.1);
-      camera.lookAt(cameraLookAt.current);
+    // Actualizar posición de la cámara del jugador
+    if (playerCameraRef.current) {
+      cameraPosition.current.getWorldPosition(cameraWorldPosition.current);
+      playerCameraRef.current.position.lerp(cameraWorldPosition.current, 0.1);
+
+      if (cameraTarget.current) {
+        cameraTarget.current.getWorldPosition(cameraLookAtWorldPosition.current);
+        cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 0.1);
+        playerCameraRef.current.lookAt(cameraLookAt.current);
+      }
     }
-
-    currentCameraRef.current = camera;
-
   });
 
   return (

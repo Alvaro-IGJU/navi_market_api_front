@@ -8,6 +8,7 @@ import api from "../api";
 import { AuthContext } from "../contexts/AuthContext";
 import { getStandCoordinates } from "../utils/standPositions";
 import { getBasePosition } from "../utils/basePosition";
+import { CameraManager } from "./CameraManager";
 
 const Experience = ({ eventId }) => {
   const characterRef = useRef();
@@ -15,6 +16,7 @@ const Experience = ({ eventId }) => {
   const [stands, setStands] = useState([]);
   const [isInteracting, setIsInteracting] = useState(false); // Estado para controlar interacción
 
+  // Fetching stands from API
   const fetchStands = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -41,6 +43,7 @@ const Experience = ({ eventId }) => {
     }
   };
 
+  // Register visit to the event
   const registerVisit = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -53,6 +56,7 @@ const Experience = ({ eventId }) => {
     }
   };
 
+  // Close visit when leaving the event
   const closeVisit = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -65,12 +69,14 @@ const Experience = ({ eventId }) => {
     }
   };
 
+  // Register the visit and fetch stands on mount
   useEffect(() => {
     if (eventId && user) {
       registerVisit();
       fetchStands();
     }
 
+    // Handle cleanup on page unload or hide
     const handleUnload = () => {
       closeVisit();
     };
@@ -87,18 +93,18 @@ const Experience = ({ eventId }) => {
   const baseConfig = getBasePosition();
 
   return (
-    <>
-      {/* Entorno */}
+    <CameraManager>
+      {/* Environment */}
       <Environment
         files="models/textures/kloofendal_48d_partly_cloudy_puresky_1k.hdr"
         background
       />
-      {/* Simulación física */}
+      {/* Physics simulation */}
       <Physics debug>
-        {/* Modelo base */}
+        {/* Base model */}
         <Base position={baseConfig.position} scale={baseConfig.scale} />
 
-        {/* Renderizar stands dinámicamente */}
+        {/* Render stands dynamically */}
         {stands.map((stand) => (
           <Stand
             key={stand.id}
@@ -107,20 +113,17 @@ const Experience = ({ eventId }) => {
             rotation={stand.rotation}
             size={stand.size}
             type={stand.type}
-            characterRef={characterRef} // Pasar characterRef
+            characterRef={characterRef} // Pass characterRef
             catalog_pdf={stand.catalog_pdf}
-            isInteracting={isInteracting} // Pasar isInteracting
-            setIsInteracting={setIsInteracting} // Pasar setIsInteracting
-            getPlayerCamera={() =>
-              characterRef.current?.getPlayerCamera() || null
-            } // Pasar getPlayerCamera como prop
+            isInteracting={isInteracting} // Pass isInteracting
+            setIsInteracting={setIsInteracting} // Pass setIsInteracting
           />
         ))}
 
-        {/* Personaje */}
+        {/* Character controller */}
         <CharacterController ref={characterRef} isInteracting={isInteracting} />
       </Physics>
-    </>
+    </CameraManager>
   );
 };
 
