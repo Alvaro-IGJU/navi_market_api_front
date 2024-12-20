@@ -16,6 +16,7 @@ import AdminEventsPage from './pages/AdminEventsPage';
 import AdminStandsPage from './pages/AdminStandsPage';
 import CanvasWrapper from './components/CanvasWrapper'; // Nuevo componente importado
 import ListEventsPage from './pages/ListEventsPage';
+import AdminDashboard from './pages/AdminDashboard'; // Importar el nuevo componente
 
 const App = () => {
   return (
@@ -41,23 +42,38 @@ const App = () => {
               </PrivateRoute>
             }
           />
-          <Route path="/admin" element={
-            <PrivateRoute>
-              <AdminPage />
-            </PrivateRoute>} />
-          <Route path="/company" element={
-            <PrivateRoute>
-              <CompanyPage />
-            </PrivateRoute>} />
-          <Route path="/canvas" element={
-            <PrivateRoute>
-            <CanvasWrapper />
-            </PrivateRoute>} />
-          <Route path="/admin/create-company-user" element={
-            <PrivateRoute>
-              <AdminCreateCompanyUserPage />
-            </PrivateRoute>
-          } />
+          <Route
+            path="/admin"
+            element={
+              <PrivateRoute>
+                <AdminPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/company"
+            element={
+              <PrivateRoute>
+                <CompanyPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/canvas"
+            element={
+              <PrivateRoute>
+                <CanvasWrapper />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/create-company-user"
+            element={
+              <PrivateRoute>
+                <AdminCreateCompanyUserPage />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/admin/events"
             element={
@@ -71,6 +87,16 @@ const App = () => {
             element={
               <PrivateRoute>
                 <AdminStandsPage />
+              </PrivateRoute>
+            }
+          />
+
+          {/* Nueva ruta para AdminDashboard */}
+          <Route
+            path="/admin/dashboard"
+            element={
+              <PrivateRoute>
+                <AdminDashboard />
               </PrivateRoute>
             }
           />
