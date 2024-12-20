@@ -56,7 +56,7 @@ const AuthPage = () => {
       console.error(error);
       toast.error(
         'Error: ' +
-          (error.response?.data?.detail || 'Ha ocurrido un error inesperado.')
+          (error.response?.data?.email || error.response?.data?.username || error.response?.data?.password || 'Ha ocurrido un error inesperado.')
       );
     }
   };
