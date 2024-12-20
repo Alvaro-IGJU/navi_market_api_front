@@ -15,7 +15,11 @@ const Stand = ({
   size = [3, 3, 3],
   type,
   areaRadius = 8,
-  catalog_pdf
+  catalog_pdf,
+  characterRef,
+  isInteracting, 
+  setIsInteracting,
+  getPlayerCamera
 }) => {
   const { posX, posY, posZ, rotX, rotY, rotZ } = useControls(`Stand ${id}`, {
     posX: { value: position[0], min: -100, max: 100, step: 0.1 },
@@ -126,6 +130,7 @@ const Stand = ({
   };
 
   const handleClick = (interactionType) => {
+    console.log(characterRef)
     if (isCharacterInside.current) {
       console.log(`Interaction triggered: ${interactionType}`);
       if (interactionType === "download_catalog") {
@@ -241,7 +246,16 @@ const Stand = ({
 
         {/* ChatBot */}
       {/* {canInteract && <ChatBot position={[0, 0.1, 5]} standId={id} />} */}
-      { <ChatBot canInteract = {canInteract} position={[0, 0.1, 5]} standId={id} />}
+      { <ChatBot 
+        canInteract = {canInteract} 
+        position={[0, 0.1, 5]} 
+        standId={id} 
+        isCharacterInside={isCharacterInside} 
+        characterRef={characterRef} 
+        isInteracting={isInteracting} 
+        setIsInteracting={setIsInteracting}
+        getPlayerCamera={getPlayerCamera} // Pasar getPlayerCamera a ChatBot
+        />}
     </group>
   );
 };

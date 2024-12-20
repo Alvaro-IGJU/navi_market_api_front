@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
 import { Avatar } from "./Avatar";
 import { Vector3 } from "three";
@@ -29,7 +29,7 @@ const lerpAngle = (start, end, t) => {
   return normalizeAngle(start + (end - start) * t);
 };
 
-export const CharacterController = ({ eventId = 1 }) => {
+export const CharacterController = forwardRef(({ eventId = 1, isInteracting = false }, ref) => {
   const { WALK_SPEED, RUN_SPEED, ROTATION_SPEED } = useControls("Character Control", {
     WALK_SPEED: { value: 0.8, min: 0.1, max: 4, step: 0.1 },
     RUN_SPEED: { value: 1.6, min: 0.2, max: 12, step: 0.1 },
@@ -56,13 +56,27 @@ export const CharacterController = ({ eventId = 1 }) => {
   const [, get] = useKeyboardControls();
   const isClicking = useRef(false);
 
-  // Obtener la posición inicial del avatar
   const initialPosition = getAvatarInitialPosition(eventId);
 
+  useImperativeHandle(ref, () => ({
+    rigidBody: rb.current,
+    teleport: (position) => {
+      if (rb.current) {
+        rb.current.setTranslation(position, true);
+      }
+    },
+    getPlayerCamera: () => currentCameraRef.current, // Exponer la cámara actual
+  }));
+  const currentCameraRef = useRef();
+
   useFrame(({ camera, mouse }) => {
+    if (isInteracting) {
+      // Detener control de la cámara cuando el jugador está interactuando
+      return;
+    }
+
     if (rb.current) {
       const vel = rb.current.linvel();
-
       const movement = { x: 0, z: 0 };
 
       if (get().forward) movement.z = 1;
@@ -103,6 +117,9 @@ export const CharacterController = ({ eventId = 1 }) => {
       cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 0.1);
       camera.lookAt(cameraLookAt.current);
     }
+
+    currentCameraRef.current = camera;
+
   });
 
   return (
@@ -111,7 +128,7 @@ export const CharacterController = ({ eventId = 1 }) => {
       lockRotations
       ref={rb}
       name="Character"
-      position={initialPosition} // Usar la posición inicial
+      position={initialPosition}
     >
       <group ref={container}>
         <group ref={cameraTarget} position-z={1.5} />
@@ -123,4 +140,4 @@ export const CharacterController = ({ eventId = 1 }) => {
       <CapsuleCollider args={[0.2, 0.18]} />
     </RigidBody>
   );
-};
+});

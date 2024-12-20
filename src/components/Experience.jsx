@@ -13,7 +13,7 @@ const Experience = ({ eventId }) => {
   const characterRef = useRef();
   const { user } = useContext(AuthContext);
   const [stands, setStands] = useState([]);
-
+  const [isInteracting, setIsInteracting] = useState(false); // Estado para controlar interacción
 
   const fetchStands = async () => {
     try {
@@ -29,8 +29,8 @@ const Experience = ({ eventId }) => {
           position,
           rotation,
           size: [3, 3, 3],
-          type: stand.type, // Asignar color basado en el tipo o gris por defecto
-          catalog_pdf: stand.catalog_pdf
+          type: stand.type,
+          catalog_pdf: stand.catalog_pdf,
         };
       });
 
@@ -90,11 +90,11 @@ const Experience = ({ eventId }) => {
     <>
       {/* Entorno */}
       <Environment
-        files="models/textures/kloofendal_48d_partly_cloudy_puresky_1k.hdr" // Ruta al archivo HDR
-        background // Si deseas que el HDR también sea el fondo de tu escena
+        files="models/textures/kloofendal_48d_partly_cloudy_puresky_1k.hdr"
+        background
       />
       {/* Simulación física */}
-      <Physics>
+      <Physics debug>
         {/* Modelo base */}
         <Base position={baseConfig.position} scale={baseConfig.scale} />
 
@@ -107,13 +107,18 @@ const Experience = ({ eventId }) => {
             rotation={stand.rotation}
             size={stand.size}
             type={stand.type}
-            characterRef={characterRef}
-            catalog_pdf = {stand.catalog_pdf}
+            characterRef={characterRef} // Pasar characterRef
+            catalog_pdf={stand.catalog_pdf}
+            isInteracting={isInteracting} // Pasar isInteracting
+            setIsInteracting={setIsInteracting} // Pasar setIsInteracting
+            getPlayerCamera={() =>
+              characterRef.current?.getPlayerCamera() || null
+            } // Pasar getPlayerCamera como prop
           />
         ))}
 
         {/* Personaje */}
-        <CharacterController characterRef={characterRef} />
+        <CharacterController ref={characterRef} isInteracting={isInteracting} />
       </Physics>
     </>
   );
