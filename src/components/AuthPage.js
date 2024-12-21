@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import api from '../api';
@@ -10,13 +10,32 @@ const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     email: '',
-    username: '',
     password: '',
-    first_name: '',
-    last_name: '',
+    sector: '',  // Sector field
+    position: '',  // Position field
   });
+  const [sectors, setSectors] = useState([]);
+  const [positions, setPositions] = useState([]);
   const { loginUser } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // Obtener sectores y posiciones desde el backend
+  useEffect(() => {
+    const fetchSectorsAndPositions = async () => {
+      try {
+        const sectorResponse = await api.get('/users/sectors/');  // Cambia esta URL por la correcta
+        const positionResponse = await api.get('/users/positions/');  // Cambia esta URL por la correcta
+
+        setSectors(sectorResponse.data);
+        setPositions(positionResponse.data);
+      } catch (error) {
+        console.error('Error fetching sectors and positions:', error);
+        toast.error('No se pudieron cargar los sectores y cargos.');
+      }
+    };
+
+    fetchSectorsAndPositions();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,18 +54,18 @@ const AuthPage = () => {
         const { tokens } = response.data;
         await loginUser(tokens);
         toast.success('Inicio de sesión exitoso');
-        if(response.data.role === "Company"){
+        if (response.data.role === 'Company') {
           navigate('/dashboard');
-        }else{
+        } else {
           navigate('/events');
         }
       } else {
         const registerData = {
           email: formData.email,
-          username: formData.username,
           password: formData.password,
-          first_name: formData.first_name,
-          last_name: formData.last_name,
+          username: formData.username,
+          sector: formData.sector,    // Agregar sector
+          position: formData.position, // Agregar cargo
         };
         await api.post('/users/register/', registerData);
         toast.success('Registro exitoso. Ahora puedes iniciar sesión.');
@@ -56,7 +75,7 @@ const AuthPage = () => {
       console.error(error);
       toast.error(
         'Error: ' +
-          (error.response?.data?.email || error.response?.data?.username || error.response?.data?.password || 'Ha ocurrido un error inesperado.')
+          (error.response?.data?.email || error.response?.data?.password || 'Ha ocurrido un error inesperado.')
       );
     }
   };
@@ -77,30 +96,19 @@ const AuthPage = () => {
               {isLogin ? 'Iniciar Sesión' : 'Registrarse'}
             </h1>
             <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+                <label className="block mb-1 text-[#C7AA68]">Email:</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
+                />
+              </div>
               {!isLogin && (
                 <>
-                  <div>
-                    <label className="block mb-1 text-[#C7AA68]">Nombre:</label>
-                    <input
-                      type="text"
-                      name="first_name"
-                      value={formData.first_name}
-                      onChange={handleChange}
-                      required
-                      className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-1 text-[#C7AA68]">Apellido:</label>
-                    <input
-                      type="text"
-                      name="last_name"
-                      value={formData.last_name}
-                      onChange={handleChange}
-                      required
-                      className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
-                    />
-                  </div>
                   <div>
                     <label className="block mb-1 text-[#C7AA68]">Usuario:</label>
                     <input
@@ -112,19 +120,44 @@ const AuthPage = () => {
                       className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
                     />
                   </div>
+                  {/* Selección del sector */}
+                  <div>
+                    <label className="block mb-1 text-[#C7AA68]">Sector:</label>
+                    <select
+                      name="sector"
+                      value={formData.sector}
+                      onChange={handleChange}
+                      required
+                      className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
+                    >
+                      <option value="">Selecciona un sector</option>
+                      {sectors.map((sector) => (
+                        <option key={sector.id} value={sector.id}>
+                          {sector.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  {/* Selección del cargo */}
+                  <div>
+                    <label className="block mb-1 text-[#C7AA68]">Cargo:</label>
+                    <select
+                      name="position"
+                      value={formData.position}
+                      onChange={handleChange}
+                      required
+                      className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
+                    >
+                      <option value="">Selecciona un cargo</option>
+                      {positions.map((position) => (
+                        <option key={position.id} value={position.id}>
+                          {position.title}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </>
               )}
-              <div>
-                <label className="block mb-1 text-[#C7AA68]">Email:</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
-                />
-              </div>
               <div>
                 <label className="block mb-1 text-[#C7AA68]">Contraseña:</label>
                 <input
