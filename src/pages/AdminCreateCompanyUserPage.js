@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../api'; // Configura Axios con tu base URL
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Header from '../components/Header'; // Importa el Header
 
 const AdminCreateCompanyUserPage = () => {
   const { user } = useContext(AuthContext); // Contexto de autenticación
@@ -48,8 +49,11 @@ const AdminCreateCompanyUserPage = () => {
   };
 
   return (
-    <div className="bg-gray-900 min-h-screen text-gray-100 flex items-center justify-center">
-      <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg">
+    <div className="bg-gray-900 min-h-screen text-gray-100">
+      {/* Coloca el Header en la parte superior */}
+      <Header />
+
+      <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg mt-4">
         {/* Título principal */}
         <h1 className="text-3xl font-bold mb-6 text-[#C7AA68] text-center">
           Crear Usuario de Empresa

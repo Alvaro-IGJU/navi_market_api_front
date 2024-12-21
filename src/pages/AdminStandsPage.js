@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
+import Header from '../components/Header'; // Importa el Header
 
 const AdminStandsPage = () => {
   const { user } = useContext(AuthContext);
@@ -29,7 +30,7 @@ const AdminStandsPage = () => {
 
   useEffect(() => {
     if (!user?.is_superuser) {
-      navigate("/");
+      navigate("/"); // Redirigir si no es superusuario
       return;
     }
 
@@ -135,6 +136,9 @@ const AdminStandsPage = () => {
 
   return (
     <div className="bg-gray-900 min-h-screen text-gray-100">
+      {/* Aquí se agrega el Header */}
+      <Header />
+
       <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg mt-4">
         <h1 className="text-3xl font-bold mb-6 text-[#C7AA68]">Gestión de Stands</h1>
         {message && <p className="text-red-500">{message}</p>}

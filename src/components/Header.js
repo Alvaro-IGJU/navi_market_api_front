@@ -22,52 +22,91 @@ const Header = () => {
         </Link>
         <div className="flex items-center space-x-4">
           {isAuthenticated ? (
-            <div
-              className="relative"
-              onMouseEnter={() => setDropdownOpen(true)}
-              onMouseLeave={closeDropdown}
-            >
-              <button
-                onClick={toggleDropdown}
-                className="flex items-center space-x-2 focus:outline-none"
-              >
-                <img
-                  src={user?.profile_picture || '/default-avatar.png'}
-                  alt="Perfil"
-                  className="w-8 h-8 rounded-full border border-yellow-400"
-                />
-                <span className="text-sm">
-                  {user?.first_name
-                    ? `${user.first_name} ${user.last_name || ''}`
-                    : 'Usuario'}
-                </span>
-              </button>
-              <ul
-                className={`absolute right-0 mt-2 w-48 bg-gray-700 text-white rounded shadow-lg transition-all ${
-                  dropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-                }`}
-              >
-                <li className="border-b border-gray-600">
+            <>
+              <div className="flex space-x-4">
+                <Link
+                  to="/events"
+                  className="text-sm text-yellow-400 hover:underline"
+                >
+                  Eventos
+                </Link>
+                {user?.role === "Company" && (
                   <Link
-                    to="/profile"
-                    className="block px-4 py-2 hover:bg-gray-600"
-                    onClick={closeDropdown}
+                    to="/dashboard"
+                    className="text-sm text-yellow-400 hover:underline"
                   >
-                    Perfil
+                    Dashboard
                   </Link>
-                </li>
+                )}
                 {user?.is_superuser && (
+                  <>
+                    <Link
+                      to="/admin/dashboard"
+                      className="text-sm text-yellow-400 hover:underline"
+                    >
+                      Dashboard Admin
+                    </Link>
+                    <Link
+                      to="/admin/stands"
+                      className="text-sm text-yellow-400 hover:underline"
+                    >
+                      Stands
+                    </Link>
+                    <Link
+                      to="/admin/create-company-user"
+                      className="text-sm text-yellow-400 hover:underline"
+                    >
+                      Create Company User
+                    </Link>
+                  </>
+                )}
+              </div>
+              <div
+                className="relative"
+                onMouseEnter={() => setDropdownOpen(true)}
+                onMouseLeave={closeDropdown}
+              >
+                <button
+                  onClick={toggleDropdown}
+                  className="flex items-center space-x-2 focus:outline-none"
+                >
+                  <img
+                    src={user?.profile_picture || '/default-avatar.png'}
+                    alt="Perfil"
+                    className="w-8 h-8 rounded-full border border-yellow-400"
+                  />
+                  <span className="text-sm">
+                    {user?.first_name
+                      ? `${user.first_name} ${user.last_name || ''}`
+                      : 'Usuario'}
+                  </span>
+                </button>
+                <ul
+                  className={`absolute right-0 mt-2 w-48 bg-gray-700 text-white rounded shadow-lg transition-all ${
+                    dropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+                  }`}
+                >
                   <li className="border-b border-gray-600">
                     <Link
-                      to="/admin"
+                      to="/profile"
                       className="block px-4 py-2 hover:bg-gray-600"
                       onClick={closeDropdown}
                     >
-                      Administración
+                      Perfil
                     </Link>
                   </li>
-                )}
-                {user?.role === "Company" && (
+                  {user?.is_superuser && (
+                    <li className="border-b border-gray-600">
+                      <Link
+                        to="/admin"
+                        className="block px-4 py-2 hover:bg-gray-600"
+                        onClick={closeDropdown}
+                      >
+                        Administración
+                      </Link>
+                    </li>
+                  )}
+                   {user?.role === "Company" && (
                   <li className="border-b border-gray-600">
                     <Link
                       to="/company"
@@ -78,20 +117,20 @@ const Header = () => {
                     </Link>
                   </li>
                 )}
-                <li>
-                  <button
-                    onClick={() => {
-                      closeDropdown();
-                      logout();
-                    }}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-600"
-                  >
-                    Cerrar Sesión
-                  </button>
-                </li>
-                
-              </ul>
-            </div>
+                  <li>
+                    <button
+                      onClick={() => {
+                        closeDropdown();
+                        logout();
+                      }}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-600"
+                    >
+                      Cerrar Sesión
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </>
           ) : (
             <Link to="/auth" className="text-sm text-yellow-400 hover:underline">
               Iniciar Sesión
