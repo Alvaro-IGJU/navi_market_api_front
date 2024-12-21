@@ -12,7 +12,7 @@ const CompanyStandInteractionsChart = ({ companyId }) => {
     stand_entry: { label: "Entradas a Stand", icon: faPersonWalking },
     info_pc: { label: "Clicks ordenador", icon: faLaptop },
     mailbox: { label: "Clicks MailBox", icon: faEnvelope },
-    play_video: { label: "Clicks Reproducir Vídeo", icon: faPlay },
+    play_video: { label: "Clicks en Vídeo", icon: faPlay },
     schedule_meeting: { label: "Reuniones agendadas", icon: faHandshake },
     download_catalog: { label: "Catálogos descargados", icon: faBookOpen },
   };
