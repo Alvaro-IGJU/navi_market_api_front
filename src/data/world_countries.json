@@ -1,0 +1,22 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": { "name": "Afghanistan" },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[[61.210817, 35.650072], [62.230651, 35.270664], [62.984662, 35.404041]]]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": { "name": "United States of America" },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[[170.001, 65.210], [-180.000, 65.210], [-180.000, 50.000]]]
+        }
+      }
+    ]
+  }
+  

@@ -130,7 +130,13 @@ const Stand = ({
     if (isCharacterInside.current) {
       console.log(`Interaction triggered: ${interactionType}`);
       if (interactionType === "download_catalog") {
-        downloadPDF();
+        try {
+          // Registra la interacción antes de intentar descargar
+          sendInteraction(interactionType);
+          downloadPDF();
+        } catch (error) {
+          console.error("Error during catalog interaction:", error);
+        }
       } else {
         sendInteraction(interactionType);
       }
