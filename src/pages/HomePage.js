@@ -52,10 +52,10 @@ const HomePage = () => {
             ¡Explora un entorno virtual para ferias online y presentaciones empresariales!
           </p>
           <button
-            onClick={() => document.getElementById('content').scrollIntoView({ behavior: 'smooth' })}
+            onClick={() => window.location.href = '/auth'} // Redirige a /auth
             className="mt-10 px-6 py-3 text-lg bg-gradient-to-r from-[#C7AA68] to-[#A68A50] hover:from-[#A68A50] hover:to-[#8A6E40] text-white rounded-full shadow-lg transition-all duration-300 flex items-center"
           >
-            Conócenos
+            Iniciar Sesión
             <svg
               className="ml-2 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
@@ -66,6 +66,7 @@ const HomePage = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
+
         </div>
       </div>
 
