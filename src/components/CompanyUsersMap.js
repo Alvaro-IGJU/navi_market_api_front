@@ -16,14 +16,16 @@ const CompanyUsersMap = ({ companyId }) => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        // El backend devuelve los datos en formato { country_code: "USA", user_count: 100 }
-        const locationData = response.data;
+        console.log("Datos de ubicación de usuarios (raw):", response.data);
 
-        // Mapear los datos para el componente Choropleth
+        // Mapea los datos recibidos para el formato requerido por Choropleth
+        const locationData = response.data || [];
         const mappedData = locationData.map((item) => ({
-          id: item.country_code,
-          value: item.user_count,
+          id: item.id, // Código ISO del país
+          value: item.value || 0, // Asegura que `value` siempre tenga un valor numérico
         }));
+
+        console.log("Datos mapeados:", mappedData);
 
         setMapData(mappedData);
         setLoading(false);
@@ -44,11 +46,11 @@ const CompanyUsersMap = ({ companyId }) => {
     <div className="bg-gray-800 p-6 rounded-lg shadow-lg" style={{ height: "500px" }}>
       <h2 className="text-xl font-bold text-[#C7AA68] mb-4 text-center">Mapa de Usuarios por País</h2>
       <ResponsiveChoropleth
-        data={mapData}
+        data={mapData.filter((d) => d.value !== undefined)} // Asegura que todos los datos tengan un `value`
         features={worldCountries.features}
         margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
         colors="nivo"
-        domain={[0, Math.max(...mapData.map((d) => d.value), 100)]} // Ajusta el dominio dinámicamente
+        domain={[0, Math.max(...mapData.map((d) => d.value), 100)]} // Ajusta dinámicamente el dominio
         unknownColor="#666666"
         label="properties.name"
         valueFormat=".0f"
