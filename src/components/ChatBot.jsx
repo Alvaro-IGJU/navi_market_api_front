@@ -8,7 +8,8 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
   const cameraRef = useRef();
   const [showInput, setShowInput] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
-  const [message, setMessage] = useState("¡Hola! Hazme una pregunta.");
+  const [displayedMessage, setDisplayedMessage] = useState("¡Hola! Hazme una pregunta."); // Mensaje mostrado gradualmente
+  const [fullMessage, setFullMessage] = useState(""); // Mensaje completo
   const [input, setInput] = useState("");
 
   useEffect(() => {
@@ -16,6 +17,21 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
       registerStandCamera(standId, cameraRef.current);
     }
   }, [cameraRef, standId, registerStandCamera]);
+
+  // Función para mostrar el mensaje gradualmente
+  const revealMessage = (message) => {
+    setDisplayedMessage(""); // Limpiar el mensaje mostrado inicialmente
+    let index = 0;
+
+    const interval = setInterval(() => {
+      setDisplayedMessage((prev) => prev + message[index - 1]);
+      index += 1;
+
+      if (index >= message.length) {
+        clearInterval(interval); // Detener el intervalo cuando todo el mensaje ha sido mostrado
+      }
+    }, 50); // Velocidad del texto (50ms por carácter)
+  };
 
   const handleChatbotClick = () => {
     if (canInteract) {
@@ -35,7 +51,7 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
     if (!input.trim()) return;
 
     setIsThinking(true);
-    setMessage("Pensando...");
+    setDisplayedMessage("Pensando..."); // Mostrar un mensaje mientras se procesa la solicitud
 
     try {
       const token = localStorage.getItem("accessToken");
@@ -48,24 +64,23 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
           },
         }
       );
-      setMessage(response.data.response || "No tengo respuesta ahora.");
+
+      const responseMessage = response.data.response || "No tengo respuesta ahora.";
+      setFullMessage(responseMessage); // Establecer el mensaje completo
+      revealMessage(responseMessage); // Iniciar la animación de texto
     } catch (error) {
       console.error("Error al obtener respuesta del chatbot:", error);
 
-      if (error.response) {
-        setMessage(
-          "Ha surgido un error y ahora mismo no puedo contestarte. ¡Disculpa las molestias!"
-        );
-      } else if (error.request) {
-        setMessage("Error: No se recibió respuesta del servidor.");
-      } else {
-        setMessage("Error: Ocurrió un problema al enviar la solicitud.");
-      }
+      const errorMessage =
+        error.response?.data?.message ||
+        "Ha surgido un error y ahora mismo no puedo contestarte. ¡Disculpa las molestias!";
+      setFullMessage(errorMessage); // Establecer el mensaje de error
+      revealMessage(errorMessage); // Mostrar el mensaje de error gradualmente
     } finally {
       setIsThinking(false);
     }
 
-    setInput("");
+    setInput(""); // Limpiar el campo de entrada
   };
 
   return (
@@ -84,10 +99,10 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
         anchorX="center"
         anchorY="middle"
       >
-        {isThinking ? "Pensando..." : message}
+        {displayedMessage} {/* Mostrar el mensaje gradualmente */}
       </Text>
       {showInput && (
-        <Html center position={[0,-0.5,0]}>
+        <Html center position={[0, -0.5, 0]}>
           <div
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.9)",
@@ -97,7 +112,7 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
               flexDirection: "column",
               alignItems: "center",
               boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-              width: "500px"
+              width: "500px",
             }}
           >
             <input
