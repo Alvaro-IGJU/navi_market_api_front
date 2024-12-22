@@ -86,6 +86,8 @@ const Header = () => {
                   className={`absolute right-0 mt-2 w-48 bg-gray-700 text-white rounded shadow-lg transition-all ${
                     dropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
                   }`}
+                  style={{ zIndex: 9999 }} // Se añadió el z-index alto
+
                 >
                   <li className="border-b border-gray-600">
                     <Link

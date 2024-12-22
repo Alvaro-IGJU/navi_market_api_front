@@ -82,7 +82,7 @@ const Dashboard = () => {
       { i: "stats", x: 0, y: 0, w: 12, h: 2 },
       { i: "interactions", x: 0, y: 2, w: 12, h: 4 },
       { i: "map", x: 0, y: 6, w: 12, h: 4 },
-      { i: "funnel", x: 0, y: 8, w: 12, h: 3 },
+      { i: "funnel", x: 0, y: 8, w: 12, h: 4 },
       { i: "positions", x: 0, y: 10, w: 12, h: 2 },
       { i: "sectors", x: 0, y: 12, w: 12, h: 2 },
       { i: "other", x: 0, y: 14, w: 12, h: 1 },
