@@ -75,9 +75,9 @@ const EventPage = () => {
         {error && <p className="text-red-500">{error}</p>}
         {eventDetails && (
           <div className="text-white p-10 rounded-lg shadow-2xl" style={{ backgroundColor: "#222", width: "200%" }}>
-            <h1 className="text-4xl font-bold text-yellow-400 mb-6">{eventDetails.name}</h1>
+            <h1 className="text-4xl font-bold text-yellow-400 mb-6">{eventDetails.event.name}</h1>
             <p className="text-gray-300 text-lg mb-6">
-              {eventDetails.description.split("\n").map((line, index) => (
+              {eventDetails.event.description.split("\n").map((line, index) => (
                 <span key={index}>
                   {line}
                   <br />
@@ -89,7 +89,7 @@ const EventPage = () => {
             </div>
             <button
               onClick={() => handleSelectEvent({ eventId })}
-              className="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-300"
+              className="bg-yellow-500 text-white px-6 py-3 rounded hover:bg-yellow-600 transition duration-300"
             >
               Seleccionar
             </button>
