@@ -7,7 +7,7 @@ const ListEventsPage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Para manejar redirección
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -30,8 +30,7 @@ const ListEventsPage = () => {
   }, []);
 
   const handleSelectEvent = (eventId) => {
-    // Manejar la selección del evento, por ejemplo redirigir a una página específica
-    navigate("/canvas", { state: { eventId } });
+    navigate(`/events/${eventId}`); // Redirigir a la página del evento específico
   };
 
   if (loading) return <p className="text-gray-300">Cargando eventos...</p>;

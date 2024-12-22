@@ -100,36 +100,40 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
 
       {/* Mostrar texto y fondo solo si showInput es true */}
       {showInput && (
-        <Html position={[-0.37, 0.5, 1]}>
-          <div
-            style={{
-              width: `${planeWidth}px`,
-              height: `${planeHeight}px`,
-              backgroundColor: "rgba(255, 255, 255, 0.9)",
-              borderRadius: "8px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              textAlign: "center",
-              padding: "8px",
-              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-              overflow: "hidden",
-              position: "relative",
-            }}
-          >
+        <>
+          {/* Cuadro principal */}
+          <Html position={[-0.37, 0.5, 1]}>
             <div
-              ref={textRef}
-              className="text-content"
               style={{
-                whiteSpace: "normal",
-                fontSize: "20px",
-                lineHeight: "1.5",
+                width: `${planeWidth}px`,
+                height: `${planeHeight}px`,
+                backgroundColor: "rgba(255, 255, 255, 0.9)",
+                borderRadius: "8px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center",
+                padding: "8px",
+                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                overflow: "hidden",
+                position: "relative",
               }}
             >
-              {displayedMessage}
+              <div
+                ref={textRef}
+                className="text-content"
+                style={{
+                  whiteSpace: "normal",
+                  fontSize: "20px",
+                  lineHeight: "1.5",
+                }}
+              >
+                {displayedMessage}
+              </div>
             </div>
-          </div>
-        </Html>
+          </Html>
+
+        </>
       )}
 
       {showInput && (

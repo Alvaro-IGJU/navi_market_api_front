@@ -17,6 +17,7 @@ import AdminStandsPage from './pages/AdminStandsPage';
 import CanvasWrapper from './components/CanvasWrapper'; // Nuevo componente importado
 import ListEventsPage from './pages/ListEventsPage';
 import AdminDashboard from './pages/AdminDashboard'; // Importar el nuevo componente
+import EventPage from './pages/EventPage';
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
             }
           />
           <Route path="/events" element={<ListEventsPage />} />
+          <Route path="/events/:eventId" element={<EventPage />} />
           <Route
             path="/profile"
             element={
