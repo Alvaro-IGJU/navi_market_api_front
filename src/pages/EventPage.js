@@ -66,7 +66,7 @@ const EventPage = () => {
       {/* Física y modelo 3D */}
       <Physics>
         {/* Usar el Base adaptado con shouldRotate habilitado */}
-        <Base shouldRotate={true} scale={0.1} position={[3, 0.5, 0]} rotation={[0.4, 0, 0.7]} />
+        <Base shouldRotate={true} scale={0.15} position={[2, 0.5, 0]} rotation={[0.4, 0, 0.4]} />
       </Physics>
 
       {/* Contenido HTML superpuesto */}
