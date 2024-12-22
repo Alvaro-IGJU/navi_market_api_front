@@ -42,19 +42,42 @@ const CompanyStandInteractionsChart = ({ companyId }) => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-      <h2 className="text-xl font-bold text-[#C7AA68] mb-4 text-center">Interacciones Totales por Tipo</h2>
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    <div
+      className=" p-4 rounded-lg h-full flex flex-col"
+      style={{
+        minWidth: "200px", // Tamaño mínimo del componente
+        overflow: "hidden", // Asegura que el contenido no desborde
+        resize: "both", // Permite redimensionar manualmente
+      }}
+    >
+      <h2 className="text-lg font-bold text-[#C7AA68] mb-4 text-center">Interacciones Totales por Tipo</h2>
+      <div
+        className="grid gap-4 flex-grow"
+        style={{
+          gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", // Columnas flexibles
+        }}
+      >
         {interactionDetails.map((interaction, index) => {
-          const { label, icon } = interactionTypeLabels[interaction.interaction_type] || { label: interaction.interaction_type, icon: null };
+          const { label, icon } = interactionTypeLabels[interaction.interaction_type] || {
+            label: interaction.interaction_type,
+            icon: null,
+          };
 
           return (
-            <div key={index} className="bg-gray-900 p-3 rounded-lg shadow-lg text-center">
-              <div className="text-4xl mt-2 text-[#C7AA68]">
+            <div
+              key={index}
+              className="bg-gray-50 rounded-lg flex flex-col items-center justify-center"
+              style={{
+                minWidth: "50px", // Tamaño mínimo de cada tarjeta
+                minHeight: "50px", // Altura mínima de cada tarjeta
+                flex: "1 1 auto", // Crecimiento y reducción flexible
+              }}
+            >
+              <div className="text-3xl mt-2 text-[#C7AA68]">
                 {icon && <FontAwesomeIcon icon={icon} />}
               </div>
-              <p className="text-lg text-white font-bold">{label}</p>
-              <p className="text-2xl font-bold text-[#C7AA68]">{interaction.total_interactions}</p>
+              <p className="text-base text-black font-bold">{label}</p>
+              <p className="text-xl font-bold text-[#C7AA68]">{interaction.total_interactions}</p>
             </div>
           );
         })}

@@ -41,7 +41,7 @@ const CompanyUserSectorsPieChart = ({ companyId }) => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-lg" style={{ height: "500px" }}>
+    <div className="  p-6 rounded-lg " style={{ height: "100%" }}>
       <h2 className="text-xl font-bold text-[#C7AA68] mb-4 text-center">Sectores de Usuarios</h2>
       <ResponsivePie
         data={sectorData}

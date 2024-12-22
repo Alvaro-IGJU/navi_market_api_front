@@ -50,11 +50,11 @@ const CompanyLeadsFunnel = ({ companyId }) => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-lg" style={{ height: "400px" }}>
+    <div className=" p-6 pb-10 rounded-lg " style={{ height: "100%" }}>
       <h2 className="text-xl font-bold text-[#C7AA68] mb-4 text-center">Embudo de Leads</h2>
       <ResponsiveFunnel
         data={funnelData}
-        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+        margin={{  right: 20, bottom: 20, left: 20 }}
         valueFormat=">-.4s"
         colors={{ scheme: "spectral" }}
         borderWidth={20}
@@ -69,6 +69,7 @@ const CompanyLeadsFunnel = ({ companyId }) => {
         currentPartSizeExtension={10}
         currentBorderWidth={40}
         motionConfig="wobbly"
+        
       />
     </div>
   );

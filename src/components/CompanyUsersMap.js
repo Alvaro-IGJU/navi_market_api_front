@@ -43,8 +43,8 @@ const CompanyUsersMap = ({ companyId }) => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-lg" style={{ height: "500px" }}>
-      <h2 className="text-xl font-bold text-[#C7AA68] mb-4 text-center">Mapa de Usuarios por País</h2>
+    <>
+      <h2 className="text-xl font-bold text-[#C7AA68] text-center">Mapa de Usuarios por País</h2>
       <ResponsiveChoropleth
         data={mapData.filter((d) => d.value !== undefined)} // Asegura que todos los datos tengan un `value`
         features={worldCountries.features}
@@ -65,13 +65,13 @@ const CompanyUsersMap = ({ companyId }) => {
             anchor: "bottom-left",
             direction: "column",
             justify: true,
-            translateX: 20,
-            translateY: -100,
+            translateX: 90,
+            translateY: -200,
             itemsSpacing: 0,
             itemWidth: 94,
             itemHeight: 18,
             itemDirection: "left-to-right",
-            itemTextColor: "#ffffff",
+            itemTextColor: "#000000",
             itemOpacity: 0.85,
             symbolSize: 18,
             effects: [
@@ -86,7 +86,7 @@ const CompanyUsersMap = ({ companyId }) => {
           },
         ]}
       />
-    </div>
+    </>
   );
 };
 

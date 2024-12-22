@@ -4,7 +4,7 @@ import api from "../api";
 const CompanyEventBasicStatistics = ({ companyId }) => {
   const [totalVisits, setTotalVisits] = useState(0);
   const [averageTimePerStand, setAverageTimePerStand] = useState(0);
-  const [uniqueUsers, setUniqueUsers] = useState(0); // Para usuarios únicos
+  const [uniqueUsers, setUniqueUsers] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -13,7 +13,6 @@ const CompanyEventBasicStatistics = ({ companyId }) => {
       try {
         const token = localStorage.getItem("accessToken");
 
-        // Llamada para obtener visitas totales
         const visitsResponse = await api.get(`/interactions/companies/${companyId}/events-visits/`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -30,7 +29,6 @@ const CompanyEventBasicStatistics = ({ companyId }) => {
 
         setTotalVisits(totalVisits);
 
-        // Llamada para obtener estadísticas de interacciones
         const interactionsResponse = await api.get(
           `/interactions/companies/${companyId}/interactions/`,
           {
@@ -38,12 +36,11 @@ const CompanyEventBasicStatistics = ({ companyId }) => {
           }
         );
 
-        const { stands_details, total_interactions, unique_users } = interactionsResponse.data;
+        const { stands_details, unique_users } = interactionsResponse.data;
 
         let totalAverageDuration = 0;
         let standEntryCount = 0;
 
-        // Filtrar interacciones de tipo 'stand_entry' y sumar sus 'average_duration'
         stands_details.forEach((stand) => {
           stand.interaction_details
             .filter((interaction) => interaction.interaction_type === "stand_entry")
@@ -71,26 +68,45 @@ const CompanyEventBasicStatistics = ({ companyId }) => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-      <h2 className="text-xl font-bold text-[#C7AA68] mb-4">Estadísticas de Visitas</h2>
-      <div className="grid gap-4 grid-rows-2 grid-cols-2">
-        {/* Fila 1: Total de Visitas */}
-        <div className="row-span-1 col-span-2 bg-gray-900 p-6 rounded-lg shadow">
-          <p className="text-3xl font-bold text-white text-center">Visitas totales al evento:</p>
-          <p className="text-5xl font-bold text-white text-center">{totalVisits}</p>
+    <div
+      className=" p-4 rounded-lg h-full flex flex-col"
+      style={{
+        minWidth: "150px", // Tamaño mínimo del cuadro
+        minHeight: "100px", // Altura mínima
+        overflow: "hidden", // Asegura que el contenido no desborde
+        resize: "both", // Permite el redimensionamiento
+      }}
+    >
+      <h2 className="text-md font-bold text-[#C7AA68] text-center mb-2">Estadísticas de Visitas</h2>
+      <div className="flex flex-col gap-2 flex-grow">
+        {/* Total de Visitas */}
+        <div
+          className="bg-gray-50 p-3 rounded-lg flex flex-col items-center justify-center flex-1"
+          style={{ minHeight: "50px" }} // Altura mínima para el contenido
+        >
+          <p className="text-sm font-bold text-black">Visitas totales:</p>
+          <p className="text-base font-bold text-black">{totalVisits}</p>
         </div>
-        {/* Fila 2: Tiempo promedio en stand */}
-        <div className="col-span-1 bg-gray-900 p-6 rounded-lg shadow">
-          <p className="text-lg text-white text-center">Tiempo Promedio en Stand:</p>
-          <p className="text-xl font-bold text-white text-center">
-            {Math.floor(averageTimePerStand / 60)} minutos{" "}
-            {Math.floor(averageTimePerStand % 60)} segundos
-          </p>
-        </div>
-        {/* Fila 2: Usuarios únicos */}
-        <div className="col-span-1 bg-gray-900 p-6 rounded-lg shadow">
-          <p className="text-lg text-white text-center">Usuarios Únicos:</p>
-          <p className="text-xl font-bold text-white text-center">{uniqueUsers}</p>
+        {/* Última Fila: Tiempo promedio y Usuarios únicos */}
+        <div className="flex gap-2 flex-1">
+          {/* Tiempo promedio en stand */}
+          <div
+            className="bg-gray-50 p-3 rounded-lg flex flex-col items-center justify-center flex-1"
+            style={{ minHeight: "50px" }} // Altura mínima para mantener diseño
+          >
+            <p className="text-xs text-black text-center">Tiempo Promedio:</p>
+            <p className="text-sm font-bold text-black text-center">
+              {Math.floor(averageTimePerStand / 60)}m {Math.floor(averageTimePerStand % 60)}s
+            </p>
+          </div>
+          {/* Usuarios únicos */}
+          <div
+            className="bg-gray-50 p-3 rounded-lg flex flex-col items-center justify-center flex-1"
+            style={{ minHeight: "50px" }} // Altura mínima para mantener diseño
+          >
+            <p className="text-xs text-black text-center">Usuarios Únicos:</p>
+            <p className="text-sm font-bold text-black text-center">{uniqueUsers}</p>
+          </div>
         </div>
       </div>
     </div>

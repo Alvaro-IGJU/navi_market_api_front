@@ -42,13 +42,13 @@ const CompanyUserPositions = ({ companyId }) => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-lg" style={{ height: "500px" }}>
+    <div className=" p-6 rounded-lg " style={{ height: "100%" }}>
       <h2 className="text-xl font-bold text-[#C7AA68] mb-4 text-center">Posiciones de Usuarios</h2>
       <ResponsiveBar
         data={barData}
         keys={["users"]}
         indexBy="position"
-        margin={{ top: 50, right: 50, bottom: 100, left: 60 }}
+        margin={{ right: 50, bottom: 100, left: 60 }}
         padding={0.3}
         colors={{ scheme: "nivo" }}
         axisTop={null}

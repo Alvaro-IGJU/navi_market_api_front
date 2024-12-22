@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Responsive, WidthProvider } from "react-grid-layout";
+import "react-grid-layout/css/styles.css";
+import "react-resizable/css/styles.css";
 import { useNavigate } from "react-router-dom";
-import Grid2 from "@mui/material/Grid2";
 import CompanyEventBasicStatistics from "../components/CompanyEventBasicStatistics";
 import CompanyStandInteractionsChart from "../components/CompanyStandInteractionsChart";
 import CompanyLeadsFunnel from "../components/CompanyLeadsFunnel";
@@ -11,6 +13,8 @@ import CompanyUserSectorsPieChart from "../components/CompanyUserSectorsPieChart
 import { AuthContext } from "../contexts/AuthContext";
 import api from "../api";
 import Header from "../components/Header";
+
+const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
@@ -54,128 +58,137 @@ const Dashboard = () => {
   const expandContent = (content) => setExpandedContent(content);
   const collapseContent = () => setExpandedContent(null);
 
+  const layouts = {
+    lg: [
+      { i: "stats", x: 0, y: 0, w: 3, h: 2 },
+      { i: "funnel", x: 3, y: 0, w: 4, h: 4 },
+      { i: "map", x: 9, y: 0, w: 5, h: 4.5 },
+      { i: "interactions", x: 0, y: 2, w: 3, h:3.5 },
+      { i: "positions", x: 3, y: 4, w: 4, h: 3 },
+      { i: "sectors", x: 9, y: 2, w: 5, h: 3 },
+      { i: "other", x: 0, y: 6, w: 3, h: 1 },
+    ],
+    md: [
+      { i: "stats", x: 0, y: 0, w: 6, h: 2 },
+      { i: "funnel", x: 0, y: 2, w: 6, h: 4 },
+      { i: "map", x: 6, y: 0, w: 6, h: 2 },
+      { i: "interactions", x: 0, y: 6, w: 6, h: 2 },
+      { i: "positions", x: 6, y: 6, w: 6, h: 2 },
+      { i: "sectors", x: 0, y: 8, w: 6, h: 2 },
+      { i: "other", x: 6, y: 8, w: 6, h: 1 },
+    ],
+    sm: [
+      { i: "stats", x: 0, y: 0, w: 12, h: 2 },
+      { i: "funnel", x: 0, y: 2, w: 12, h: 4 },
+      { i: "map", x: 0, y: 6, w: 12, h: 2 },
+      { i: "interactions", x: 0, y: 8, w: 12, h: 2 },
+      { i: "positions", x: 0, y: 10, w: 12, h: 2 },
+      { i: "sectors", x: 0, y: 12, w: 12, h: 2 },
+      { i: "other", x: 0, y: 14, w: 12, h: 1 },
+    ],
+  };
+
   return (
     <>
       <Header />
 
-      <div
-        className="text-white"
+      <h1 className="text-3xl font-bold mt-3 mb-8 text-center">Dashboard de Interacciones</h1>
+
+      <ResponsiveGridLayout
+        className="layout"
+        layouts={layouts}
+        breakpoints={{ lg: 1200, md: 996, sm: 768 }}
+        cols={{ lg: 12, md: 12, sm: 12 }}
+        rowHeight={150}
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-         
+          margin: "0 auto",
+          maxWidth: "100%",
+          backgroundColor: "#ffffff",
+          borderRadius: "8px",
+          padding: "10px",
         }}
       >
-        <h1 className="text-3xl font-bold text-center mb-8">Dashboard de Interacciones</h1>
+  <div
+    key="stats"
+    style={{
+      border: "1px solid #d3d3d3", // Borde gris claro
+      backgroundColor: "#ffffff",
+      borderRadius: "5px",
+      overflow: "hidden", // Asegura que los bordes no se desborden
+    }}
+  >
+    <CompanyEventBasicStatistics companyId={companyId} />
+  </div>
+  <div
+    key="funnel"
+    style={{
+      border: "1px solid #d3d3d3",
+      backgroundColor: "#ffffff",
+      borderRadius: "5px",
+      overflow: "hidden",
+    }}
+  >
+    <CompanyLeadsFunnel companyId={companyId} />
+  </div>
+  <div
+    key="map"
+    style={{
+      border: "1px solid #d3d3d3",
+      borderRadius: "5px",
+      backgroundColor: "#ffffff",
+      overflow: "hidden",
+    }}
+  >
+    <CompanyUsersMap companyId={companyId} />
+  </div>
+  <div
+    key="interactions"
+    style={{
+      border: "1px solid #d3d3d3",
+      borderRadius: "5px",
+      backgroundColor: "#ffffff",
+      overflow: "hidden",
+    }}
+  >
+    <CompanyStandInteractionsChart companyId={companyId} />
+  </div>
+  <div
+    key="positions"
+    style={{
+      border: "1px solid #d3d3d3",
+      borderRadius: "5px",
+      backgroundColor: "#ffffff",
+      overflow: "hidden",
+    }}
+  >
+    <CompanyUserPositions companyId={companyId} />
+  </div>
+  <div
+    key="sectors"
+    style={{
+      border: "1px solid #d3d3d3",
+      borderRadius: "5px",
+      backgroundColor: "#ffffff",
+      overflow: "hidden",
+    }}
+  >
+    <CompanyUserSectorsPieChart companyId={companyId} />
+  </div>
+  <div
+    key="other"
+    style={{
+      border: "1px solid #d3d3d3",
+      borderRadius: "5px",
+      backgroundColor: "#ffffff",
+      overflow: "hidden",
+    }}
+  >
+    <h2 className="text-xl font-semibold text-[#C7AA68] mb-4">Otra Métrica</h2>
+    <p>Contenido del gráfico o estadística.</p>
+  </div>
+</ResponsiveGridLayout>
 
-        <Grid2
-          container
-          spacing={3}
-          justifyContent="center"
-          alignItems="stretch"
-          sx={{ maxWidth: "90%", margin: "0 auto" }}
-          columns={12}
-        >
-          {/* Estadísticas de Visitas */}
-          <Grid2 size={{ xs: 12, md: 3 }}>
-            <motion.div
-              className="bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer"
-              onClick={() => expandContent(<CompanyEventBasicStatistics companyId={companyId} />)}
-            >
-              <CompanyEventBasicStatistics companyId={companyId} />
-            </motion.div>
-          </Grid2>
-
-          {/* Embudo de Leads */}
-          <Grid2 size={{ xs: 12, md: 4 }}>
-            <motion.div
-              className="bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer h-full"
-              onClick={() => expandContent(<CompanyLeadsFunnel companyId={companyId} />)}
-              style={{ height: "100%" }}
-            >
-              <CompanyLeadsFunnel companyId={companyId} />
-            </motion.div>
-          </Grid2>
-
-          {/* Mapa de Usuarios */}
-          <Grid2 size={{ xs: 12, md: 3 }}>
-            <motion.div
-              className="bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer "
-              onClick={() => expandContent(<CompanyUsersMap companyId={companyId} />)}
-            >
-              <CompanyUsersMap companyId={companyId} />
-            </motion.div>
-          </Grid2>
-
-          {/* Interacciones Totales por Tipo */}
-          <Grid2 size={{ xs: 12, md: 3 }}>
-            <motion.div
-              className="bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer"
-              onClick={() => expandContent(<CompanyStandInteractionsChart companyId={companyId} />)}
-            >
-              <CompanyStandInteractionsChart companyId={companyId} />
-            </motion.div>
-          </Grid2>
-
-          
-
-        
-
-          {/* Posiciones de Usuarios */}
-          <Grid2 size={{ xs: 12, md: 4 }}>
-            <motion.div
-              className="bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer"
-              onClick={() => expandContent(<CompanyUserPositions companyId={companyId} />)}
-            >
-              <CompanyUserPositions companyId={companyId} />
-            </motion.div>
-          </Grid2>
-
-          {/* Sectores de Usuarios */}
-          <Grid2 size={{ xs: 12, md: 3 }}>
-            <motion.div
-              className="bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer"
-              onClick={() => expandContent(<CompanyUserSectorsPieChart companyId={companyId} />)}
-            >
-              <CompanyUserSectorsPieChart companyId={companyId} />
-            </motion.div>
-          </Grid2>
-            {/* Otra Métrica */}
-        <Grid2 size={{ xs: 12, md: 3 }}>
-            <motion.div
-              className="bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer"
-              onClick={() => expandContent(<p>Otra Métrica</p>)}
-            >
-              <h2 className="text-xl font-semibold text-[#C7AA68] mb-4">Otra Métrica</h2>
-              <p>Contenido del gráfico o estadística.</p>
-            </motion.div>
-          </Grid2>
-          <Grid2 size={{ xs: 12, md: 7 }}>
-          </Grid2>
-        </Grid2>
-      </div>
-
-      <AnimatePresence>
-        {expandedContent && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
-            onClick={collapseContent}
-          >
-            <motion.div
-              className="bg-white text-black p-8 rounded-lg shadow-lg max-w-4xl w-full"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {expandedContent}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+     
     </>
   );
 };
