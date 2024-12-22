@@ -1,16 +1,18 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Html, PerspectiveCamera, Text } from "@react-three/drei";
+import { Html, PerspectiveCamera } from "@react-three/drei";
 import { useCameraManager } from "./CameraManager";
 import api from "../api";
 
 const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracting }) => {
   const { registerStandCamera, activateStandCamera, activatePlayerCamera } = useCameraManager();
   const cameraRef = useRef();
+  const textRef = useRef(); // Referencia para el contenedor del texto
   const [showInput, setShowInput] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
-  const [displayedMessage, setDisplayedMessage] = useState("¡Hola! Hazme una pregunta."); // Mensaje mostrado gradualmente
-  const [fullMessage, setFullMessage] = useState(""); // Mensaje completo
+  const [displayedMessage, setDisplayedMessage] = useState("¡Hola! Hazme una pregunta.");
   const [input, setInput] = useState("");
+  const [planeHeight, setPlaneHeight] = useState(100); // Altura dinámica del rectángulo
+  const planeWidth = 800; // Ancho fijo del rectángulo en píxeles
 
   useEffect(() => {
     if (cameraRef.current) {
@@ -18,19 +20,30 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
     }
   }, [cameraRef, standId, registerStandCamera]);
 
-  // Función para mostrar el mensaje gradualmente
-  const revealMessage = (message) => {
-    setDisplayedMessage(""); // Limpiar el mensaje mostrado inicialmente
-    let index = 0;
+  const adjustRectangleSize = () => {
+    if (textRef.current) {
+      const textContainer = textRef.current;
+      // Calcular altura basada en el contenido renderizado
+      const newHeight = Math.max(textContainer.scrollHeight + 20, 100); // Altura mínima de 100px
+      setPlaneHeight(newHeight);
+    }
+  };
 
-    const interval = setInterval(() => {
-      setDisplayedMessage((prev) => prev + message[index - 1]);
-      index += 1;
+  useEffect(() => {
+    adjustRectangleSize();
+  }, [displayedMessage]);
 
-      if (index >= message.length) {
-        clearInterval(interval); // Detener el intervalo cuando todo el mensaje ha sido mostrado
-      }
-    }, 50); // Velocidad del texto (50ms por carácter)
+  const revealMessage = async (message) => {
+    setDisplayedMessage(""); // Limpiar el mensaje anterior
+    let currentMessage = "";
+
+    for (let char of message) {
+      await new Promise((resolve) => setTimeout(resolve, 50)); // Animación gradual
+      currentMessage += char;
+      setDisplayedMessage(currentMessage);
+    }
+
+    adjustRectangleSize(); // Ajustar la altura al finalizar la animación
   };
 
   const handleChatbotClick = () => {
@@ -51,7 +64,7 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
     if (!input.trim()) return;
 
     setIsThinking(true);
-    setDisplayedMessage("Pensando..."); // Mostrar un mensaje mientras se procesa la solicitud
+    setDisplayedMessage("Pensando...");
 
     try {
       const token = localStorage.getItem("accessToken");
@@ -66,21 +79,15 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
       );
 
       const responseMessage = response.data.response || "No tengo respuesta ahora.";
-      setFullMessage(responseMessage); // Establecer el mensaje completo
-      revealMessage(responseMessage); // Iniciar la animación de texto
+      await revealMessage(responseMessage);
     } catch (error) {
       console.error("Error al obtener respuesta del chatbot:", error);
-
-      const errorMessage =
-        error.response?.data?.message ||
-        "Ha surgido un error y ahora mismo no puedo contestarte. ¡Disculpa las molestias!";
-      setFullMessage(errorMessage); // Establecer el mensaje de error
-      revealMessage(errorMessage); // Mostrar el mensaje de error gradualmente
+      await revealMessage("Ha surgido un error y ahora mismo no puedo contestarte.");
     } finally {
       setIsThinking(false);
     }
 
-    setInput(""); // Limpiar el campo de entrada
+    setInput("");
   };
 
   return (
@@ -90,17 +97,41 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
         <sphereGeometry args={[0.5, 32, 32]} />
         <meshStandardMaterial color="orange" />
       </mesh>
-      <Text
-        position={[0, 0.2, 1]}
-        fontSize={0.05}
-        color="black"
-        maxWidth={1}
-        textAlign="center"
-        anchorX="center"
-        anchorY="middle"
-      >
-        {displayedMessage} {/* Mostrar el mensaje gradualmente */}
-      </Text>
+
+      {/* Mostrar texto y fondo solo si showInput es true */}
+      {showInput && (
+        <Html position={[-0.37, 0.5, 1]}>
+          <div
+            style={{
+              width: `${planeWidth}px`,
+              height: `${planeHeight}px`,
+              backgroundColor: "rgba(255, 255, 255, 0.9)",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+              padding: "8px",
+              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+              overflow: "hidden",
+              position: "relative",
+            }}
+          >
+            <div
+              ref={textRef}
+              className="text-content"
+              style={{
+                whiteSpace: "normal",
+                fontSize: "20px",
+                lineHeight: "1.5",
+              }}
+            >
+              {displayedMessage}
+            </div>
+          </div>
+        </Html>
+      )}
+
       {showInput && (
         <Html center position={[0, -0.5, 0]}>
           <div
