@@ -15,7 +15,8 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-gray-800 text-white h-20">
+    <header className="bg-gray-800 text-white h-20 shadow-lg">
+      {/* Added shadow-lg for the shadow effect */}
       <div className="container mx-auto px-4 py-4 flex items-center justify-between h-full">
         <Link to="/" className="text-lg font-bold text-yellow-400">
           NAVI MARKET
@@ -106,17 +107,17 @@ const Header = () => {
                       </Link>
                     </li>
                   )}
-                   {user?.role === "Company" && (
-                  <li className="border-b border-gray-600">
-                    <Link
-                      to="/company"
-                      className="block px-4 py-2 hover:bg-gray-600"
-                      onClick={closeDropdown}
-                    >
-                      Mi empresa
-                    </Link>
-                  </li>
-                )}
+                  {user?.role === "Company" && (
+                    <li className="border-b border-gray-600">
+                      <Link
+                        to="/company"
+                        className="block px-4 py-2 hover:bg-gray-600"
+                        onClick={closeDropdown}
+                      >
+                        Mi empresa
+                      </Link>
+                    </li>
+                  )}
                   <li>
                     <button
                       onClick={() => {

@@ -77,7 +77,7 @@ const CompanyEventBasicStatistics = ({ companyId }) => {
         resize: "both", // Permite el redimensionamiento
       }}
     >
-      <h2 className="text-md font-bold text-[#C7AA68] text-center mb-2">Estadísticas de Visitas</h2>
+      <h2 className="text-lg font-bold text-[#C7AA68] mb-4 text-center">Estadísticas de Visitas</h2>
       <div className="flex flex-col gap-2 flex-grow">
         {/* Total de Visitas */}
         <div

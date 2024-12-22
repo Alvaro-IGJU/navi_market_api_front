@@ -44,7 +44,7 @@ const CompanyUsersMap = ({ companyId }) => {
 
   return (
     <>
-      <h2 className="text-xl font-bold text-[#C7AA68] text-center">Mapa de Usuarios por País</h2>
+      <h2 className="text-lg font-bold text-[#C7AA68] mt-4 text-center">Mapa de Usuarios por País</h2>
       <ResponsiveChoropleth
         data={mapData.filter((d) => d.value !== undefined)} // Asegura que todos los datos tengan un `value`
         features={worldCountries.features}

@@ -51,7 +51,7 @@ const CompanyLeadsFunnel = ({ companyId }) => {
 
   return (
     <div className=" p-6 pb-10 rounded-lg " style={{ height: "100%" }}>
-      <h2 className="text-xl font-bold text-[#C7AA68] mb-4 text-center">Embudo de Leads</h2>
+      <h2 className="text-lg font-bold text-[#C7AA68] mb-4 text-center">Embudo de Leads</h2>
       <ResponsiveFunnel
         data={funnelData}
         margin={{  right: 20, bottom: 20, left: 20 }}

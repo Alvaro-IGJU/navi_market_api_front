@@ -43,14 +43,14 @@ const CompanyStandInteractionsChart = ({ companyId }) => {
 
   return (
     <div
-      className=" p-4 rounded-lg h-full flex flex-col"
+      className=" p-6 rounded-lg h-full flex flex-col"
       style={{
         minWidth: "200px", // Tamaño mínimo del componente
         overflow: "hidden", // Asegura que el contenido no desborde
         resize: "both", // Permite redimensionar manualmente
       }}
     >
-      <h2 className="text-lg font-bold text-[#C7AA68] mb-4 text-center">Interacciones Totales por Tipo</h2>
+      <h2 className="text-lg font-bold text-[#C7AA68] mb-4 text-center">Interacciones Stand</h2>
       <div
         className="grid gap-4 flex-grow"
         style={{

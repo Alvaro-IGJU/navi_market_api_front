@@ -42,7 +42,7 @@ const CompanyUserPositions = ({ companyId }) => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className=" p-6 rounded-lg " style={{ height: "100%" }}>
+    <div className=" p-6 pb-10 rounded-lg " style={{ height: "100%" }}>
       <h2 className="text-xl font-bold text-[#C7AA68] mb-4 text-center">Posiciones de Usuarios</h2>
       <ResponsiveBar
         data={barData}
@@ -79,19 +79,19 @@ const CompanyUserPositions = ({ companyId }) => {
           <div
             style={{
               padding: "5px",
-              color: "#fff",
-              background: color,
+              color: "black",
+              background: "white",
               borderRadius: "3px",
             }}
           >
-            <strong>{id}</strong>: {value}
+            <span>{id}</span>: <strong>{value}</strong>
           </div>
         )}
         theme={{
           axis: {
             ticks: {
               text: {
-                fill: "#ffffff",
+                fill: "black",
               },
             },
           },
