@@ -34,7 +34,7 @@ const EventPage = () => {
 
   const handleSelectEvent = () => {
     // Manejar la selección del evento, por ejemplo redirigir a una página específica
-     navigate("/canvas", { state: { eventId } });
+    navigate("/canvas", { state: { eventId } });
   };
 
 
@@ -70,24 +70,29 @@ const EventPage = () => {
       </Physics>
 
       {/* Contenido HTML superpuesto */}
-      <Html position={[-5, 2, 0]} style={{ width: "50%", padding: "20px" }}>
+      <Html position={[-5, 2, 0]} style={{ padding: "40px" }}>
         {loading && <p className="text-gray-300">Cargando información del evento...</p>}
         {error && <p className="text-red-500">{error}</p>}
         {eventDetails && (
-          <div className="text-white p-6 rounded-lg shadow-lg">
-            <h1 className="text-3xl font-bold text-yellow-400 mb-4">{eventDetails.name}</h1>
-            <p className="text-gray-300 text-lg mb-4">{eventDetails.description}</p>
-            <div className="flex flex-col sm:flex-row sm:justify-between mb-4">
-             
-              
+          <div className="text-white p-10 rounded-lg shadow-2xl" style={{ backgroundColor: "#222", width: "200%" }}>
+            <h1 className="text-4xl font-bold text-yellow-400 mb-6">{eventDetails.name}</h1>
+            <p className="text-gray-300 text-lg mb-6">
+              {eventDetails.description.split("\n").map((line, index) => (
+                <span key={index}>
+                  {line}
+                  <br />
+                </span>
+              ))}
+            </p>
+            <div className="flex flex-col sm:flex-row sm:justify-between mb-6">
+              {/* Añadir más detalles o elementos aquí si es necesario */}
             </div>
-            
             <button
-                onClick={() => handleSelectEvent({eventId})}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300"
-              >
-                Seleccionar
-              </button>
+              onClick={() => handleSelectEvent({ eventId })}
+              className="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-300"
+            >
+              Seleccionar
+            </button>
           </div>
         )}
       </Html>
