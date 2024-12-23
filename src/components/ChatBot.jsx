@@ -108,9 +108,11 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
     <group position={position}>
       <PerspectiveCamera ref={cameraRef} makeDefault={false} position={[0, 0.1, 2]} fov={50} />
       <mesh onClick={handleChatbotClick} onPointerOver={(e) => {
-      e.object.material.emissive.set("yellow");
-      e.object.material.emissiveIntensity = 0.1;
-      document.body.style.cursor = "pointer";
+        if(canInteract){
+          e.object.material.emissive.set("yellow"); // Añade un brillo amarillo
+          e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad del brillo
+          document.body.style.cursor = "pointer";
+        }
     }}
     onPointerOut={(e) => {
       e.object.material.emissive.set("black");
@@ -180,21 +182,21 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
             }}
           >
             <input
-      type="text"
-      value={input}
-      onChange={(e) => {
-        const accented = applyAccentRules(e.target.value);
-        setInput(accented);
-      }}
-      placeholder="Escribe tu pregunta..."
-      style={{
-        padding: "0.5rem",
-        border: "1px solid #ccc",
-        borderRadius: "4px",
-        marginBottom: "1rem",
-        width: "100%",
-      }}
-    />
+              type="text"
+              value={input}
+              onChange={(e) => {
+                const accented = applyAccentRules(e.target.value);
+                setInput(accented);
+              }}
+              placeholder="Escribe tu pregunta..."
+              style={{
+                padding: "0.5rem",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                marginBottom: "1rem",
+                width: "100%",
+              }}
+            />
             <button
               onClick={sendMessage}
               disabled={isThinking}

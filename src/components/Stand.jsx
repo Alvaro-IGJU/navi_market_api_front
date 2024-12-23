@@ -205,9 +205,12 @@ const Stand = ({
     position={[-0.5, -0.5, 3]}
     onClick={() => handleClick("mailbox")}
     onPointerOver={(e) => {
-      e.object.material.emissive.set("yellow"); // Añade un brillo amarillo
-      e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad del brillo
-      document.body.style.cursor = "pointer";
+      if(canInteract){
+        e.object.material.emissive.set("yellow"); // Añade un brillo amarillo
+        e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad del brillo
+        document.body.style.cursor = "pointer";
+      }
+      
     }}
     onPointerOut={(e) => {
       e.object.material.emissive.set("black"); // Elimina el brillo
@@ -225,9 +228,11 @@ const Stand = ({
     position={[-0.2, 0, 3]}
     onClick={() => handleClick("info_pc")}
     onPointerOver={(e) => {
-      e.object.material.emissive.set("yellow");
-      e.object.material.emissiveIntensity = 0.1;
-      document.body.style.cursor = "pointer";
+      if(canInteract){
+        e.object.material.emissive.set("yellow"); // Añade un brillo amarillo
+        e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad del brillo
+        document.body.style.cursor = "pointer";
+      }
     }}
     onPointerOut={(e) => {
       e.object.material.emissive.set("black");
@@ -245,9 +250,11 @@ const Stand = ({
     position={[0.2, 0.2, 3]}
     onClick={() => handleClick("play_video")}
     onPointerOver={(e) => {
-      e.object.material.emissive.set("yellow");
-      e.object.material.emissiveIntensity = 0.1;
-      document.body.style.cursor = "pointer";
+      if(canInteract){
+        e.object.material.emissive.set("yellow"); // Añade un brillo amarillo
+        e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad del brillo
+        document.body.style.cursor = "pointer";
+      }
     }}
     onPointerOut={(e) => {
       e.object.material.emissive.set("black");
@@ -265,9 +272,11 @@ const Stand = ({
     position={[0.5, -0.5, 3]}
     onClick={() => handleClick("download_catalog")}
     onPointerOver={(e) => {
-      e.object.material.emissive.set("yellow");
-      e.object.material.emissiveIntensity = 0.1;
-      document.body.style.cursor = "pointer";
+      if(canInteract){
+        e.object.material.emissive.set("yellow"); // Añade un brillo amarillo
+        e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad del brillo
+        document.body.style.cursor = "pointer";
+      }
     }}
     onPointerOut={(e) => {
       e.object.material.emissive.set("black");
@@ -285,9 +294,11 @@ const Stand = ({
     position={[0.7, -0.3, 3]}
     onClick={() => handleClick("schedule_meeting")}
     onPointerOver={(e) => {
-      e.object.material.emissive.set("yellow");
-      e.object.material.emissiveIntensity = 0.1;
-      document.body.style.cursor = "pointer";
+      if(canInteract){
+        e.object.material.emissive.set("yellow"); // Añade un brillo amarillo
+        e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad del brillo
+        document.body.style.cursor = "pointer";
+      }
     }}
     onPointerOut={(e) => {
       e.object.material.emissive.set("black");
