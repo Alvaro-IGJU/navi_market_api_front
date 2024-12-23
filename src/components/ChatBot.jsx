@@ -106,7 +106,16 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
   return (
     <group position={position}>
       <PerspectiveCamera ref={cameraRef} makeDefault={false} position={[0, 0.1, 2]} fov={50} />
-      <mesh onClick={handleChatbotClick}>
+      <mesh onClick={handleChatbotClick} onPointerOver={(e) => {
+      e.object.material.emissive.set("yellow");
+      e.object.material.emissiveIntensity = 0.1;
+      document.body.style.cursor = "pointer";
+    }}
+    onPointerOut={(e) => {
+      e.object.material.emissive.set("black");
+      e.object.material.emissiveIntensity = 0;
+      document.body.style.cursor = "default";
+    }}>
         <sphereGeometry args={[0.5, 32, 32]} />
         <meshStandardMaterial color="orange" />
       </mesh>

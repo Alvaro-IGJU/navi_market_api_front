@@ -201,39 +201,105 @@ const Stand = ({
       </mesh>
 
       <RigidBody type="fixed">
-        <mesh position={[-0.5, -0.5, 3]} onClick={() => handleClick("mailbox")}>
-          <boxGeometry args={[0.2, 0.2, 0.2]} />
-          <meshStandardMaterial color="yellow" />
-        </mesh>
-      </RigidBody>
+  <mesh
+    position={[-0.5, -0.5, 3]}
+    onClick={() => handleClick("mailbox")}
+    onPointerOver={(e) => {
+      e.object.material.emissive.set("yellow"); // Añade un brillo amarillo
+      e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad del brillo
+      document.body.style.cursor = "pointer";
+    }}
+    onPointerOut={(e) => {
+      e.object.material.emissive.set("black"); // Elimina el brillo
+      e.object.material.emissiveIntensity = 0; // Restaura la intensidad
+      document.body.style.cursor = "default";
+    }}
+  >
+    <boxGeometry args={[0.2, 0.2, 0.2]} />
+    <meshStandardMaterial color="green" />
+  </mesh>
+</RigidBody>
 
-      <RigidBody type="fixed">
-        <mesh position={[-0.2, 0, 3]} onClick={() => handleClick("info_pc")}>
-          <boxGeometry args={[0.3, 0.1, 0.2]} />
-          <meshStandardMaterial color="gray" />
-        </mesh>
-      </RigidBody>
+<RigidBody type="fixed">
+  <mesh
+    position={[-0.2, 0, 3]}
+    onClick={() => handleClick("info_pc")}
+    onPointerOver={(e) => {
+      e.object.material.emissive.set("yellow");
+      e.object.material.emissiveIntensity = 0.1;
+      document.body.style.cursor = "pointer";
+    }}
+    onPointerOut={(e) => {
+      e.object.material.emissive.set("black");
+      e.object.material.emissiveIntensity = 0;
+      document.body.style.cursor = "default";
+    }}
+  >
+    <boxGeometry args={[0.3, 0.1, 0.2]} />
+    <meshStandardMaterial color="gray" />
+  </mesh>
+</RigidBody>
 
-      <RigidBody type="fixed">
-        <mesh position={[0.2, 0.2, 3]} onClick={() => handleClick("play_video")}>
-          <boxGeometry args={[0.4, 0.3, 0.1]} />
-          <meshStandardMaterial color="black" />
-        </mesh>
-      </RigidBody>
+<RigidBody type="fixed">
+  <mesh
+    position={[0.2, 0.2, 3]}
+    onClick={() => handleClick("play_video")}
+    onPointerOver={(e) => {
+      e.object.material.emissive.set("yellow");
+      e.object.material.emissiveIntensity = 0.1;
+      document.body.style.cursor = "pointer";
+    }}
+    onPointerOut={(e) => {
+      e.object.material.emissive.set("black");
+      e.object.material.emissiveIntensity = 0;
+      document.body.style.cursor = "default";
+    }}
+  >
+    <boxGeometry args={[0.4, 0.3, 0.1]} />
+    <meshStandardMaterial color="black" />
+  </mesh>
+</RigidBody>
 
-      <RigidBody type="fixed">
-        <mesh position={[0.5, -0.5, 3]} onClick={() => handleClick("download_catalog")}>
-          <boxGeometry args={[0.2, 0.05, 0.3]} />
-          <meshStandardMaterial color="green" />
-        </mesh>
-      </RigidBody>
+<RigidBody type="fixed">
+  <mesh
+    position={[0.5, -0.5, 3]}
+    onClick={() => handleClick("download_catalog")}
+    onPointerOver={(e) => {
+      e.object.material.emissive.set("yellow");
+      e.object.material.emissiveIntensity = 0.1;
+      document.body.style.cursor = "pointer";
+    }}
+    onPointerOut={(e) => {
+      e.object.material.emissive.set("black");
+      e.object.material.emissiveIntensity = 0;
+      document.body.style.cursor = "default";
+    }}
+  >
+    <boxGeometry args={[0.2, 0.05, 0.3]} />
+    <meshStandardMaterial color="green" />
+  </mesh>
+</RigidBody>
 
-      <RigidBody type="fixed">
-        <mesh position={[0.7, -0.3, 3]} onClick={() => handleClick("schedule_meeting")}>
-          <boxGeometry args={[0.1, 0.2, 0.1]} />
-          <meshStandardMaterial color="red" />
-        </mesh>
-      </RigidBody>
+<RigidBody type="fixed">
+  <mesh
+    position={[0.7, -0.3, 3]}
+    onClick={() => handleClick("schedule_meeting")}
+    onPointerOver={(e) => {
+      e.object.material.emissive.set("yellow");
+      e.object.material.emissiveIntensity = 0.1;
+      document.body.style.cursor = "pointer";
+    }}
+    onPointerOut={(e) => {
+      e.object.material.emissive.set("black");
+      e.object.material.emissiveIntensity = 0;
+      document.body.style.cursor = "default";
+    }}
+  >
+    <boxGeometry args={[0.1, 0.2, 0.1]} />
+    <meshStandardMaterial color="red" />
+  </mesh>
+</RigidBody>
+
 
       <ChatBot
         canInteract={canInteract}
@@ -243,6 +309,7 @@ const Stand = ({
         setIsInteracting={setIsInteracting}
         getPlayerCamera={getPlayerCamera}
         handleClick={handleClick}
+        
       />
     </group>
   );
