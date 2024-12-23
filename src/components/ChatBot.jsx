@@ -6,13 +6,13 @@ import api from "../api";
 const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracting }) => {
   const { registerStandCamera, activateStandCamera, activatePlayerCamera } = useCameraManager();
   const cameraRef = useRef();
-  const textRef = useRef(); // Referencia para el contenedor del texto
+  const textRef = useRef();
   const [showInput, setShowInput] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
   const [displayedMessage, setDisplayedMessage] = useState("¡Hola! Hazme una pregunta.");
   const [input, setInput] = useState("");
-  const [planeHeight, setPlaneHeight] = useState(100); // Altura dinámica del rectángulo
-  const planeWidth = 800; // Ancho fijo del rectángulo en píxeles
+  const [planeHeight, setPlaneHeight] = useState(100);
+  const [planeWidth, setPlaneWidth] = useState(window.innerWidth * 0.8); // Inicializa con el 80% del ancho de la pantalla
 
   useEffect(() => {
     if (cameraRef.current) {
@@ -23,27 +23,38 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
   const adjustRectangleSize = () => {
     if (textRef.current) {
       const textContainer = textRef.current;
-      // Calcular altura basada en el contenido renderizado
-      const newHeight = Math.max(textContainer.scrollHeight + 20, 100); // Altura mínima de 100px
+      const newHeight = Math.max(textContainer.scrollHeight + 20, 100);
       setPlaneHeight(newHeight);
     }
+  };
+
+  const updatePlaneWidth = () => {
+    setPlaneWidth(window.innerWidth * 0.8); // Ajusta el ancho al 80% del ancho de la pantalla
   };
 
   useEffect(() => {
     adjustRectangleSize();
   }, [displayedMessage]);
 
+  useEffect(() => {
+    // Escucha los cambios en el tamaño de la ventana
+    window.addEventListener("resize", updatePlaneWidth);
+    return () => {
+      window.removeEventListener("resize", updatePlaneWidth);
+    };
+  }, []);
+
   const revealMessage = async (message) => {
-    setDisplayedMessage(""); // Limpiar el mensaje anterior
+    setDisplayedMessage("");
     let currentMessage = "";
 
     for (let char of message) {
-      await new Promise((resolve) => setTimeout(resolve, 50)); // Animación gradual
+      await new Promise((resolve) => setTimeout(resolve, 50));
       currentMessage += char;
       setDisplayedMessage(currentMessage);
     }
 
-    adjustRectangleSize(); // Ajustar la altura al finalizar la animación
+    adjustRectangleSize();
   };
 
   const handleChatbotClick = () => {
@@ -98,45 +109,46 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
         <meshStandardMaterial color="orange" />
       </mesh>
 
-      {/* Mostrar texto y fondo solo si showInput es true */}
       {showInput && (
-        <>
-          {/* Cuadro principal */}
-          <Html position={[-0.37, 0.5, 1]}>
-            <div
-              style={{
-                width: `${planeWidth}px`,
-                height: `${planeHeight}px`,
-                backgroundColor: "rgba(255, 255, 255, 0.9)",
-                borderRadius: "8px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                textAlign: "center",
-                padding: "8px",
-                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-                overflow: "hidden",
-                position: "relative",
-              }}
-            >
-              <div
-                ref={textRef}
-                className="text-content"
-                style={{
-                  whiteSpace: "normal",
-                  fontSize: "20px",
-                  lineHeight: "1.5",
-                }}
-              >
-                {displayedMessage}
-              </div>
-            </div>
-          </Html>
+  <>
+    {/* Cuadro principal */}
+    <Html position={[0, 0.5, 1]} style={{ transform: 'translate(-50%, 0)' }}>
+      <div
+        style={{
+          width: `${planeWidth}px`, // Ancho dinámico basado en porcentaje
+          maxWidth: "800px", // Ancho máximo
+          height: `${planeHeight}px`,
+          backgroundColor: "rgba(255, 255, 255, 0.9)",
+          borderRadius: "8px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+          padding: "8px",
+          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+          overflow: "hidden",
+          position: "absolute", // Posición fija en 3D
+          left: "50%", // Centrar en la pantalla
+          transform: "translateX(-50%)", // Ajustar para un centrado perfecto
+        }}
+      >
+        <div
+          ref={textRef}
+          className="text-content"
+          style={{
+            whiteSpace: "normal",
+            fontSize: "20px",
+            lineHeight: "1.5",
+          }}
+        >
+          {displayedMessage}
+        </div>
+      </div>
+    </Html>
+  </>
+)}
 
-        </>
-      )}
-
-      {showInput && (
+{showInput && (
         <Html center position={[0, -0.5, 0]}>
           <div
             style={{
@@ -147,7 +159,12 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
               flexDirection: "column",
               alignItems: "center",
               boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-              width: "500px",
+              width: window.innerWidth > 1200 
+                ? "500px" // Pantallas grandes
+                : window.innerWidth > 768 
+                ? "400px" // Pantallas medianas
+                : "300px", // Pantallas pequeñas
+              maxWidth: "500px", // Ancho máximo
             }}
           >
             <input
