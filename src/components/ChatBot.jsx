@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Html, PerspectiveCamera } from "@react-three/drei";
 import { useCameraManager } from "./CameraManager";
 import api from "../api";
+import { applyAccentRules } from '../utils/chatBotInputAccentRules';
 
 const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracting, handleClick }) => {
   const { registerStandCamera, activateStandCamera, activatePlayerCamera } = useCameraManager();
@@ -179,18 +180,21 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
             }}
           >
             <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Escribe tu pregunta..."
-              style={{
-                padding: "0.5rem",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-                marginBottom: "1rem",
-                width: "100%",
-              }}
-            />
+      type="text"
+      value={input}
+      onChange={(e) => {
+        const accented = applyAccentRules(e.target.value);
+        setInput(accented);
+      }}
+      placeholder="Escribe tu pregunta..."
+      style={{
+        padding: "0.5rem",
+        border: "1px solid #ccc",
+        borderRadius: "4px",
+        marginBottom: "1rem",
+        width: "100%",
+      }}
+    />
             <button
               onClick={sendMessage}
               disabled={isThinking}
