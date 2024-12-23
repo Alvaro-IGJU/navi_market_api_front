@@ -18,7 +18,7 @@ const Header = () => {
     <header className="bg-gray-800 text-white h-20 shadow-lg">
       {/* Added shadow-lg for the shadow effect */}
       <div className="container mx-auto px-4 py-4 flex items-center justify-between h-full">
-        <Link to="/" className="text-lg font-bold text-yellow-400">
+        <Link to="/" className="text-lg font-bold text-yellow-400 no-underline">
           NAVI MARKET
         </Link>
         <div className="flex items-center space-x-4">
@@ -27,14 +27,14 @@ const Header = () => {
               <div className="flex space-x-4">
                 <Link
                   to="/events"
-                  className="text-sm text-yellow-400 hover:underline"
+                  className="text-sm text-yellow-400 no-underline"
                 >
                   Eventos
                 </Link>
                 {user?.role === "Company" && (
                   <Link
                     to="/dashboard"
-                    className="text-sm text-yellow-400 hover:underline"
+                    className="text-sm text-yellow-400 no-underline"
                   >
                     Dashboard
                   </Link>
@@ -43,19 +43,19 @@ const Header = () => {
                   <>
                     <Link
                       to="/admin/dashboard"
-                      className="text-sm text-yellow-400 hover:underline"
+                      className="text-sm text-yellow-400 no-underline"
                     >
                       Dashboard Admin
                     </Link>
                     <Link
                       to="/admin/stands"
-                      className="text-sm text-yellow-400 hover:underline"
+                      className="text-sm text-yellow-400 no-underline"
                     >
                       Stands
                     </Link>
                     <Link
                       to="/admin/create-company-user"
-                      className="text-sm text-yellow-400 hover:underline"
+                      className="text-sm text-yellow-400 no-underline"
                     >
                       Create Company User
                     </Link>
@@ -87,22 +87,21 @@ const Header = () => {
                     dropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
                   }`}
                   style={{ zIndex: 9999 }} // Se añadió el z-index alto
-
                 >
-                  <li className="border-b border-gray-600">
+                  <li>
                     <Link
                       to="/profile"
-                      className="block px-4 py-2 hover:bg-gray-600"
+                      className="block px-4 py-2 hover:bg-gray-600 no-underline"
                       onClick={closeDropdown}
                     >
                       Perfil
                     </Link>
                   </li>
                   {user?.is_superuser && (
-                    <li className="border-b border-gray-600">
+                    <li>
                       <Link
                         to="/admin"
-                        className="block px-4 py-2 hover:bg-gray-600"
+                        className="block px-4 py-2 hover:bg-gray-600 no-underline"
                         onClick={closeDropdown}
                       >
                         Administración
@@ -110,10 +109,10 @@ const Header = () => {
                     </li>
                   )}
                   {user?.role === "Company" && (
-                    <li className="border-b border-gray-600">
+                    <li>
                       <Link
                         to="/company"
-                        className="block px-4 py-2 hover:bg-gray-600"
+                        className="block px-4 py-2 hover:bg-gray-600 no-underline"
                         onClick={closeDropdown}
                       >
                         Mi empresa
@@ -135,7 +134,7 @@ const Header = () => {
               </div>
             </>
           ) : (
-            <Link to="/auth" className="text-sm text-yellow-400 hover:underline">
+            <Link to="/auth" className="text-sm text-yellow-400 no-underline">
               Iniciar Sesión
             </Link>
           )}
