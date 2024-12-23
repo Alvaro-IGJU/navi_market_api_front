@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { KeyboardControls, Stats } from '@react-three/drei';
 import { useLocation } from 'react-router-dom';
 import Experience from './Experience';
+import LoadingScreen from './LoadingScreen';
 
 const keyboardMap = [
   { name: "forward", keys: ["ArrowUp", "KeyW"] },
@@ -22,6 +23,8 @@ const CanvasWrapper = () => {
 
   return (
     <div className="fullscreen-canvas"> {/* Clase para ocupar toda la pantalla */}
+      <LoadingScreen />
+
       <KeyboardControls map={keyboardMap}>
         <Canvas
           camera={{ position: [0, 0.5, 5], fov: 42 }}
