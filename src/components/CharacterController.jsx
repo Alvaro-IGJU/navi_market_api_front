@@ -61,10 +61,31 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
   const initialPosition = getAvatarInitialPosition(eventId);
 
   useEffect(() => {
-    if (playerCameraRef.current) {
-      console.log("Player camera initialized:", playerCameraRef.current);
+    const tabletBreakpoint = 1025; 
+
+    const onMouseDown = (e) => {
+      isClicking.current = true;
+    };
+    const onMouseUp = (e) => {
+      isClicking.current = false;
+    };
+    console.log(window.innerWidth, tabletBreakpoint)
+    if (window.innerWidth < tabletBreakpoint) {
+      // Solo añadir los eventos si la pantalla es menor que el punto de ruptura
+      document.addEventListener("mousedown", onMouseDown);
+      document.addEventListener("mouseup", onMouseUp);
+      document.addEventListener("touchstart", onMouseDown);
+      document.addEventListener("touchend", onMouseUp);
     }
-  }, [playerCameraRef]);
+
+    return () => {
+      // Eliminar los eventos al desmontar el componente
+      document.removeEventListener("mousedown", onMouseDown);
+      document.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("touchstart", onMouseDown);
+      document.removeEventListener("touchend", onMouseUp);
+    };
+  }, []); // Solo se ejecutará al montar y desmontar el componente
 
   useFrame(({ camera, mouse }) => {
     if (isInteracting) {
