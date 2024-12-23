@@ -3,7 +3,7 @@ import { Html, PerspectiveCamera } from "@react-three/drei";
 import { useCameraManager } from "./CameraManager";
 import api from "../api";
 
-const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracting }) => {
+const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracting, handleClick }) => {
   const { registerStandCamera, activateStandCamera, activatePlayerCamera } = useCameraManager();
   const cameraRef = useRef();
   const textRef = useRef();
@@ -88,7 +88,9 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
           },
         }
       );
-
+      if (handleClick) {
+        handleClick("talk_chatbot");
+      }
       const responseMessage = response.data.response || "No tengo respuesta ahora.";
       await revealMessage(responseMessage);
     } catch (error) {

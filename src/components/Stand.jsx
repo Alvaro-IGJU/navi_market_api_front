@@ -242,6 +242,7 @@ const Stand = ({
         isInteracting={isInteracting}
         setIsInteracting={setIsInteracting}
         getPlayerCamera={getPlayerCamera}
+        handleClick={handleClick}
       />
     </group>
   );
