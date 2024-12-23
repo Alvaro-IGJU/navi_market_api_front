@@ -15,21 +15,29 @@ const EventPage = () => {
   const [eventDetails, setEventDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [hover, setHover] = useState(false); // Nuevo estado para controlar el hover
   const navigate = useNavigate();
 
   // Detect screen size for responsiveness
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    handleResize();
-    window.addEventListener("resize", handleResize);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768); // Define mobile size as 768px or less
+    };
 
+    // Add resize listener
+    window.addEventListener("resize", handleResize);
+    
+    // Initial check
+    handleResize();
+
+    // Cleanup on unmount
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Fetch event details
   useEffect(() => {
     const fetchEventDetails = async () => {
       try {
+        console.log("Fetching event with ID:", eventId);
         const response = await api.get(`/events/${eventId}/`);
         setEventDetails(response.data);
         toast.success("Evento cargado correctamente.");
@@ -58,24 +66,36 @@ const EventPage = () => {
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
-      
       <button
         onClick={handleBack}
-        className="back-button"
+        style={{
+          position: "fixed",
+          top: "20px",
+          left: "20px",
+          zIndex: 1000,
+          background: "none",
+          border: "none",
+          color: "white",
+          fontSize: "24px",
+          cursor: "pointer",
+        }}
+        onMouseEnter={() => setHover(true)} // Activar efecto en hover
+        onMouseLeave={() => setHover(false)} // Desactivar efecto al salir
       >
         <FontAwesomeIcon 
           icon={faCircleChevronLeft} 
+          beat={hover} // Efecto solo cuando hover es true
           size="lg" 
-          className="back-icon" 
+          style={{ color: "#FFD43B" }} 
         />
       </button>
-
       <Canvas
         style={{ width: "100vw", height: "100vh", backgroundColor: "#111111" }}
         shadows
       >
-        <ambientLight intensity={0.3} color="#ffffff" />
+        <ambientLight intensity={0.3} color={"#ffffff"} />
         
+        {/* Conditionally render SpotLight and other elements based on screen size */}
         {!isMobile && (
           <>
             <SpotLight
@@ -97,23 +117,26 @@ const EventPage = () => {
         <Html position={[-5, 2, 0]} style={{ padding: "40px" }}>
           {loading && <p className="text-gray-300">Cargando información del evento...</p>}
           {eventDetails && (
-            <div className="event-details">
-              <h1 className="event-name">{eventDetails.event.name}</h1>
-              <p className="event-description">
+            <div className="text-white p-10 rounded-lg shadow-2xl" style={{ backgroundColor: "#222", width: "200%" }}>
+              <h1 className="text-4xl font-bold text-white-400 mb-6">{eventDetails.event.name}</h1>
+              <p className="text-gray-300 text-lg mb-6">
                 {eventDetails.event.description.split("\n").map((line, index) => (
-                  <span key={index}>{line}<br /></span>
+                  <span key={index}>
+                    {line}
+                    <br />
+                  </span>
                 ))}
               </p>
-              <div className="event-sectors">
-                <ul>
+              <div className="text-gray-300 text-lg mb-6">
+                <ul className="custom-list">
                   {eventDetails.unique_sectors.map((sector, index) => (
-                    <li key={index}>{sector}</li>
+                    <li key={index} className="text-white">{sector}</li>
                   ))}
                 </ul>
               </div>
               <button
                 onClick={handleSelectEvent}
-                className="select-button"
+                className="bg-yellow-500 text-black px-6 py-3 rounded hover:bg-yellow-600 transition duration-300"
               >
                 Seleccionar
               </button>
