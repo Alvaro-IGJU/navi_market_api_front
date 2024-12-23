@@ -12,7 +12,6 @@ import CompanyUserSectorsPieChart from "../components/CompanyUserSectorsPieChart
 import TotalScheduleMeetings from "../components/TotalScheduleMeetings";
 import { AuthContext } from "../contexts/AuthContext";
 import api from "../api";
-import Header from "../components/Header";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -21,8 +20,8 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [companyName, setCompanyName] = useState(""); // Estado para guardar el nombre de la empresa
-  const [expandedContent, setExpandedContent] = useState(null);
+  const [companyName, setCompanyName] = useState("");
+  const [interactionsData, setInteractionsData] = useState(null); // Estado para guardar los datos de interacciones
   const hasFetched = useRef(false);
   const companyId = user?.company_relation;
 
@@ -44,10 +43,11 @@ const Dashboard = () => {
           });
           setCompanyName(companyResponse.data.name);
 
-          // Aquí puedes cargar otros datos necesarios para el dashboard si es necesario
-          await api.get(`/interactions/companies/${companyId}/interactions/`, {
+          // Obtener datos de interacciones
+          const interactionsResponse = await api.get(`/interactions/companies/${companyId}/interactions/`, {
             headers: { Authorization: `Bearer ${token}` },
           });
+          setInteractionsData(interactionsResponse.data); // Guardar los datos en el estado
 
           setLoading(false);
         } catch (err) {
@@ -64,9 +64,6 @@ const Dashboard = () => {
 
   if (loading) return <p className="text-gray-300">Cargando datos...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
-
-  const expandContent = (content) => setExpandedContent(content);
-  const collapseContent = () => setExpandedContent(null);
 
   const layouts = {
     lg: [
@@ -99,116 +96,49 @@ const Dashboard = () => {
   };
 
   return (
-    <>
-      <Header />
+    <div className="bg-gray-800 min-h-screen p-6">
+      <h1 className="text-3xl font-bold mt-3 mb-8 text-center text-white">
+        Dashboard de {companyName || "Interacciones"}
+      </h1>
 
-      <div
-        className="bg-gray-800 min-h-screen p-6"
+      <ResponsiveGridLayout
+        className="layout"
+        layouts={layouts}
+        breakpoints={{ lg: 1350, md: 996, sm: 768 }}
+        cols={{ lg: 12, md: 12, sm: 12 }}
+        rowHeight={150}
         style={{
-          padding: "20px", // Espaciado alrededor del layout
+          margin: "0 auto",
+          maxWidth: "100%",
+          backgroundColor: "#1F2937",
+          borderRadius: "8px",
+          padding: "10px",
+          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <h1
-          className="text-3xl font-bold mt-3 mb-8 text-center text-white"
-        >
-          Dashboard de {companyName || "Interacciones"}
-        </h1>
-
-        <ResponsiveGridLayout
-          className="layout"
-          layouts={layouts}
-          breakpoints={{ lg: 1350, md: 996, sm: 768 }}
-          cols={{ lg: 12, md: 12, sm: 12 }}
-          rowHeight={150}
-          style={{
-            margin: "0 auto",
-            maxWidth: "100%",
-            backgroundColor: "#1F2937",
-            borderRadius: "8px",
-            padding: "10px",
-            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)", // Sombra para destacar el layout
-          }}
-        >
-          <div
-            key="stats"
-            style={{
-              border: "1px solid #d3d3d3",
-              backgroundColor: "#ffffff",
-              borderRadius: "5px",
-              overflow: "hidden",
-            }}
-          >
-            <CompanyEventBasicStatistics companyId={companyId} />
-          </div>
-          <div
-            key="funnel"
-            style={{
-              border: "1px solid #d3d3d3",
-              backgroundColor: "#ffffff",
-              borderRadius: "5px",
-              overflow: "hidden",
-            }}
-          >
-            <CompanyLeadsFunnel companyId={companyId} />
-          </div>
-          <div
-            key="map"
-            style={{
-              border: "1px solid #d3d3d3",
-              borderRadius: "5px",
-              backgroundColor: "#ffffff",
-              overflow: "hidden",
-            }}
-          >
-            <CompanyUsersMap companyId={companyId} />
-          </div>
-          <div
-            key="interactions"
-            style={{
-              border: "1px solid #d3d3d3",
-              borderRadius: "5px",
-              backgroundColor: "#ffffff",
-              overflow: "hidden",
-            }}
-          >
-            <CompanyStandInteractionsChart companyId={companyId} />
-          </div>
-          <div
-            key="positions"
-            style={{
-              border: "1px solid #d3d3d3",
-              borderRadius: "5px",
-              backgroundColor: "#ffffff",
-              overflow: "hidden",
-            }}
-          >
-            <CompanyUserPositions companyId={companyId} />
-          </div>
-          <div
-            key="sectors"
-            style={{
-              border: "1px solid #d3d3d3",
-              borderRadius: "5px",
-              backgroundColor: "#ffffff",
-              overflow: "hidden",
-            }}
-          >
-            <CompanyUserSectorsPieChart companyId={companyId} />
-          </div>
-          <div
-            key="other"
-            style={{
-              border: "1px solid #d3d3d3",
-              borderRadius: "5px",
-              backgroundColor: "#ffffff",
-              overflow: "hidden",
-            }}
-          >
-            <TotalScheduleMeetings companyId={companyId} />
-          </div>
-        </ResponsiveGridLayout>
-      </div>
-    </>
+        <div key="stats">
+          <CompanyEventBasicStatistics companyId={companyId} interactionsData={interactionsData} />
+        </div>
+        <div key="funnel">
+          <CompanyLeadsFunnel companyId={companyId} interactionsData={interactionsData} />
+        </div>
+        <div key="map">
+          <CompanyUsersMap companyId={companyId}  />
+        </div>
+        <div key="interactions">
+          <CompanyStandInteractionsChart companyId={companyId} interactionsData={interactionsData} />
+        </div>
+        <div key="positions">
+          <CompanyUserPositions companyId={companyId}  />
+        </div>
+        <div key="sectors">
+          <CompanyUserSectorsPieChart companyId={companyId} />
+        </div>
+        <div key="other">
+          <TotalScheduleMeetings companyId={companyId} interactionsData={interactionsData} />
+        </div>
+      </ResponsiveGridLayout>
+    </div>
   );
 };
 

@@ -137,7 +137,6 @@ const AdminStandsPage = () => {
   return (
     <div className="bg-gray-900 min-h-screen text-gray-100">
       {/* Aquí se agrega el Header */}
-      <Header />
 
       <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg mt-4">
         <h1 className="text-3xl font-bold mb-6 text-[#C7AA68]">Gestión de Stands</h1>

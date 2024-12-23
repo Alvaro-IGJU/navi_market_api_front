@@ -11,7 +11,9 @@ const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchAuth = async () => {
+    const initializeAuth = async () => {
+      setIsLoading(true);
+
       const accessToken = localStorage.getItem('accessToken');
       const refreshToken = localStorage.getItem('refreshToken');
 
@@ -22,57 +24,35 @@ const AuthProvider = ({ children }) => {
           if (refreshToken) {
             await renewAccessToken(refreshToken);
           } else {
-            logout();
+            handleLogout();
           }
         }
-      } else {
-        setIsAuthenticated(false);
       }
+
       setIsLoading(false);
     };
 
-    fetchAuth();
+    initializeAuth();
   }, []);
 
   const fetchUserInfo = async (token) => {
-    try {
-      const response = await api.get('/users/profile/', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setUser(response.data);
-      setIsAuthenticated(true);
-    } catch (error) {
-      console.error('Error al cargar la información del usuario:', error);
-      throw error;
-    }
+    const response = await api.get('/users/profile/', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setUser(response.data);
+    setIsAuthenticated(true);
   };
 
   const renewAccessToken = async (refreshToken) => {
-    try {
-      const response = await api.post('/token/refresh/', { refresh: refreshToken });
-      const newAccessToken = response.data.access;
-      localStorage.setItem('accessToken', newAccessToken);
-      await fetchUserInfo(newAccessToken);
-    } catch (error) {
-      console.error('No se pudo renovar el token:', error);
-      logout();
-    }
+    const response = await api.post('/token/refresh/', { refresh: refreshToken });
+    const newAccessToken = response.data.access;
+    localStorage.setItem('accessToken', newAccessToken);
+    await fetchUserInfo(newAccessToken);
   };
 
-  const loginUser = async (tokens) => {
-    try {
-      localStorage.setItem('accessToken', tokens.access);
-      localStorage.setItem('refreshToken', tokens.refresh);
-      await fetchUserInfo(tokens.access);
-    } catch (error) {
-      console.error('Error al iniciar sesión:', error);
-      logout();
-    }
-  };
-
-  const logout = () => {
+  const handleLogout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     setIsAuthenticated(false);
@@ -86,10 +66,7 @@ const AuthProvider = ({ children }) => {
         isAuthenticated,
         isLoading,
         user,
-        setUser,
-        loginUser,
-        logout,
-        renewAccessToken,
+        logout: handleLogout,
       }}
     >
       {children}

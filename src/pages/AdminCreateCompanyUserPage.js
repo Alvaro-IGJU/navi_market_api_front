@@ -51,7 +51,6 @@ const AdminCreateCompanyUserPage = () => {
   return (
     <div className="bg-gray-900 min-h-screen text-gray-100">
       {/* Coloca el Header en la parte superior */}
-      <Header />
 
       <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg mt-4">
         {/* Título principal */}

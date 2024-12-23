@@ -5,7 +5,7 @@ import Header from './components/Header';
 import AuthPage from './components/AuthPage';
 import Dashboard from './pages/Dashboard';
 import ProfilePage from './pages/ProfilePage';
-import AuthProvider from './contexts/AuthContext';
+import AuthProvider from './contexts/AuthContext'; // Importar el proveedor
 import PrivateRoute from './components/PrivateRoute';
 import './App.css'; // Asegúrate de importar el archivo CSS global
 import './Canvas.css'; // Asegúrate de importar el archivo CSS global
@@ -22,7 +22,8 @@ import EventPage from './pages/EventPage';
 const App = () => {
   return (
     <Router>
-      <AuthProvider>
+        <AuthProvider>
+        <Header /> {/* Mueve la lógica de AuthContext dentro del Header */}
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/auth" element={<AuthPage />} />
@@ -92,8 +93,6 @@ const App = () => {
               </PrivateRoute>
             }
           />
-
-          {/* Nueva ruta para AdminDashboard */}
           <Route
             path="/admin/dashboard"
             element={
@@ -103,8 +102,8 @@ const App = () => {
             }
           />
         </Routes>
-      </AuthProvider>
-    </Router>
+    </AuthProvider>
+      </Router>
   );
 };
 

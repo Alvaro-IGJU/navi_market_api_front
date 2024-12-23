@@ -38,7 +38,6 @@ const ListEventsPage = () => {
 
   return (
     <>
-      <Header />
       <div className="container mt-4 text-white">
         <h1 className="text-2xl font-bold mb-4">Lista de Eventos</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

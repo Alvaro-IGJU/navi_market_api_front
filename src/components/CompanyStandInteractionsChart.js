@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLaptop, faEnvelope, faPlay, faPersonWalking, faBookOpen, faRobot } from "@fortawesome/free-solid-svg-icons";
-import api from "../api";
 
-const CompanyStandInteractionsChart = ({ companyId }) => {
+const CompanyStandInteractionsChart = ({ interactionsData }) => {
   const [interactionDetails, setInteractionDetails] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,25 +18,20 @@ const CompanyStandInteractionsChart = ({ companyId }) => {
   };
 
   useEffect(() => {
-    const fetchInteractions = async () => {
-      try {
-        const token = localStorage.getItem("accessToken");
-        const response = await api.get(`/interactions/companies/${companyId}/interactions/`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const details = response.data.interaction_details || [];
-        setInteractionDetails(details);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error al obtener las interacciones:", err);
-        setError("No se pudieron cargar las interacciones.");
-        setLoading(false);
+    try {
+      if (!interactionsData || !interactionsData.interaction_details) {
+        throw new Error("Datos de interacción no disponibles.");
       }
-    };
 
-    fetchInteractions();
-  }, [companyId]);
+      const details = interactionsData.interaction_details || [];
+      setInteractionDetails(details);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error al procesar las interacciones:", err);
+      setError("No se pudieron cargar las interacciones.");
+      setLoading(false);
+    }
+  }, [interactionsData]);
 
   if (loading) return <p className="text-gray-300">Cargando interacciones...</p>;
   if (error) return <p className="text-red-500">{error}</p>;

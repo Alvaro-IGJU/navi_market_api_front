@@ -16,7 +16,6 @@ const Header = () => {
 
   return (
     <header className="bg-gray-800 text-white h-20 shadow-lg">
-      {/* Added shadow-lg for the shadow effect */}
       <div className="container mx-auto px-4 py-4 flex items-center justify-between h-full">
         <Link to="/" className="text-lg font-bold text-yellow-400 no-underline">
           NAVI MARKET
@@ -25,68 +24,44 @@ const Header = () => {
           {isAuthenticated ? (
             <>
               <div className="flex space-x-4">
-                <Link
-                  to="/events"
-                  className="text-sm text-yellow-400 no-underline"
-                >
+                <Link to="/events" className="text-sm text-yellow-400 no-underline">
                   Eventos
                 </Link>
-                {user?.role === "Company" && (
-                  <Link
-                    to="/dashboard"
-                    className="text-sm text-yellow-400 no-underline"
-                  >
+                {user?.role === 'Company' && (
+                  <Link to="/dashboard" className="text-sm text-yellow-400 no-underline">
                     Dashboard
                   </Link>
                 )}
                 {user?.is_superuser && (
                   <>
-                    <Link
-                      to="/admin/dashboard"
-                      className="text-sm text-yellow-400 no-underline"
-                    >
+                    <Link to="/admin/dashboard" className="text-sm text-yellow-400 no-underline">
                       Dashboard Admin
                     </Link>
-                    <Link
-                      to="/admin/stands"
-                      className="text-sm text-yellow-400 no-underline"
-                    >
+                    <Link to="/admin/stands" className="text-sm text-yellow-400 no-underline">
                       Stands
                     </Link>
-                    <Link
-                      to="/admin/create-company-user"
-                      className="text-sm text-yellow-400 no-underline"
-                    >
+                    <Link to="/admin/create-company-user" className="text-sm text-yellow-400 no-underline">
                       Create Company User
                     </Link>
                   </>
                 )}
               </div>
-              <div
-                className="relative"
-                onMouseEnter={() => setDropdownOpen(true)}
-                onMouseLeave={closeDropdown}
-              >
-                <button
-                  onClick={toggleDropdown}
-                  className="flex items-center space-x-2 focus:outline-none"
-                >
+              <div className="relative" onMouseEnter={() => setDropdownOpen(true)} onMouseLeave={closeDropdown}>
+                <button onClick={toggleDropdown} className="flex items-center space-x-2 focus:outline-none">
                   <img
                     src={user?.profile_picture || '/default-avatar.png'}
                     alt="Perfil"
                     className="w-8 h-8 rounded-full border border-yellow-400"
                   />
                   <span className="text-sm">
-                    {user?.first_name
-                      ? `${user.first_name} ${user.last_name || ''}`
-                      : 'Usuario'}
+                    {user?.first_name ? `${user.first_name} ${user.last_name || ''}` : 'Usuario'}
                   </span>
                 </button>
                 <ul
                   className={`absolute right-0 mt-2 w-48 bg-gray-700 text-white rounded shadow-lg transition-all ${
                     dropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
                   }`}
-                  style={{ zIndex: 9999 }} // Se añadió el z-index alto
+                  style={{ zIndex: 9999 }}
                 >
                   <li>
                     <Link
@@ -108,7 +83,7 @@ const Header = () => {
                       </Link>
                     </li>
                   )}
-                  {user?.role === "Company" && (
+                  {user?.role === 'Company' && (
                     <li>
                       <Link
                         to="/company"

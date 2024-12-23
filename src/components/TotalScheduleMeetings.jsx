@@ -1,35 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHandshake } from "@fortawesome/free-solid-svg-icons";
-import api from "../api";
 
-const TotalScheduleMeetings = ({ companyId }) => {
+const TotalScheduleMeetings = ({ interactionsData }) => {
   const [totalMeetings, setTotalMeetings] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchScheduledMeetings = async () => {
-      try {
-        const token = localStorage.getItem("accessToken");
-        const response = await api.get(`/interactions/companies/${companyId}/interactions/`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const details = response.data.interaction_details || [];
-        // Filtrar y sumar las reuniones agendadas
-        const meetings = details.find((interaction) => interaction.interaction_type === "schedule_meeting");
-        setTotalMeetings(meetings ? meetings.total_interactions : 0);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error al obtener reuniones agendadas:", err);
-        setError("No se pudieron cargar las reuniones agendadas.");
-        setLoading(false);
+    try {
+      if (!interactionsData || !interactionsData.interaction_details) {
+        throw new Error("Datos de interacción no disponibles.");
       }
-    };
 
-    fetchScheduledMeetings();
-  }, [companyId]);
+      const details = interactionsData.interaction_details || [];
+      // Filtrar y sumar las reuniones agendadas
+      const meetings = details.find(
+        (interaction) => interaction.interaction_type === "schedule_meeting"
+      );
+      setTotalMeetings(meetings ? meetings.total_interactions : 0);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error al procesar reuniones agendadas:", err);
+      setError("No se pudieron cargar las reuniones agendadas.");
+      setLoading(false);
+    }
+  }, [interactionsData]);
 
   if (loading) return <p className="text-gray-300">Cargando reuniones agendadas...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
