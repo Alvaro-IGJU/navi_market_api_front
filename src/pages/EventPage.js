@@ -4,33 +4,28 @@ import { Html, SpotLight, Environment } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import { useNavigate, useParams } from "react-router-dom";
 import Base from "../components/Base";
-import api from '../api';
-import { ToastContainer, toast } from "react-toastify";
+import api from "../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import "react-toastify/dist/ReactToastify.css";
 
 const EventPage = () => {
   const { eventId } = useParams();
   const [eventDetails, setEventDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const [hover, setHover] = useState(false); // Nuevo estado para controlar el hover
+  const [isTablet, setIsTablet] = useState(false); // Estado adicional para tabletas
+  const [hover, setHover] = useState(false);
   const navigate = useNavigate();
 
-  // Detect screen size for responsiveness
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768); // Define mobile size as 768px or less
+      const width = window.innerWidth;
+      setIsMobile(width <= 768);
+      setIsTablet(width > 768 && width <= 1024); // Pantallas entre móvil y PC
     };
 
-    // Add resize listener
     window.addEventListener("resize", handleResize);
-    
-    // Initial check
-    handleResize();
-
-    // Cleanup on unmount
+    handleResize(); // Verificamos al montar
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -40,10 +35,8 @@ const EventPage = () => {
         console.log("Fetching event with ID:", eventId);
         const response = await api.get(`/events/${eventId}/`);
         setEventDetails(response.data);
-        toast.success("Evento cargado correctamente.");
       } catch (err) {
         console.error("Error fetching event details:", err);
-        toast.error("No se pudo cargar la información del evento.");
       } finally {
         setLoading(false);
       }
@@ -56,16 +49,14 @@ const EventPage = () => {
 
   const handleSelectEvent = () => {
     navigate("/canvas", { state: { eventId } });
-    toast.info("Evento seleccionado.");
   };
 
   const handleBack = () => {
-    navigate(-1); // Navega a la pantalla anterior
+    navigate(-1);
   };
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       <button
         onClick={handleBack}
         style={{
@@ -79,23 +70,23 @@ const EventPage = () => {
           fontSize: "24px",
           cursor: "pointer",
         }}
-        onMouseEnter={() => setHover(true)} // Activar efecto en hover
-        onMouseLeave={() => setHover(false)} // Desactivar efecto al salir
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
       >
         <FontAwesomeIcon 
           icon={faCircleChevronLeft} 
-          beat={hover} // Efecto solo cuando hover es true
+          beat={hover}
           size="lg" 
           style={{ color: "#FFD43B" }} 
         />
       </button>
+
       <Canvas
         style={{ width: "100vw", height: "100vh", backgroundColor: "#111111" }}
         shadows
       >
         <ambientLight intensity={0.3} color={"#ffffff"} />
         
-        {/* Conditionally render SpotLight and other elements based on screen size */}
         {!isMobile && (
           <>
             <SpotLight
@@ -114,34 +105,56 @@ const EventPage = () => {
           </>
         )}
         
-        <Html position={[-5, 2, 0]} style={{ padding: "40px" }}>
-          {loading && <p className="text-gray-300">Cargando información del evento...</p>}
-          {eventDetails && (
-            <div className="text-white p-10 rounded-lg shadow-2xl" style={{ backgroundColor: "#222", width: "200%" }}>
-              <h1 className="text-4xl font-bold text-white-400 mb-6">{eventDetails.event.name}</h1>
-              <p className="text-gray-300 text-lg mb-6">
-                {eventDetails.event.description.split("\n").map((line, index) => (
-                  <span key={index}>
-                    {line}
-                    <br />
-                  </span>
-                ))}
-              </p>
-              <div className="text-gray-300 text-lg mb-6">
-                <ul className="custom-list">
-                  {eventDetails.unique_sectors.map((sector, index) => (
-                    <li key={index} className="text-white">{sector}</li>
-                  ))}
-                </ul>
-              </div>
-              <button
-                onClick={handleSelectEvent}
-                className="bg-yellow-500 text-black px-6 py-3 rounded hover:bg-yellow-600 transition duration-300"
-              >
-                Seleccionar
-              </button>
-            </div>
-          )}
+        <Html position={[0, 0, 0]}>
+          <div
+            style={{
+              position: "fixed",
+              top: "50%",
+              left: isMobile ? "10%" : isTablet ? "-390px" : "-550px", // Diferentes valores para móvil, tablet y PC
+              transform: isMobile
+                ? "translate(-50%, -50%)"
+                : isTablet
+                ? "translate(0, -50%)"
+                : "translate(0, -50%)", // Centrado horizontal en móvil, ajustado en tablet
+              zIndex: 1000,
+              backgroundColor: "#222",
+              padding: "20px",
+              borderRadius: "10px",
+              width: isMobile ? "300px" : isTablet ? "350px" : "400px", // Ancho dinámico
+              color: "white",
+            }}
+          >
+            {loading ? (
+              <p className="text-gray-300">Cargando información del evento...</p>
+            ) : (
+              eventDetails && (
+                <>
+                  <h1 className="text-4xl font-bold mb-6">{eventDetails.event.name}</h1>
+                  <p className="text-gray-300 text-lg mb-6">
+                    {eventDetails.event.description.split("\n").map((line, index) => (
+                      <span key={index}>
+                        {line}
+                        <br />
+                      </span>
+                    ))}
+                  </p>
+                  <div className="text-gray-300 text-lg mb-6">
+                    <ul>
+                      {eventDetails.unique_sectors.map((sector, index) => (
+                        <li key={index} className="text-white">{sector}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <button
+                    onClick={handleSelectEvent}
+                    className="bg-yellow-500 text-black px-6 py-3 rounded hover:bg-yellow-600 transition duration-300"
+                  >
+                    Seleccionar
+                  </button>
+                </>
+              )
+            )}
+          </div>
         </Html>
       </Canvas>
     </>
