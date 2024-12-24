@@ -46,10 +46,26 @@ const AuthProvider = ({ children }) => {
   };
 
   const renewAccessToken = async (refreshToken) => {
-    const response = await api.post('/token/refresh/', { refresh: refreshToken });
-    const newAccessToken = response.data.access;
-    localStorage.setItem('accessToken', newAccessToken);
-    await fetchUserInfo(newAccessToken);
+    try{
+      const response = await api.post('/token/refresh/', { refresh: refreshToken });
+      const newAccessToken = response.data.access;
+      localStorage.setItem('accessToken', newAccessToken);
+      await fetchUserInfo(newAccessToken);
+
+    }catch(error){
+      handleLogout()
+    }
+  };
+
+  const loginUser = async (tokens) => {
+    try {
+      localStorage.setItem('accessToken', tokens.access);
+      localStorage.setItem('refreshToken', tokens.refresh);
+      await fetchUserInfo(tokens.access);
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      handleLogout();
+    }
   };
 
   const handleLogout = () => {
@@ -66,6 +82,7 @@ const AuthProvider = ({ children }) => {
         isAuthenticated,
         isLoading,
         user,
+        loginUser,
         logout: handleLogout,
       }}
     >
