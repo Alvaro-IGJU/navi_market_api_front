@@ -1,12 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
 import { RigidBody } from "@react-three/rapier";
 import { useFrame } from "@react-three/fiber";
+import { Html, useVideoTexture } from "@react-three/drei";
 import api from "../api";
 import { useControls } from "leva";
 import ChatBot from "./ChatBot";
 import StandBasic from "./StandBasic";
 import StandPremium from "./StandPremium";
 import StandVip from "./StandVip";
+import Video from "./Video";
 
 const Stand = ({
   id,
@@ -33,6 +35,7 @@ const Stand = ({
   const isCharacterInside = useRef(false);
   const areaRef = useRef();
   const [canInteract, setCanInteract] = useState(false);
+  const [showVideo, setShowVideo] = useState(false); // Estado para mostrar el video
   const timeInside = useRef(0);
   const interactionId = useRef(null);
 
@@ -145,6 +148,20 @@ const Stand = ({
     }
   };
 
+  const handleVideoClick = () => {
+    console.log("Can interact:", isCharacterInside.current);
+    if (isCharacterInside.current) {
+      setShowVideo(true); // Mostrar el video
+    } else {
+      console.log("No estás dentro del área para interactuar.");
+    }
+  };
+  
+
+  const handleCloseVideo = () => {
+    setShowVideo(false); // Cerrar el video
+  };
+
   useFrame(({ scene }) => {
     if (areaRef.current) {
       const character = scene.getObjectByName("Character");
@@ -166,6 +183,7 @@ const Stand = ({
       } else if (!insideArea && isCharacterInside.current) {
         isCharacterInside.current = false;
         setCanInteract(false);
+        setShowVideo(false); 
         console.log("Character left the area.");
         endInteraction();
       }
@@ -185,6 +203,7 @@ const Stand = ({
   }, []);
 
   return (
+    <>
     <group position={[posX, posY, posZ]} rotation={[rotX, rotY, rotZ]}>
       {type === "basic" && (
         <StandBasic scale={[10, 10, 10]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
@@ -245,27 +264,12 @@ const Stand = ({
   </mesh>
 </RigidBody>
 
-<RigidBody type="fixed">
-  <mesh
-    position={[0.2, 0.2, 3]}
-    onClick={() => handleClick("play_video")}
-    onPointerOver={(e) => {
-      if(canInteract){
-        e.object.material.emissive.set("yellow"); // Añade un brillo amarillo
-        e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad del brillo
-        document.body.style.cursor = "pointer";
-      }
-    }}
-    onPointerOut={(e) => {
-      e.object.material.emissive.set("black");
-      e.object.material.emissiveIntensity = 0;
-      document.body.style.cursor = "default";
-    }}
-  >
-    <boxGeometry args={[0.4, 0.3, 0.1]} />
-    <meshStandardMaterial color="black" />
-  </mesh>
-</RigidBody>
+<Video
+  videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ"
+  showVideo={showVideo}
+  setShowVideo={setShowVideo}
+  setIsInteracting={setIsInteracting}
+/>
 
 <RigidBody type="fixed">
   <mesh
@@ -323,6 +327,8 @@ const Stand = ({
         
       />
     </group>
+ 
+    </>
   );
 };
 
