@@ -115,6 +115,8 @@ const Dashboard = () => {
           padding: "10px",
           boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
         }}
+        isDraggable={false} // Desactivar arrastre
+        isResizable={false} // Desactivar redimensionamiento
       >
         <div key="stats">
           <CompanyEventBasicStatistics companyId={companyId} interactionsData={interactionsData} />

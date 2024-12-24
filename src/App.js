@@ -35,8 +35,8 @@ const App = () => {
               </PrivateRoute>
             }
           />
-          <Route path="/events" element={<ListEventsPage />} />
-          <Route path="/events/:eventId" element={<EventPage />} />
+          <Route path="/events" element={ <PrivateRoute><ListEventsPage /></PrivateRoute>} />
+          <Route path="/events/:eventId" element={<PrivateRoute><EventPage /></PrivateRoute>} />
           <Route
             path="/profile"
             element={
