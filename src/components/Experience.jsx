@@ -33,6 +33,7 @@ const Experience = ({ eventId }) => {
           size: [3, 3, 3],
           type: stand.type,
           catalog_pdf: stand.catalog_pdf,
+          url_video: stand.url_video,
         };
       });
 

@@ -2,11 +2,15 @@ import React from "react";
 import { Html } from "@react-three/drei";
 
 const Video = ({ videoUrl, showVideo, setShowVideo }) => {
+  console.log("videoUrl:", videoUrl); // Imprime el valor de videoUrl cada vez que el componente se renderiza
+
   const handleVideoClick = () => {
+    console.log("Opening video with URL:", videoUrl); // Imprime el valor al abrir el video
     setShowVideo(true); // Mostrar el video
   };
 
   const handleCloseVideo = () => {
+    console.log("Closing video"); // Imprime al cerrar el video
     setShowVideo(false); // Ocultar el video
   };
 
@@ -46,7 +50,7 @@ const Video = ({ videoUrl, showVideo, setShowVideo }) => {
             }}
           >
             <iframe
-              src={videoUrl}
+              src={`https://www.youtube.com/embed/${videoUrl}`}
               style={{ width: "100%", height: "100%", border: "none" }}
               title="YouTube Video"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

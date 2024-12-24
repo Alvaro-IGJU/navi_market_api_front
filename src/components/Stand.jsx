@@ -32,7 +32,7 @@ const Stand = ({
     rotY: { value: rotation[1], min: -Math.PI, max: Math.PI, step: 0.01 },
     rotZ: { value: rotation[2], min: -Math.PI, max: Math.PI, step: 0.01 },
   });
-
+  console.log("A",url_video)
   const isCharacterInside = useRef(false);
   const areaRef = useRef();
   const [canInteract, setCanInteract] = useState(false);
