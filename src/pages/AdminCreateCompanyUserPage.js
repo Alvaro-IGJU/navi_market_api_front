@@ -49,10 +49,10 @@ const AdminCreateCompanyUserPage = () => {
   };
 
   return (
-    <div className="bg-gray-900 min-h-screen text-gray-100">
+    <div className="bg-gray-900 min-h-screen text-gray-100 pt-4">
       {/* Coloca el Header en la parte superior */}
 
-      <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg mt-4">
+      <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg ">
         {/* Título principal */}
         <h1 className="text-3xl font-bold mb-6 text-[#C7AA68] text-center">
           Crear Usuario de Empresa

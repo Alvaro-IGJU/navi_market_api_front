@@ -73,7 +73,7 @@ const AdminStandsPage = () => {
         alert("Por favor, selecciona un archivo PDF.");
         return;
       }
-
+  
       const reader = new FileReader();
       reader.onload = () => {
         const base64Data = reader.result.split(",")[1];
@@ -82,22 +82,30 @@ const AdminStandsPage = () => {
           [fieldName]: base64Data, // Guardar el archivo PDF codificado en Base64 en el campo correspondiente
         }));
       };
-
+  
       reader.onerror = () => {
         console.error("Error al leer el archivo:", reader.error);
         alert("Hubo un problema al leer el archivo. Intenta de nuevo.");
       };
-
+  
       reader.readAsDataURL(file); // Convertir el archivo a Base64
     }
   };
+  
 
   const handleStandSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
+  
+    // Validar que los archivos sean obligatorios
+    if (!newStand.catalog_pdf || !newStand.prompts_pdf) {
+      setMessage("Los archivos Catálogo y Prompts son obligatorios y deben ser PDFs.");
+      return;
+    }
+  
     try {
       const token = localStorage.getItem("accessToken");
-
+  
       // Enviar la solicitud al backend con los PDF en Base64
       const response = await api.post("/events/stands/create/", newStand, {
         headers: { Authorization: `Bearer ${token}` },
@@ -116,7 +124,30 @@ const AdminStandsPage = () => {
       });
     } catch (error) {
       console.error("Error al crear el stand:", error);
-      setMessage(error.response?.data?.detail || "Error al crear el stand.");
+  
+      // Manejo de errores detallado
+      if (error.response?.data) {
+        const errorData = error.response.data;
+  
+        if (typeof errorData === "string") {
+          setMessage(errorData); // Mensaje de error como cadena
+        } else if (typeof errorData === "object") {
+          // Comprobamos si `messages` es una cadena o un array
+          const errorMessages = Object.entries(errorData)
+            .map(([field, messages]) => {
+              if (Array.isArray(messages)) {
+                return `${field}: ${messages.join(", ")}`;
+              }
+              return `${field}: ${messages}`; // Mensaje simple (no array)
+            })
+            .join("\n");
+          setMessage(errorMessages);
+        } else {
+          setMessage("Error desconocido al crear el stand.");
+        }
+      } else {
+        setMessage("Error al crear el stand.");
+      }
     }
   };
 
@@ -130,16 +161,32 @@ const AdminStandsPage = () => {
       setMessage("Stand eliminado con éxito.");
     } catch (error) {
       console.error("Error al eliminar el stand:", error);
-      setMessage("Error al eliminar el stand.");
+  
+      // Manejo de errores en eliminación
+      if (error.response?.data) {
+        const errorData = error.response.data;
+        if (typeof errorData === "string") {
+          setMessage(errorData);
+        } else if (typeof errorData === "object") {
+          const errorMessages = Object.entries(errorData)
+            .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
+            .join("\n");
+          setMessage(errorMessages);
+        } else {
+          setMessage("Error desconocido al eliminar el stand.");
+        }
+      } else {
+        setMessage("Error al eliminar el stand.");
+      }
     }
   };
 
   return (
-    <div className="bg-gray-900 min-h-screen text-gray-100">
+    <div className="bg-gray-900 min-h-screen text-gray-100 pt-4">
       {/* Aquí se agrega el Header */}
 
-      <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg mt-4">
-        <h1 className="text-3xl font-bold mb-6 text-[#C7AA68]">Gestión de Stands</h1>
+      <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg  ">
+        <h1 className="text-3xl font-bold mb-6 text-[#C7AA68] ">Gestión de Stands</h1>
         {message && <p className="text-red-500">{message}</p>}
 
         <h2 className="text-2xl font-bold text-[#C7AA68] mt-4">Crear Nuevo Stand</h2>

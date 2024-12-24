@@ -227,8 +227,8 @@ const AdminPage = () => {
   }
 
   return (
-    <div className="bg-gray-900 min-h-screen text-gray-100">
-      <div className="max-w-6xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg mt-4 md:mt-4">
+    <div className="bg-gray-900 min-h-screen text-gray-100 pt-4">
+      <div className="max-w-6xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold mb-6 text-[#C7AA68]">Administración</h1>
         <section>
           <h2 className="text-xl font-bold mb-4 text-[#C7AA68]">Cargos</h2>
