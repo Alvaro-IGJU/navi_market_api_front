@@ -17,8 +17,9 @@ const AdminStandsPage = () => {
     description: "",
     position: "",
     type: "",
-    catalog_pdf: null, // Catálogo en PDF (Base64)
-    prompts_pdf: null, // Prompts en PDF (Base64)
+    catalog_pdf: null,
+    prompts_pdf: null,
+    url_video: "", // Nueva URL del video
   });
   const [message, setMessage] = useState("");
 
@@ -73,40 +74,37 @@ const AdminStandsPage = () => {
         alert("Por favor, selecciona un archivo PDF.");
         return;
       }
-  
+
       const reader = new FileReader();
       reader.onload = () => {
         const base64Data = reader.result.split(",")[1];
         setNewStand((prevData) => ({
           ...prevData,
-          [fieldName]: base64Data, // Guardar el archivo PDF codificado en Base64 en el campo correspondiente
+          [fieldName]: base64Data,
         }));
       };
-  
+
       reader.onerror = () => {
         console.error("Error al leer el archivo:", reader.error);
         alert("Hubo un problema al leer el archivo. Intenta de nuevo.");
       };
-  
-      reader.readAsDataURL(file); // Convertir el archivo a Base64
+
+      reader.readAsDataURL(file);
     }
   };
-  
 
   const handleStandSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
-  
-    // Validar que los archivos sean obligatorios
+
     if (!newStand.catalog_pdf || !newStand.prompts_pdf) {
       setMessage("Los archivos Catálogo y Prompts son obligatorios y deben ser PDFs.");
       return;
     }
-  
+
     try {
       const token = localStorage.getItem("accessToken");
-  
-      // Enviar la solicitud al backend con los PDF en Base64
+
       const response = await api.post("/events/stands/create/", newStand, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -121,24 +119,23 @@ const AdminStandsPage = () => {
         type: "",
         catalog_pdf: null,
         prompts_pdf: null,
+        url_video: "",
       });
     } catch (error) {
       console.error("Error al crear el stand:", error);
-  
-      // Manejo de errores detallado
+
       if (error.response?.data) {
         const errorData = error.response.data;
-  
+
         if (typeof errorData === "string") {
-          setMessage(errorData); // Mensaje de error como cadena
+          setMessage(errorData);
         } else if (typeof errorData === "object") {
-          // Comprobamos si `messages` es una cadena o un array
           const errorMessages = Object.entries(errorData)
             .map(([field, messages]) => {
               if (Array.isArray(messages)) {
                 return `${field}: ${messages.join(", ")}`;
               }
-              return `${field}: ${messages}`; // Mensaje simple (no array)
+              return `${field}: ${messages}`;
             })
             .join("\n");
           setMessage(errorMessages);
@@ -161,8 +158,7 @@ const AdminStandsPage = () => {
       setMessage("Stand eliminado con éxito.");
     } catch (error) {
       console.error("Error al eliminar el stand:", error);
-  
-      // Manejo de errores en eliminación
+
       if (error.response?.data) {
         const errorData = error.response.data;
         if (typeof errorData === "string") {
@@ -183,10 +179,8 @@ const AdminStandsPage = () => {
 
   return (
     <div className="bg-gray-900 min-h-screen text-gray-100 pt-4">
-      {/* Aquí se agrega el Header */}
-
-      <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg  ">
-        <h1 className="text-3xl font-bold mb-6 text-[#C7AA68] ">Gestión de Stands</h1>
+      <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg">
+        <h1 className="text-3xl font-bold mb-6 text-[#C7AA68]">Gestión de Stands</h1>
         {message && <p className="text-red-500">{message}</p>}
 
         <h2 className="text-2xl font-bold text-[#C7AA68] mt-4">Crear Nuevo Stand</h2>
@@ -292,6 +286,17 @@ const AdminStandsPage = () => {
               className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded"
             />
           </div>
+          <div className="mb-4">
+            <label className="block text-gray-200">URL del Video</label>
+            <input
+              type="url"
+              name="url_video"
+              value={newStand.url_video}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded"
+              placeholder="https://example.com/video"
+            />
+          </div>
           <button
             type="submit"
             className="w-full mt-2 bg-[#C7AA68] text-gray-900 py-2 rounded hover:bg-[#9E8A52] transition duration-300"
@@ -306,6 +311,18 @@ const AdminStandsPage = () => {
             <li key={stand.id} className="bg-gray-700 p-4 mb-2 rounded">
               <strong>{stand.name}</strong> - Evento: {stand.event.name} - Empresa: {stand.company.name} - Tipo: {stand.type} - Posición: {stand.position}
               <p>{stand.description}</p>
+              {stand.url_video && (
+                <p>
+                  <a
+                    href={stand.url_video}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#C7AA68] underline"
+                  >
+                    Ver Video
+                  </a>
+                </p>
+              )}
               <button
                 onClick={() => handleDelete(stand.id)}
                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 transition duration-300 mt-2"

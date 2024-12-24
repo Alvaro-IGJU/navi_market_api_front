@@ -22,6 +22,7 @@ const Stand = ({
   isInteracting,
   setIsInteracting,
   getPlayerCamera,
+  url_video,
 }) => {
   const { posX, posY, posZ, rotX, rotY, rotZ } = useControls(`Stand ${id}`, {
     posX: { value: position[0], min: -100, max: 100, step: 0.1 },
@@ -265,7 +266,7 @@ const Stand = ({
 </RigidBody>
 
 <Video
-  videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ"
+  videoUrl={url_video}
   showVideo={showVideo}
   setShowVideo={setShowVideo}
   setIsInteracting={setIsInteracting}

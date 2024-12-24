@@ -117,6 +117,7 @@ const Experience = ({ eventId }) => {
             catalog_pdf={stand.catalog_pdf}
             isInteracting={isInteracting} // Pass isInteracting
             setIsInteracting={setIsInteracting} // Pass setIsInteracting
+            url_video={stand.url_video}
           />
         ))}
 
