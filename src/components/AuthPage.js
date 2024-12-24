@@ -11,10 +11,10 @@ const AuthPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    sector: "", // Sector field
-    position: "", // Position field
+    sector: "",
+    position: "",
   });
-  const [acceptTerms, setAcceptTerms] = useState(false); // Nuevo estado para el checkbox
+  const [acceptTerms, setAcceptTerms] = useState(false);
   const [sectors, setSectors] = useState([]);
   const [positions, setPositions] = useState([]);
   const { loginUser } = useContext(AuthContext);
@@ -24,9 +24,8 @@ const AuthPage = () => {
   useEffect(() => {
     const fetchSectorsAndPositions = async () => {
       try {
-        const sectorResponse = await api.get("/users/sectors/"); // Cambia esta URL por la correcta
-        const positionResponse = await api.get("/users/positions/"); // Cambia esta URL por la correcta
-
+        const sectorResponse = await api.get("/users/sectors/");
+        const positionResponse = await api.get("/users/positions/");
         setSectors(sectorResponse.data);
         setPositions(positionResponse.data);
       } catch (error) {
@@ -74,8 +73,8 @@ const AuthPage = () => {
           email: formData.email,
           password: formData.password,
           username: formData.username,
-          sector: formData.sector, // Agregar sector
-          position: formData.position, // Agregar cargo
+          sector: formData.sector,
+          position: formData.position,
         };
         await api.post("/users/register/", registerData);
         toast.success("Registro exitoso. Ahora puedes iniciar sesión.");
@@ -85,9 +84,9 @@ const AuthPage = () => {
       console.error(error);
       toast.error(
         "Error: " +
-          (error.response?.data?.email ||
-            error.response?.data?.password ||
-            "Ha ocurrido un error inesperado.")
+        (error.response?.data?.email ||
+          error.response?.data?.password ||
+          "Ha ocurrido un error inesperado.")
       );
     }
   };
@@ -165,7 +164,6 @@ const AuthPage = () => {
                       ))}
                     </select>
                   </div>
-                  
                 </>
               )}
               <div>
@@ -180,19 +178,27 @@ const AuthPage = () => {
                 />
               </div>
               <div>
-                    <label className="flex items-center text-sm text-[#C7AA68]">
-                      <input
-                        type="checkbox"
-                        checked={acceptTerms}
-                        onChange={handleCheckboxChange}
-                        className="mr-2"
-                      />
-                      Acepto los{" "}
-                      <a href="/terms" target="_blank" rel="noopener noreferrer"  className="underline ml-1">
-                        términos y condiciones
-                      </a>
-                    </label>
-                  </div>
+                {!isLogin && (
+                  <label className="flex items-center text-sm text-[#C7AA68]">
+                    <input
+                      type="checkbox"
+                      checked={acceptTerms}
+                      onChange={handleCheckboxChange}
+                      className="mr-2"
+                    />
+                    Acepto los{" "}
+                    <a
+                      href="/terms"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline ml-1 text-[#C7AA68] hover:text-[#9E8A52]"
+                    >
+                      términos y condiciones
+                    </a>
+                  </label>
+                )}
+              </div>
+
               <button
                 type="submit"
                 className="w-full bg-[#C7AA68] text-gray-900 py-2 rounded hover:bg-[#9E8A52] transition duration-300"
