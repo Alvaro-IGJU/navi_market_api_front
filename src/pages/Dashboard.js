@@ -12,6 +12,7 @@ import CompanyUserSectorsPieChart from "../components/CompanyUserSectorsPieChart
 import TotalScheduleMeetings from "../components/TotalScheduleMeetings";
 import { AuthContext } from "../contexts/AuthContext";
 import api from "../api";
+import InterestedUsersTable from "./InterestedUsersTable";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -139,8 +140,13 @@ const Dashboard = () => {
         <div key="other">
           <TotalScheduleMeetings companyId={companyId} interactionsData={interactionsData} />
         </div>
+        
       </ResponsiveGridLayout>
+      <div key="usersTable">
+          <InterestedUsersTable companyId={companyId} />
+        </div>
     </div>
+    
   );
 };
 
