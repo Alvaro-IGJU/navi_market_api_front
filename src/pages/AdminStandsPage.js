@@ -24,9 +24,9 @@ const AdminStandsPage = () => {
   const [message, setMessage] = useState("");
 
   const standTypes = [
-    { value: "basic", label: "Básico" },
-    { value: "premium", label: "Premium" },
-    { value: "vip", label: "VIP" },
+    { value: "bronze", label: "Bronce" },
+    { value: "silver", label: "Silver" },
+    { value: "gold", label: "Gold" },
   ];
 
   useEffect(() => {

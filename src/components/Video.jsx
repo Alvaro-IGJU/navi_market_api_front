@@ -1,7 +1,8 @@
 import React from "react";
 import { Html } from "@react-three/drei";
+import Screen from "./Screen"; // Importa el componente Screen
 
-const Video = ({ videoUrl, showVideo, setShowVideo }) => {
+const Video = ({ videoUrl, showVideo, setShowVideo, position }) => {
   console.log("videoUrl:", videoUrl); // Imprime el valor de videoUrl cada vez que el componente se renderiza
 
   const handleVideoClick = () => {
@@ -16,29 +17,39 @@ const Video = ({ videoUrl, showVideo, setShowVideo }) => {
 
   return (
     <group>
-      {/* Mesh interactivo */}
-      <mesh
-        position={[0.2, 0.2, 3]}
-        scale={[2,1.5,2]}
+      {/* Modelo interactivo */}
+      <group
+        position={position}
+        
+        rotation={[Math.PI / 2,Math.PI,Math.PI]}
+        scale={[0.08, 0.08, 0.08]} // Ajusta el tamaño del modelo
         onClick={handleVideoClick}
         onPointerOver={(e) => {
-          e.object.material.emissive.set("yellow");
-          e.object.material.emissiveIntensity = 0.1;
+          e.object.material.emissive.set("yellow"); // Añade brillo amarillo
+          e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad
           document.body.style.cursor = "pointer";
         }}
         onPointerOut={(e) => {
-          e.object.material.emissive.set("black");
+          e.object.material.emissive.set("black"); // Elimina el brillo
           e.object.material.emissiveIntensity = 0;
           document.body.style.cursor = "default";
         }}
       >
-        <boxGeometry args={[0.4, 0.3, 0.1]} />
-        <meshStandardMaterial color="black" />
-      </mesh>
+        {/* Usa el componente Screen aquí con la rotación adecuada */}
+        <Screen position={[0, -10, 0]}  />
+      </group>
 
-      {/* Video HTML anclado al mesh */}
+      {/* Video HTML anclado al modelo */}
       {showVideo && (
-        <Html position={[0.2, 0.2, 3]} scale={[0.6,0.6,0.6]} transform distanceFactor={1.5}>
+        <Html
+        rotation={[0,Math.PI / 2,0]}
+          position={[0.29, 0.02, 0]}
+          scale={[0.41, 0.41, 0.41]}
+          transform
+          distanceFactor={1.5}
+          occlude // Activa el occlude para ocultar detrás de otros objetos
+          zIndexRange={[1, 10]} // Ajusta el rango del índice Z si es necesario
+        >
           <div
             style={{
               width: "400px",

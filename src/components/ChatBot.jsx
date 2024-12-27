@@ -4,7 +4,7 @@ import { useCameraManager } from "./CameraManager";
 import api from "../api";
 import { applyAccentRules } from '../utils/chatBotInputAccentRules';
 
-const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracting, handleClick }) => {
+const ChatBot = ({ standId, position, rotation,  canInteract, isInteracting, setIsInteracting, handleClick }) => {
   const { registerStandCamera, activateStandCamera, activatePlayerCamera } = useCameraManager();
   const cameraRef = useRef();
   const textRef = useRef();
@@ -105,7 +105,7 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
   };
 
   return (
-    <group position={position}>
+    <group position={position} rotation={rotation}>
       <PerspectiveCamera ref={cameraRef} makeDefault={false} position={[0, 0.1, 2]} fov={50} />
       <mesh onClick={handleChatbotClick} onPointerOver={(e) => {
         if(canInteract){
@@ -119,7 +119,7 @@ const ChatBot = ({ standId, position, canInteract, isInteracting, setIsInteracti
       e.object.material.emissiveIntensity = 0;
       document.body.style.cursor = "default";
     }}>
-        <sphereGeometry args={[0.5, 32, 32]} />
+        <sphereGeometry args={[0.1, 12, 12]} />
         <meshStandardMaterial color="orange" />
       </mesh>
 

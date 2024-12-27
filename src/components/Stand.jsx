@@ -5,10 +5,11 @@ import { Html, useVideoTexture } from "@react-three/drei";
 import api from "../api";
 import { useControls } from "leva";
 import ChatBot from "./ChatBot";
-import StandBasic from "./StandBasic";
+import StandBronce from "./StandBronce";
 import StandPremium from "./StandPremium";
 import StandVip from "./StandVip";
 import Video from "./Video";
+import Mailbox from "./Mailbox";
 
 const Stand = ({
   id,
@@ -149,19 +150,7 @@ const Stand = ({
     }
   };
 
-  const handleVideoClick = () => {
-    console.log("Can interact:", isCharacterInside.current);
-    if (isCharacterInside.current) {
-      setShowVideo(true); // Mostrar el video
-    } else {
-      console.log("No estás dentro del área para interactuar.");
-    }
-  };
-  
 
-  const handleCloseVideo = () => {
-    setShowVideo(false); // Cerrar el video
-  };
 
   useFrame(({ scene }) => {
     if (areaRef.current) {
@@ -203,73 +192,60 @@ const Stand = ({
     };
   }, []);
 
+
+  const layoutConfig = {
+    bronze: {
+      mailboxPosition: [0.6, -1, -1.3],
+      videoPosition: [0.28, 0.02, -0.15],
+      catalogPosition: [0.5, -0.5, 3],
+      chatbotPosition: [0, -0.2, -1],
+    },
+    silver: {
+      mailboxPosition: [-1, -0.5, 3.5],
+      videoPosition: [0.3, 0.3, 4],
+      catalogPosition: [0.6, -0.5, 3.8],
+    },
+    gold: {
+      mailboxPosition: [-1.5, -0.5, 4],
+      videoPosition: [0.4, 0.4, 4.5],
+      catalogPosition: [0.7, -0.5, 4.3],
+    },
+  };
+
+  const { mailboxPosition, videoPosition, catalogPosition, chatbotPosition } =
+    layoutConfig[type] || layoutConfig["bronze"];
+
   return (
     <>
     <group position={[posX, posY, posZ]} rotation={[rotX, rotY, rotZ]}>
-      {type === "basic" && (
-        <StandBasic scale={[10, 10, 10]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
+      {type === "bronze" && (
+        <StandBronce scale={[0.1, 0.1, 0.1]} size={size} position={[0, -1, 0]} rotation={[0, 0, 0]} />
+          
       )}
-      {type === "premium" && (
+      {type === "silver" && (
         <StandPremium scale={[10, 10, 10]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
       )}
-      {type === "vip" && (
+      {type === "gold" && (
         <StandVip scale={[1, 1, 1]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
       )}
 
       <mesh ref={areaRef}>
+      {/* <sphereGeometry args={[areaRadius, 32, 32]} />  */}
         <meshStandardMaterial color="green" transparent opacity={0.2} />
       </mesh>
 
-      <RigidBody type="fixed">
-  <mesh
-    position={[-0.5, -0.5, 3]}
-    onClick={() => handleClick("mailbox")}
-    onPointerOver={(e) => {
-      if(canInteract){
-        e.object.material.emissive.set("yellow"); // Añade un brillo amarillo
-        e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad del brillo
-        document.body.style.cursor = "pointer";
-      }
-      
-    }}
-    onPointerOut={(e) => {
-      e.object.material.emissive.set("black"); // Elimina el brillo
-      e.object.material.emissiveIntensity = 0; // Restaura la intensidad
-      document.body.style.cursor = "default";
-    }}
-  >
-    <boxGeometry args={[0.2, 0.2, 0.2]} />
-    <meshStandardMaterial color="green" />
-  </mesh>
-</RigidBody>
+     
 
-<RigidBody type="fixed">
-  <mesh
-    position={[-0.2, 0, 3]}
-    onClick={() => handleClick("info_pc")}
-    onPointerOver={(e) => {
-      if(canInteract){
-        e.object.material.emissive.set("yellow"); // Añade un brillo amarillo
-        e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad del brillo
-        document.body.style.cursor = "pointer";
-      }
-    }}
-    onPointerOut={(e) => {
-      e.object.material.emissive.set("black");
-      e.object.material.emissiveIntensity = 0;
-      document.body.style.cursor = "default";
-    }}
-  >
-    <boxGeometry args={[0.3, 0.1, 0.2]} />
-    <meshStandardMaterial color="gray" />
-  </mesh>
-</RigidBody>
+      <Mailbox scale={[0.1, 0.1, 0.1]} rotation={[0,Math.PI / 2,0]} position={mailboxPosition} handleClick={handleClick} canInteract={canInteract} />
+
 
 <Video
   videoUrl={url_video}
   showVideo={showVideo}
   setShowVideo={setShowVideo}
   setIsInteracting={setIsInteracting}
+  position={videoPosition}
+  rotation={[]}
 />
 
 <RigidBody type="fixed">
@@ -319,7 +295,8 @@ const Stand = ({
 
       <ChatBot
         canInteract={canInteract}
-        position={[0, 0.1, 5]}
+        position={chatbotPosition}
+        rotation = {[0, Math.PI , 0]}
         standId={id}
         isInteracting={isInteracting}
         setIsInteracting={setIsInteracting}
