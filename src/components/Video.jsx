@@ -31,7 +31,7 @@ const Video = ({ videoUrl, showVideo, setShowVideo, position, handleClick, canIn
             e.object.material.emissive.set("yellow"); // Añade brillo amarillo
             e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad
             document.body.style.cursor = "pointer";
-            setHoverMessage("Ver video"); // Establece el mensaje interactivo
+            setHoverMessage("Ver vídeo"); // Establece el mensaje interactivo
           }
         }}
         onPointerOut={(e) => {
@@ -48,7 +48,7 @@ const Video = ({ videoUrl, showVideo, setShowVideo, position, handleClick, canIn
       {/* Muestra el mensaje interactivo */}
       {hoverMessage && canInteract && !isInteracting && (
         <Html
-          position={[0.30, 0.2, 0.1]}
+        position={[position[0], position[1] + 0.2, position[2] + 0.2]}
           style={{
             background: "rgba(0, 0, 0, 0.8)",
             color: "white",

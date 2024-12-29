@@ -11,6 +11,7 @@ import StandVip from "./StandVip";
 import Video from "./Video";
 import Mailbox from "./Mailbox";
 import Catalog from "./Catalog";
+import StandSilver from "./StandSilver";
 
 const Stand = ({
   id,
@@ -202,9 +203,10 @@ const Stand = ({
       chatbotPosition: [0, -0.2, -1],
     },
     silver: {
-      mailboxPosition: [-1, -0.5, 3.5],
+      mailboxPosition: [-1, -1, 3.5],
       videoPosition: [0.3, 0.3, 4],
       catalogPosition: [0.6, -0.5, 3.8],
+      chatbotPosition: [0, -0.2, -1],
     },
     gold: {
       mailboxPosition: [-1.5, -0.5, 4],
@@ -221,10 +223,9 @@ const Stand = ({
     <group position={[posX, posY, posZ]} rotation={[rotX, rotY, rotZ]}>
       {type === "bronze" && (
         <StandBronce scale={[0.1, 0.1, 0.1]} size={size} position={[0, -1, 0]} rotation={[0, 0, 0]} />
-          
       )}
       {type === "silver" && (
-        <StandPremium scale={[10, 10, 10]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
+        <StandSilver scale={[0.5, 0.5, 0.5]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
       )}
       {type === "gold" && (
         <StandVip scale={[1, 1, 1]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />

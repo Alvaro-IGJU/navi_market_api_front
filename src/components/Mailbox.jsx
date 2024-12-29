@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
 import { Html } from "@react-three/drei";
 
-export function Mailbox({ handleClick, canInteract, isInteracting, ...props }) {
+export function Mailbox({ handleClick, canInteract, isInteracting, position, ...props }) {
   const { nodes } = useGLTF("/models/mailbox.glb"); // Usamos el modelo cargado
   const [hoverMessage, setHoverMessage] = useState(null); // Estado para el mensaje interactivo
   const [clickCooldown, setClickCooldown] = useState(false); // Estado para el cooldown
@@ -73,6 +73,7 @@ export function Mailbox({ handleClick, canInteract, isInteracting, ...props }) {
     <>
       <group
         {...props}
+        position={position}
         onClick={handleMailboxClick}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
@@ -88,7 +89,7 @@ export function Mailbox({ handleClick, canInteract, isInteracting, ...props }) {
 
       {/* Mostrar el mensaje interactivo si existe */}
       {hoverMessage && isHovering.current && canInteract && !isInteracting && (
-        <Html position={[0.6, -0.25, -1.3]} distanceFactor={3}>
+        <Html position={[position[0], position[1] + 0.75, position[2]]} distanceFactor={3}>
           <div
             style={{
               background: "rgba(0, 0, 0, 0.75)",

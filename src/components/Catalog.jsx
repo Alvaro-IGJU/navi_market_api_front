@@ -3,7 +3,7 @@ import { useGLTF } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
 import { Html } from "@react-three/drei";
 
-export function Catalog({ handleClick, canInteract, isInteracting, ...props }) {
+export function Catalog({ handleClick, canInteract, isInteracting, position,  ...props }) {
   const { nodes } = useGLTF("/models/catalog.glb"); // Usamos el modelo cargado
   const [hoverMessage, setHoverMessage] = useState(null); // Estado para el mensaje interactivo
   const [clickCooldown, setClickCooldown] = useState(false); // Estado para el cooldown
@@ -73,6 +73,7 @@ export function Catalog({ handleClick, canInteract, isInteracting, ...props }) {
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
         dispose={null} // Limpieza automática
+        position={position}
       >
         <mesh
           geometry={nodes.CATALOGO.geometry} // Geometría del modelo
@@ -82,7 +83,7 @@ export function Catalog({ handleClick, canInteract, isInteracting, ...props }) {
           scale={[0.974, 0.426, 0.009]} // Escala ajustada
         />
         {hoverMessage && isHovering.current && canInteract && !isInteracting && (
-          <Html position={[0, 2, 0]} distanceFactor={3}>
+          <Html position={[position[0], position[1] + 2, position[2]]} distanceFactor={2}>
             <div
               style={{
                 background: "rgba(0, 0, 0, 0.75)",
