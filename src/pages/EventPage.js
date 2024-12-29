@@ -16,7 +16,12 @@ const EventPage = () => {
   const [isTablet, setIsTablet] = useState(false); // Estado adicional para tabletas
   const [hover, setHover] = useState(false);
   const navigate = useNavigate();
-
+  useEffect(() => {
+        const header = document.querySelector("header");
+        if (header) {
+          header.style.display = "none";
+        }
+      })
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;

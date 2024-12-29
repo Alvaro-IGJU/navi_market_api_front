@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { KeyboardControls, Stats } from '@react-three/drei';
 import { useLocation } from 'react-router-dom';
@@ -16,7 +16,12 @@ const keyboardMap = [
 const CanvasWrapper = () => {
   const location = useLocation();
   const eventId = location.state?.eventId; // Obtener el eventId del estado de navegación
-
+  useEffect(() => {
+    const header = document.querySelector("header");
+    if (header) {
+      header.style.display = "none";
+    }
+  })
   if (!eventId) {
     return <p>No se seleccionó ningún evento.</p>; // Mensaje si no hay evento seleccionado
   }

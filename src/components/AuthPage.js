@@ -19,7 +19,12 @@ const AuthPage = () => {
   const [positions, setPositions] = useState([]);
   const { loginUser } = useContext(AuthContext);
   const navigate = useNavigate();
-
+  useEffect(() => {
+      const header = document.querySelector("header");
+      if (header) {
+        header.style.display = "block";
+      }
+    })
   // Obtener sectores y posiciones desde el backend
   useEffect(() => {
     const fetchSectorsAndPositions = async () => {

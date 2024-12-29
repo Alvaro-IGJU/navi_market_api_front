@@ -63,6 +63,13 @@ const CompanyEventBasicStatistics = ({ companyId, interactionsData }) => {
     fetchStatistics();
   }, [companyId, interactionsData]);
 
+  useEffect(() => {
+        const header = document.querySelector("header");
+        if (header) {
+          header.style.display = "block";
+        }
+      })
+
   if (loading) return <p className="text-gray-300">Cargando estadísticas...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
