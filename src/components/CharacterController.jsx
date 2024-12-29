@@ -6,8 +6,8 @@ import { useControls } from "leva";
 import { useFrame } from "@react-three/fiber";
 import { useKeyboardControls } from "@react-three/drei";
 import { degToRad, MathUtils } from "three/src/math/MathUtils.js";
-import { getAvatarInitialPosition } from "../utils/avatarPosition"; // Importar la posición inicial
-import { useCameraManager } from "./CameraManager"; // Importar el CameraManager
+import { getAvatarInitialPosition } from "../utils/avatarPosition";
+import { useCameraManager } from "./CameraManager";
 
 const normalizeAngle = (angle) => {
   while (angle > Math.PI) angle -= 2 * Math.PI;
@@ -31,13 +31,19 @@ const lerpAngle = (start, end, t) => {
 };
 
 export const CharacterController = forwardRef(({ eventId = 1, isInteracting = false }, ref) => {
-  const { WALK_SPEED, RUN_SPEED, ROTATION_SPEED } = useControls("Character Control", {
+  const { WALK_SPEED, RUN_SPEED, ROTATION_SPEED, DRAG_ROTATION_SPEED } = useControls("Character Control", {
     WALK_SPEED: { value: 0.8, min: 0.1, max: 4, step: 0.1 },
     RUN_SPEED: { value: 1.6, min: 0.2, max: 12, step: 0.1 },
     ROTATION_SPEED: {
       value: degToRad(0.5),
       min: degToRad(0.1),
       max: degToRad(5),
+      step: degToRad(0.1),
+    },
+    DRAG_ROTATION_SPEED: {
+      value: degToRad(1),
+      min: degToRad(0.1),
+      max: degToRad(10),
       step: degToRad(0.1),
     },
   });
@@ -47,6 +53,9 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
   const character = useRef();
   const { playerCameraRef } = useCameraManager(); // Obtener la referencia de la cámara del jugador
   const [animation, setAnimation] = useState("Idle");
+  const isDragging = useRef(false);
+  const mouseDragStart = useRef(new Vector3());
+  const currentMousePosition = useRef(new Vector3());
 
   const characterRotationTarget = useRef(0);
   const rotationTarget = useRef(0);
@@ -56,41 +65,44 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
   const cameraLookAtWorldPosition = useRef(new Vector3());
   const cameraLookAt = useRef(new Vector3());
   const [, get] = useKeyboardControls();
-  const isClicking = useRef(false);
 
   const initialPosition = getAvatarInitialPosition(eventId);
 
-  useEffect(() => {
-    const tabletBreakpoint = 1025; 
+  const handleMouseDown = (e) => {
+    isDragging.current = true;
+    mouseDragStart.current.set(e.clientX, e.clientY, 0);
+  };
 
-    const onMouseDown = (e) => {
-      isClicking.current = true;
-    };
-    const onMouseUp = (e) => {
-      isClicking.current = false;
-    };
-    console.log(window.innerWidth, tabletBreakpoint)
-    if (window.innerWidth < tabletBreakpoint) {
-      // Solo añadir los eventos si la pantalla es menor que el punto de ruptura
-      document.addEventListener("mousedown", onMouseDown);
-      document.addEventListener("mouseup", onMouseUp);
-      document.addEventListener("touchstart", onMouseDown);
-      document.addEventListener("touchend", onMouseUp);
+  const handleMouseUp = () => {
+    isDragging.current = false;
+  };
+
+  const handleMouseMove = (e) => {
+    if (isDragging.current) {
+      currentMousePosition.current.set(e.clientX, e.clientY, 0);
+
+      const deltaX = currentMousePosition.current.x - mouseDragStart.current.x;
+      rotationTarget.current += DRAG_ROTATION_SPEED * deltaX * 0.17;
+
+      mouseDragStart.current.copy(currentMousePosition.current);
     }
+  };
+
+  useEffect(() => {
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
-      // Eliminar los eventos al desmontar el componente
-      document.removeEventListener("mousedown", onMouseDown);
-      document.removeEventListener("mouseup", onMouseUp);
-      document.removeEventListener("touchstart", onMouseDown);
-      document.removeEventListener("touchend", onMouseUp);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []); // Solo se ejecutará al montar y desmontar el componente
+  }, []);
 
-  useFrame(({ camera, mouse }) => {
+  useFrame(({ camera }) => {
     if (isInteracting) {
-      // Si hay interacción, detener actualizaciones del CharacterController
-      return;
+      return; // Detener actualizaciones si hay interacción
     }
 
     if (rb.current) {
@@ -101,12 +113,6 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
       if (get().backward) movement.z = -1;
 
       let speed = get().run ? RUN_SPEED : WALK_SPEED;
-
-      if (isClicking.current) {
-        if (Math.abs(mouse.x) > 0.1) movement.x = -mouse.x;
-        movement.z = mouse.y + 0.4;
-        if (Math.abs(movement.x) > 0.5 || Math.abs(movement.z) > 0.5) speed = RUN_SPEED;
-      }
 
       if (get().left) movement.x = 1;
       if (get().right) movement.x = -1;
@@ -128,7 +134,6 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
 
     container.current.rotation.y = MathUtils.lerp(container.current.rotation.y, rotationTarget.current, 0.1);
 
-    // Actualizar posición de la cámara del jugador
     if (playerCameraRef.current) {
       cameraPosition.current.getWorldPosition(cameraWorldPosition.current);
       playerCameraRef.current.position.lerp(cameraWorldPosition.current, 0.1);
