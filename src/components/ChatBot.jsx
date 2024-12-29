@@ -59,7 +59,7 @@ const ChatBot = ({ standId, position, rotation,  canInteract, isInteracting, set
   };
 
   const handleChatbotClick = () => {
-    if (canInteract) {
+    if (canInteract && !isInteracting) {
       setIsInteracting(true);
       setShowInput(true);
       activateStandCamera(standId);
@@ -108,9 +108,10 @@ const ChatBot = ({ standId, position, rotation,  canInteract, isInteracting, set
     <group position={position} rotation={rotation}>
       <PerspectiveCamera ref={cameraRef} makeDefault={false} position={[0, 0.1, 2]} fov={50} />
       <mesh onClick={handleChatbotClick} onPointerOver={(e) => {
-        if(canInteract){
-          e.object.material.emissive.set("yellow"); // Añade un brillo amarillo
-          e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad del brillo
+        if (canInteract && !isInteracting) {
+          e.stopPropagation(); // Evita que el evento se propague
+          e.object.material.emissive.set("yellow"); // Añade brillo amarillo
+          e.object.material.emissiveIntensity = 0.2; // Ajusta la intensidad
           document.body.style.cursor = "pointer";
         }
     }}

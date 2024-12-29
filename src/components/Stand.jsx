@@ -10,6 +10,7 @@ import StandPremium from "./StandPremium";
 import StandVip from "./StandVip";
 import Video from "./Video";
 import Mailbox from "./Mailbox";
+import Catalog from "./Catalog";
 
 const Stand = ({
   id,
@@ -197,7 +198,7 @@ const Stand = ({
     bronze: {
       mailboxPosition: [0.6, -1, -1.3],
       videoPosition: [0.28, 0.02, -0.15],
-      catalogPosition: [0.5, -0.5, 3],
+      catalogPosition: [0, -0.28, 0.33],
       chatbotPosition: [0, -0.2, -1],
     },
     silver: {
@@ -236,7 +237,13 @@ const Stand = ({
 
      
 
-      <Mailbox scale={[0.1, 0.1, 0.1]} rotation={[0,Math.PI / 2,0]} position={mailboxPosition} handleClick={handleClick} canInteract={canInteract} />
+<Mailbox scale={[0.1, 0.1, 0.1]}
+         rotation={[0,Math.PI / 2,0]} 
+         position={mailboxPosition} 
+         handleClick={handleClick} 
+         canInteract={canInteract}   
+         isInteracting={isInteracting}
+ />
 
 
 <Video
@@ -246,29 +253,19 @@ const Stand = ({
   setIsInteracting={setIsInteracting}
   position={videoPosition}
   rotation={[]}
+  handleClick={handleClick}
+  canInteract={canInteract} // Pasa la capacidad de interacción
+  isInteracting={isInteracting}
 />
 
-<RigidBody type="fixed">
-  <mesh
-    position={[0.5, -0.5, 3]}
-    onClick={() => handleClick("download_catalog")}
-    onPointerOver={(e) => {
-      if(canInteract){
-        e.object.material.emissive.set("yellow"); // Añade un brillo amarillo
-        e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad del brillo
-        document.body.style.cursor = "pointer";
-      }
-    }}
-    onPointerOut={(e) => {
-      e.object.material.emissive.set("black");
-      e.object.material.emissiveIntensity = 0;
-      document.body.style.cursor = "default";
-    }}
-  >
-    <boxGeometry args={[0.2, 0.05, 0.3]} />
-    <meshStandardMaterial color="green" />
-  </mesh>
-</RigidBody>
+<Catalog
+  position={catalogPosition}
+  scale={[0.1, 0.1, 0.1]} // Ajusta la escala según sea necesario
+  handleClick={handleClick} // Pasa la función de clic
+  canInteract={canInteract} // Pasa la capacidad de interacción
+  isInteracting={isInteracting}
+/>
+
 
 <RigidBody type="fixed">
   <mesh

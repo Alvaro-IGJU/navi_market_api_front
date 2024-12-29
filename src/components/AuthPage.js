@@ -24,16 +24,31 @@ const AuthPage = () => {
   useEffect(() => {
     const fetchSectorsAndPositions = async () => {
       try {
+        // Realiza las solicitudes a la API
         const sectorResponse = await api.get("/users/sectors/");
         const positionResponse = await api.get("/users/positions/");
-        setSectors(sectorResponse.data);
-        setPositions(positionResponse.data);
+  
+        // Verifica si las respuestas son válidas antes de usarlas
+        if (sectorResponse && sectorResponse.data) {
+          setSectors(sectorResponse.data);
+        } else {
+          console.error("Error: sectorResponse no contiene datos válidos");
+          console.log(sectorResponse, sectorResponse.data)
+        }
+  
+        if (positionResponse && positionResponse.data) {
+          setPositions(positionResponse.data);
+        } else {
+          console.error("Error: positionResponse no contiene datos válidos");
+          console.log(positionResponse, positionResponse.data)
+
+        }
       } catch (error) {
         console.error("Error fetching sectors and positions:", error);
         toast.error("No se pudieron cargar los sectores y cargos.");
       }
     };
-
+  
     fetchSectorsAndPositions();
   }, []);
 

@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Html } from "@react-three/drei";
 import Screen from "./Screen"; // Importa el componente Screen
 
-const Video = ({ videoUrl, showVideo, setShowVideo, position }) => {
-  console.log("videoUrl:", videoUrl); // Imprime el valor de videoUrl cada vez que el componente se renderiza
+const Video = ({ videoUrl, showVideo, setShowVideo, position, handleClick, canInteract, isInteracting }) => {
+  const [hoverMessage, setHoverMessage] = useState(null); // Estado para el mensaje interactivo
 
   const handleVideoClick = () => {
-    console.log("Opening video with URL:", videoUrl); // Imprime el valor al abrir el video
-    setShowVideo(true); // Mostrar el video
+    if (canInteract && !isInteracting) {
+      console.log("Opening video with URL:", videoUrl); // Imprime el valor al abrir el video
+      setShowVideo(true); // Mostrar el video
+      handleClick("show_video"); // Llama a la función pasada como prop
+    }
   };
 
   const handleCloseVideo = () => {
@@ -20,29 +23,49 @@ const Video = ({ videoUrl, showVideo, setShowVideo, position }) => {
       {/* Modelo interactivo */}
       <group
         position={position}
-        
-        rotation={[Math.PI / 2,Math.PI,Math.PI]}
+        rotation={[Math.PI / 2, Math.PI, Math.PI]}
         scale={[0.08, 0.08, 0.08]} // Ajusta el tamaño del modelo
         onClick={handleVideoClick}
         onPointerOver={(e) => {
-          e.object.material.emissive.set("yellow"); // Añade brillo amarillo
-          e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad
-          document.body.style.cursor = "pointer";
+          if (canInteract && !isInteracting) {
+            e.object.material.emissive.set("yellow"); // Añade brillo amarillo
+            e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad
+            document.body.style.cursor = "pointer";
+            setHoverMessage("Ver video"); // Establece el mensaje interactivo
+          }
         }}
         onPointerOut={(e) => {
           e.object.material.emissive.set("black"); // Elimina el brillo
           e.object.material.emissiveIntensity = 0;
           document.body.style.cursor = "default";
+          setHoverMessage(null); // Limpia el mensaje interactivo
         }}
       >
         {/* Usa el componente Screen aquí con la rotación adecuada */}
-        <Screen position={[0, -10, 0]}  />
+        <Screen position={[0, -10, 0]} />
       </group>
+
+      {/* Muestra el mensaje interactivo */}
+      {hoverMessage && canInteract && !isInteracting && (
+        <Html
+          position={[0.30, 0.2, 0.1]}
+          style={{
+            background: "rgba(0, 0, 0, 0.8)",
+            color: "white",
+            padding: "5px 20px",
+            borderRadius: "5px",
+            fontSize: "12px",
+            width: "91px"
+          }}
+        >
+          {hoverMessage}
+        </Html>
+      )}
 
       {/* Video HTML anclado al modelo */}
       {showVideo && (
         <Html
-        rotation={[0,Math.PI / 2,0]}
+          rotation={[0, Math.PI / 2, 0]}
           position={[0.29, 0.02, 0]}
           scale={[0.41, 0.41, 0.41]}
           transform

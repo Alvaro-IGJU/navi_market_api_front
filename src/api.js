@@ -6,3 +6,4 @@ const api = axios.create({
 });
 
 export default api;
+// baseURL: 'http://18.184.173.4:80/api',

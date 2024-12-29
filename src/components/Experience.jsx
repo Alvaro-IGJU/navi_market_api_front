@@ -101,7 +101,7 @@ const Experience = ({ eventId }) => {
         background
       />
       {/* Physics simulation */}
-      <Physics debug>
+      <Physics >
         {/* Base model */}
         <Base position={baseConfig.position} scale={baseConfig.scale} />
 
