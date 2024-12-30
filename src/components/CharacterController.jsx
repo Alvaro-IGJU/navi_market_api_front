@@ -56,6 +56,8 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
   const isDragging = useRef(false);
   const mouseDragStart = useRef(new Vector3());
   const currentMousePosition = useRef(new Vector3());
+  const isClicking = useRef(false);
+  const movementStarted = useRef(false);
 
   const characterRotationTarget = useRef(0);
   const rotationTarget = useRef(0);
@@ -75,6 +77,7 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
 
   const handleMouseUp = () => {
     isDragging.current = false;
+    movementStarted.current = false; // Reset movement state on mouse up
   };
 
   const handleMouseMove = (e) => {
@@ -89,18 +92,41 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
   };
 
   useEffect(() => {
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mouseup", handleMouseUp);
-    window.addEventListener("mousemove", handleMouseMove);
+    const tabletBreakpoint = 1025;
 
-    return () => {
-      window.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("mouseup", handleMouseUp);
-      window.removeEventListener("mousemove", handleMouseMove);
+    const onMouseDown = (e) => {
+      isClicking.current = true;
     };
+    const onMouseUp = (e) => {
+      isClicking.current = false;
+      movementStarted.current = false;
+    };
+
+    if (window.innerWidth > tabletBreakpoint) {
+      window.addEventListener("mousedown", handleMouseDown);
+      window.addEventListener("mouseup", handleMouseUp);
+      window.addEventListener("mousemove", handleMouseMove);
+
+      return () => {
+        window.removeEventListener("mousedown", handleMouseDown);
+        window.removeEventListener("mouseup", handleMouseUp);
+        window.removeEventListener("mousemove", handleMouseMove);
+      };
+    } else {
+      document.addEventListener("mousedown", onMouseDown);
+      document.addEventListener("mouseup", onMouseUp);
+      document.addEventListener("touchstart", onMouseDown);
+      document.addEventListener("touchend", onMouseUp);
+      return () => {
+        document.removeEventListener("mousedown", onMouseDown);
+        document.removeEventListener("mouseup", onMouseUp);
+        document.removeEventListener("touchstart", onMouseDown);
+        document.removeEventListener("touchend", onMouseUp);
+      };
+    }
   }, []);
 
-  useFrame(({ camera }) => {
+  useFrame(({ camera, mouse }) => {
     if (isInteracting) {
       return; // Detener actualizaciones si hay interacción
     }
@@ -113,6 +139,20 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
       if (get().backward) movement.z = -1;
 
       let speed = get().run ? RUN_SPEED : WALK_SPEED;
+
+      if (isClicking.current) {
+        if (!movementStarted.current) {
+          setTimeout(() => {
+            movementStarted.current = true;
+          }, 200); // Delay before starting movement
+        }
+
+        if (movementStarted.current) {
+          if (Math.abs(mouse.x) > 0.1) movement.x = -mouse.x;
+          movement.z = mouse.y + 0.4;
+          if (Math.abs(movement.x) > 0.5 || Math.abs(movement.z) > 0.5) speed = RUN_SPEED;
+        }
+      }
 
       if (get().left) movement.x = 1;
       if (get().right) movement.x = -1;

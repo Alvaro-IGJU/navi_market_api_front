@@ -15,6 +15,8 @@ const ChatBot = ({ standId, position, rotation,  canInteract, isInteracting, set
   const [planeHeight, setPlaneHeight] = useState(100);
   const [planeWidth, setPlaneWidth] = useState(window.innerWidth * 0.8); // Inicializa con el 80% del ancho de la pantalla
 
+  const isMobile = window.innerWidth <= 768; // Verifica si es un dispositivo móvil
+
   useEffect(() => {
     if (cameraRef.current) {
       registerStandCamera(standId, cameraRef.current);
@@ -164,7 +166,7 @@ const ChatBot = ({ standId, position, rotation,  canInteract, isInteracting, set
 )}
 
 {showInput && (
-        <Html center position={[0, -0.5, 0]}>
+        <Html center position={[0, isMobile ? -0.3 : -0.5, 0]}>
           <div
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.9)",
