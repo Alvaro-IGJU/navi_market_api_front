@@ -1,0 +1,118 @@
+/* Estilos generales */
+section.list-events {
+    display: flex;
+    width: 100%;
+    height: 100vh; /* Ocupa todo el tamaño del viewport */
+    overflow: hidden;
+    margin: 0; /* Asegura que no haya márgenes */
+    padding: 0; /* Elimina cualquier padding */
+    box-sizing: border-box; /* Incluye paddings y bordes en el cálculo del tamaño */
+  }
+  
+  section.list-events .event-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    background: #333;
+    overflow: hidden;
+    transition: all 0.5s ease;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  section.list-events .event-card img {
+    width: 100%;
+    height: 100%; /* Asegura que la imagen ocupe todo el espacio vertical */
+    object-fit: cover; /* Evita que la imagen se deforme */
+    transition: transform 0.5s ease;
+  }
+  
+  section.list-events .event-info {
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.8); /* Fondo semitransparente */
+    color: white;
+    position: absolute;
+    bottom: 0;
+    transform: translateY(100%);
+    transition: transform 0.5s ease;
+  }
+  
+  section.list-events .event-info h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  section.list-events .event-info p {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+  }
+  
+  section.list-events .event-info button {
+    padding: 8px 16px;
+    font-size: 1rem;
+    background: #c7aa68;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  section.list-events .event-info button:hover {
+    background: #a68a50;
+  }
+  
+  /* Hover Effect: Tablet and PC */
+  @media (min-width: 769px) {
+    section.list-events .event-card:hover {
+      flex: 1.5; /* La tarjeta seleccionada se expande */
+      z-index: 1;
+    }
+  
+    section.list-events .event-card:not(:hover) {
+      opacity: 0.7; /* Las tarjetas no seleccionadas se desvanecen un poco */
+    }
+  
+    section.list-events .event-card:hover img {
+      transform: scale(1.1); /* Zoom en la imagen de la tarjeta seleccionada */
+    }
+  
+    section.list-events .event-card:hover .event-info {
+      transform: translateY(0); /* Muestra la información al hacer hover */
+    }
+  }
+  
+  /* Diseño para pantallas pequeñas (móvil) */
+  @media (max-width: 768px) {
+    section.list-events {
+      flex-direction: column; /* Cambia a diseño vertical en pantallas pequeñas */
+      height: 100vh; /* Forza a que el contenedor ocupe todo el viewport */
+    }
+  
+    section.list-events .event-card {
+      width: 100%;
+      flex: none;
+      height: calc(100vh / 3); /* Divide las tarjetas en partes iguales */
+    }
+  
+    section.list-events .event-card img {
+      height: 100%; /* Ocupa toda la altura disponible */
+    }
+  
+    section.list-events .event-info {
+      transform: translateY(0); /* La información está siempre visible en móvil */
+    }
+  
+    section.list-events .event-card:hover {
+      flex: none; /* Desactiva el efecto de expansión */
+    }
+  
+    section.list-events .event-card:not(:hover) {
+      opacity: 1; /* Elimina el desvanecimiento */
+    }
+  }
+  

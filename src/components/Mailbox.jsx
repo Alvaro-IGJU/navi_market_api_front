@@ -42,7 +42,7 @@ export function Mailbox({ handleClick, canInteract, isInteracting, position, ...
       if (clickCooldown) {
         setHoverMessage(`Espera ${countdown}s`);
       } else {
-        setHoverMessage("Abrir buzón");
+        setHoverMessage("Solicitar email informativo");
       }
     }
   };
@@ -65,7 +65,7 @@ export function Mailbox({ handleClick, canInteract, isInteracting, position, ...
     if (clickCooldown) {
       setHoverMessage(`Espera ${countdown}s`);
     } else if (isHovering.current && canInteract && !isInteracting) {
-      setHoverMessage("Abrir buzón");
+      setHoverMessage("Solicitar email informativo");
     }
   }, [clickCooldown, countdown, canInteract, isInteracting]);
 
