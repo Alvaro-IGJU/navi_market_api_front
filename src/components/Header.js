@@ -41,15 +41,15 @@ const Header = () => {
               <div className="relative">
                 <button
                   onClick={toggleDropdown}
-                  className="flex items-center space-x-2 focus:outline-none"
+                  className="flex items-center space-x-3 focus:outline-none"
                 >
                   <img
-                    src={user?.profile_picture || '/default-avatar.png'}
+                    src={user?.profile_picture || '/multimedia/images/default-avatar.jpg'}
                     alt="Perfil"
-                    className="w-8 h-8 rounded-full border border-yellow-400"
+                    className="w-11 h-11 rounded-full border border-yellow-400"
                   />
                   <span className="hidden lg:block text-sm truncate max-w-[150px]">
-                    {user?.first_name ? `${user.first_name} ${user.last_name || ''}` : 'Usuario'}
+                    <b>{user?.username ? `${user.username}` : 'Usuario'}</b>
                   </span>
                 </button>
                 <ul
