@@ -53,53 +53,55 @@ const Header = () => {
                   </span>
                 </button>
                 <ul
-                  className={`absolute right-0 mt-2 w-48 bg-gray-700 text-white rounded shadow-lg transition-all duration-300 ${
-                    dropdownOpen ? 'block' : 'hidden'
-                  }`}
-                >
-                  <li>
-                    <NavLink
-                      to="/profile"
-                      className="block px-4 py-2 text-[#C7AA68] hover:bg-gray-600"
-                      onClick={closeDropdown}
-                    >
-                      Perfil
-                    </NavLink>
-                  </li>
-                  {user?.is_superuser && (
-                    <li>
+                    className={`absolute right-0 p-0 mt-2 w-48 bg-gray-900 text-white rounded shadow-lg transition-all duration-300 ${
+                      dropdownOpen ? 'block' : 'hidden'
+                    }`}
+                  >
+                    <li className="flex justify-center items-center w-full">
                       <NavLink
-                        to="/admin"
-                        className="block px-4 py-2 text-[#C7AA68] hover:bg-gray-600"
+                        to="/profile"
+                        className="block w-full px-4 py-2 text-[#C7AA68] hover:bg-gray-600 rounded text-center"
                         onClick={closeDropdown}
                       >
-                        Administración
+                        Perfil
                       </NavLink>
                     </li>
-                  )}
-                  {user?.role === 'Company' && (
-                    <li>
-                      <NavLink
-                        to="/company"
-                        className="block px-4 py-2 text-[#C7AA68] hover:bg-gray-600"
-                        onClick={closeDropdown}
+                    {user?.is_superuser && (
+                      <li className="flex justify-center items-center w-full">
+                        <NavLink
+                          to="/admin"
+                          className="block w-full px-4 py-2 text-[#C7AA68] hover:bg-gray-600 rounded text-center"
+                          onClick={closeDropdown}
+                        >
+                          Administración
+                        </NavLink>
+                      </li>
+                    )}
+                    {user?.role === 'Company' && (
+                      <li className="flex justify-center items-center w-full">
+                        <NavLink
+                          to="/company"
+                          className="block w-full px-4 py-2 text-[#C7AA68] hover:bg-gray-600 rounded text-center"
+                          onClick={closeDropdown}
+                        >
+                          Mi empresa
+                        </NavLink>
+                      </li>
+                    )}
+                    <li className="flex justify-center items-center w-full">
+                      <button
+                        onClick={() => {
+                          closeDropdown();
+                          logout();
+                        }}
+                        className="block w-full text-center px-4 py-2 text-[#C7AA68] hover:bg-gray-600"
                       >
-                        Mi empresa
-                      </NavLink>
+                        Cerrar Sesión
+                      </button>
                     </li>
-                  )}
-                  <li>
-                    <button
-                      onClick={() => {
-                        closeDropdown();
-                        logout();
-                      }}
-                      className="block w-full text-left px-4 py-2 text-[#C7AA68] hover:bg-gray-600"
-                    >
-                      Cerrar Sesión
-                    </button>
-                  </li>
-                </ul>
+                  </ul>
+
+
               </div>
             ) : (
               <NavLink
@@ -162,6 +164,7 @@ const Header = () => {
               Home
             </NavLink>
               </li>
+              {isAuthenticated  && (
               <li>
                 <NavLink
                   to="/events"
@@ -174,6 +177,7 @@ const Header = () => {
                   Eventos
                 </NavLink>
               </li>
+              )}
               {user?.role === 'Company' && (
                 <li>
                   <NavLink
