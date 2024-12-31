@@ -13,15 +13,33 @@ const keyboardMap = [
   { name: "run", keys: ["Shift"] },
 ];
 
+const supportsWebGL = () => {
+  try {
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (!gl) return false;
+    if (!gl.getShaderPrecisionFormat) return false; // Check for shader precision format support
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
 const CanvasWrapper = () => {
   const location = useLocation();
   const eventId = location.state?.eventId; // Obtener el eventId del estado de navegación
+  
   useEffect(() => {
     const header = document.querySelector("header");
     if (header) {
       header.style.display = "none";
     }
-  })
+  }, []);
+
+  if (!supportsWebGL()) {
+    return <p>Tu dispositivo no soporta WebGL. Intenta actualizar tu navegador o usar otro dispositivo.</p>;
+  }
+
   if (!eventId) {
     return <p>No se seleccionó ningún evento.</p>; // Mensaje si no hay evento seleccionado
   }
@@ -36,7 +54,6 @@ const CanvasWrapper = () => {
           style={{
             touchAction: "none",
           }}
-          shadows
         >
           <color attach="background" args={["#f5f3ee"]} />
           {/* <fog attach="fog" args={["#f5f3ee", 10, 50]} /> */}

@@ -104,7 +104,6 @@ const Experience = ({ eventId }) => {
       <Physics >
         {/* Base model */}
         <Base position={baseConfig.position} scale={baseConfig.scale} />
-
         {/* Render stands dynamically */}
         {stands.map((stand) => (
           <Stand

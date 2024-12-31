@@ -8,6 +8,12 @@ import api from "../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
+const supportsWebGL = () => {
+  const canvas = document.createElement("canvas");
+  const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+  return !!gl;
+};
+
 const EventPage = () => {
   const { eventId } = useParams();
   const [eventDetails, setEventDetails] = useState(null);
@@ -16,12 +22,14 @@ const EventPage = () => {
   const [isTablet, setIsTablet] = useState(false); // Estado adicional para tabletas
   const [hover, setHover] = useState(false);
   const navigate = useNavigate();
+
   useEffect(() => {
-        const header = document.querySelector("header");
-        if (header) {
-          header.style.display = "none";
-        }
-      })
+    const header = document.querySelector("header");
+    if (header) {
+      header.style.display = "none";
+    }
+  }, []);
+
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
@@ -59,6 +67,10 @@ const EventPage = () => {
   const handleBack = () => {
     navigate(-1);
   };
+
+  if (!supportsWebGL()) {
+    return <p>Tu dispositivo no soporta WebGL. Intenta actualizar tu navegador o usar otro dispositivo.</p>;
+  }
 
   return (
     <>
