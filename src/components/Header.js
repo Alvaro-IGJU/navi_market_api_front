@@ -27,8 +27,8 @@ const Header = () => {
           to="/"
           className={({ isActive }) =>
             isActive
-              ? 'flex items-center  border-white text-white'
-              : 'flex items-center  border-transparent hover:border-white text-white'
+              ? 'flex items-center  border-white text-white text-decoration-none'
+              : 'flex items-center  border-transparent hover:border-white text-white text-decoration-none'
           }
         >
           <span className="self-center text-xl font-semibold whitespace-nowrap">
