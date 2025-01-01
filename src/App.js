@@ -18,6 +18,10 @@ import CanvasWrapper from './components/CanvasWrapper'; // Nuevo componente impo
 import ListEventsPage from './pages/ListEventsPage';
 import AdminDashboard from './pages/AdminDashboard'; // Importar el nuevo componente
 import EventPage from './pages/EventPage';
+import AdminMenu from './pages/AdminMenu';
+import AdminManageSectors from './pages/AdminManageSectors';
+import AdminManagePositions from './pages/AdminManagePositions';
+import EditEventPage from './pages/AdminEditEventPage';
 
 const App = () => {
   return (
@@ -49,7 +53,7 @@ const App = () => {
             path="/admin"
             element={
               <PrivateRoute>
-                <AdminPage />
+                <AdminMenu />
               </PrivateRoute>
             }
           />
@@ -86,10 +90,34 @@ const App = () => {
             }
           />
           <Route
+        path="/admin/events/edit/:eventId" // Ruta para editar un evento con el parámetro :eventId
+        element={
+          <PrivateRoute>
+            <EditEventPage />
+          </PrivateRoute>
+        }
+      />
+          <Route
             path="/admin/stands"
             element={
               <PrivateRoute>
                 <AdminStandsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/sectors"
+            element={
+              <PrivateRoute>
+                <AdminManageSectors />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/positions"
+            element={
+              <PrivateRoute>
+                <AdminManagePositions />
               </PrivateRoute>
             }
           />

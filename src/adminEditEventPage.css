@@ -1,0 +1,132 @@
+/* General Layout */
+.edit-event-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    background-color: #1e293b;
+    padding: 2rem;
+  }
+  
+  .edit-event-container {
+    background-color: #2d3748;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 700px;
+    margin-top: 11vh;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .edit-event-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #c7aa68;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  /* Form Grid */
+  .edit-event-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  
+  .edit-event-form-field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .edit-event-label {
+    font-size: 1rem;
+    color: #e2e8f0;
+    margin-bottom: 0.5rem;
+  }
+  
+  .edit-event-input,
+  .edit-event-textarea,
+  .edit-event-input[type="file"] {
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid #4a5568;
+    background-color: #4a5568;
+    color: #f7fafc;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .edit-event-input[type="file"] {
+    padding: 0.5rem;
+  }
+  
+  .edit-event-textarea {
+    resize: none;
+  }
+  
+  .edit-event-input:focus,
+  .edit-event-textarea:focus {
+    outline: none;
+    border-color: #c7aa68;
+    box-shadow: 0 0 4px #c7aa68;
+  }
+  
+  /* Image Section */
+  .edit-event-image-field {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .edit-event-image-field img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid #4a5568;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Buttons */
+  .edit-event-buttons {
+    grid-column: span 2;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .edit-event-button {
+    background-color: #c7aa68;
+    color: #1e293b;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .edit-event-button:hover {
+    background-color: #9e8a52;
+  }
+  
+  /* Messages */
+  .message {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #e53e3e; /* Rojo para errores */
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .edit-event-form-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .edit-event-buttons {
+      grid-column: span 1;
+    }
+  }
+  

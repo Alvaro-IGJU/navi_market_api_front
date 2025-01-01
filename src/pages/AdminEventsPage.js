@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
+import '../adminEventsPage.css';
 
 const AdminEventsPage = () => {
   const { user } = useContext(AuthContext);
@@ -13,10 +14,9 @@ const AdminEventsPage = () => {
     end_date: '',
     description: '',
     image: '',
-    max_stands: 10, // Valor predeterminado para el número máximo de stands
+    max_stands: 10,
   });
   const [message, setMessage] = useState('');
-  const [editingEvent, setEditingEvent] = useState(null);
 
   useEffect(() => {
     if (!user?.is_superuser) {
@@ -56,33 +56,19 @@ const AdminEventsPage = () => {
   const handleEventSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
-    const endpoint = editingEvent ? `/events/${editingEvent.id}/update/` : '/events/create/';
-    const method = editingEvent ? 'put' : 'post';
 
     try {
       const token = localStorage.getItem('accessToken');
       if (!token) throw new Error('No estás autenticado.');
 
-      const response = await api({
-        method: method,
-        url: endpoint,
-        data: newEvent,
+      await api.post('/events/create/', newEvent, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
 
-      if (editingEvent) {
-        setEvents((prevEvents) =>
-          prevEvents.map((event) => (event.id === editingEvent.id ? response.data : event))
-        );
-        setMessage('Evento actualizado con éxito.');
-      } else {
-        setEvents((prevEvents) => [...prevEvents, response.data]);
-        setMessage('Evento creado con éxito.');
-      }
-
+      setMessage('Evento creado con éxito.');
       setNewEvent({
         name: '',
         start_date: '',
@@ -91,16 +77,10 @@ const AdminEventsPage = () => {
         image: '',
         max_stands: 10,
       });
-      setEditingEvent(null);
     } catch (error) {
-      console.error('Error al guardar el evento:', error);
-      setMessage(error.response?.data?.detail || 'Error al guardar el evento.');
+      console.error('Error al crear el evento:', error);
+      setMessage(error.response?.data?.detail || 'Error al crear el evento.');
     }
-  };
-
-  const handleEdit = (event) => {
-    setNewEvent(event);
-    setEditingEvent(event);
   };
 
   const handleDelete = async (eventId) => {
@@ -122,108 +102,101 @@ const AdminEventsPage = () => {
   };
 
   return (
-    <div className="bg-gray-900 min-h-screen text-gray-100 pt-4">
-      <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold mb-6 text-[#C7AA68]">Gestión de Eventos</h1>
-        {message && <p className="text-red-500">{message}</p>}
+    <div className="admin-page">
+      <div className="admin-container">
+        <h1 className="admin-title">Gestión de Eventos</h1>
+        {message && <p className="message">{message}</p>}
 
-        <form onSubmit={handleEventSubmit} className="mb-4">
-          <div>
-            <label className="block text-gray-200">Nombre del Evento</label>
+        <h2 className="section-title">Crear Nuevo Evento</h2>
+        <form onSubmit={handleEventSubmit} className="form-group">
+          <div className="form-field">
+            <label>Nombre del Evento</label>
             <input
               type="text"
               name="name"
               value={newEvent.name}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded"
               required
             />
           </div>
-          <div>
-            <label className="block text-gray-200">Fecha de Inicio</label>
+          <div className="form-field">
+            <label>Fecha de Inicio</label>
             <input
               type="date"
               name="start_date"
               value={newEvent.start_date}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded"
               required
             />
           </div>
-          <div>
-            <label className="block text-gray-200">Fecha de Fin</label>
+          <div className="form-field">
+            <label>Fecha de Fin</label>
             <input
               type="date"
               name="end_date"
               value={newEvent.end_date}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded"
               required
             />
           </div>
-          <div>
-            <label className="block text-gray-200">Descripción</label>
-            <textarea
-              name="description"
-              value={newEvent.description}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded"
-              rows="4"
-            ></textarea>
-          </div>
-          <div>
-            <label className="block text-gray-200">Imagen</label>
-            <input
-              type="file"
-              onChange={handleImageChange}
-              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-200">Número Máximo de Stands</label>
+          <div className="form-field">
+            <label>Número Máximo de Stands</label>
             <input
               type="number"
               name="max_stands"
               value={newEvent.max_stands}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded"
               required
             />
           </div>
-          <button
-            type="submit"
-            className="w-full mt-2 bg-[#C7AA68] text-gray-900 py-2 rounded hover:bg-[#9E8A52] transition duration-300"
-          >
-            {editingEvent ? 'Actualizar Evento' : 'Crear Evento'}
+          <div className="form-field full-width">
+            <label>Descripción</label>
+            <textarea
+              name="description"
+              value={newEvent.description}
+              onChange={handleInputChange}
+              rows="4"
+            ></textarea>
+          </div>
+          <div className="form-field full-width">
+            <label>Imagen</label>
+            <input type="file" onChange={handleImageChange} />
+          </div>
+          <button type="submit" className="form-button">
+            Crear Evento
           </button>
         </form>
 
-        <ul>
+        <h2 className="section-title">Listado de Eventos</h2>
+        <div className="events-grid">
           {events.map((event) => (
-            <li key={event.id} className="bg-gray-700 p-4 mb-2 rounded">
-              <strong>{event.name}</strong> ({event.start_date} - {event.end_date})
-              <p>{event.description}</p>
-              {event.image && (
-                <img src={event.image} alt="Event" className="w-full h-auto rounded" />
-              )}
-              <p>
-                <strong>Número Máximo de Stands:</strong> {event.max_stands}
+            <div key={event.id} className="event-card-list">
+              {event.image && <img src={event.image} alt="Event" className="event-image" />}
+              <h3 className="event-name">{event.name}</h3>
+              <p className="event-date">
+                {event.start_date} - {event.end_date}
               </p>
-              <button
-                onClick={() => handleEdit(event)}
-                className="bg-blue-500 text-gray-100 px-4 py-1 rounded mt-2 mr-2"
-              >
-                Editar
-              </button>
-              <button
-                onClick={() => handleDelete(event.id)}
-                className="bg-red-500 text-gray-100 px-4 py-1 rounded mt-2"
-              >
-                Eliminar
-              </button>
-            </li>
+              <p className="event-description">{event.description}</p>
+              <p>
+                <strong>Máx. Stands:</strong> {event.max_stands}
+              </p>
+              <div className="event-actions">
+                <button
+                  onClick={() => navigate(`/admin/events/edit/${event.id}`)}
+                  className="edit-button"
+                >
+                  Editar
+                </button>
+                <button
+                  onClick={() => handleDelete(event.id)}
+                  className="delete-button"
+                >
+                  Eliminar
+                </button>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     </div>
   );

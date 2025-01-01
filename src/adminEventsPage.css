@@ -1,0 +1,117 @@
+.admin-container {
+    margin-top: 13vh;
+  }
+  
+  .form-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .form-field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-field.full-width {
+    grid-column: span 2;
+  }
+  
+  .form-button {
+    grid-column: span 2;
+    background-color: #c7aa68;
+    color: #1e293b;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .form-button:hover {
+    background-color: #9e8a52;
+  }
+  
+  /* Grid and Card Design */
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  
+  .event-card-list {
+    background-color: #2d3748;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    color: #f7fafc;
+    padding:20px;
+  }
+  
+  .event-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+  
+  .event-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #c7aa68;
+    margin-bottom: 0.5rem;
+  }
+  
+  .event-date {
+    font-size: 1rem;
+    color: #a0aec0;
+    margin-bottom: 0.5rem;
+  }
+  
+  .event-description {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    margin-bottom: 1rem;
+  }
+  
+  .event-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .edit-button {
+    background-color: #3182ce;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .edit-button:hover {
+    background-color: #2b6cb0;
+  }
+  
+  .delete-button {
+    background-color: #e53e3e;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .delete-button:hover {
+    background-color: #c53030;
+  }
+  
+  .current-image {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  

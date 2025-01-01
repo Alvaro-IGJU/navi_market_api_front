@@ -1,0 +1,83 @@
+.admin-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Cambiado de height a min-height */
+  background-color: #1e293b; /* Fondo oscuro */
+  color: #ffffff; /* Texto blanco */
+  font-family: Arial, sans-serif;
+  padding: 1rem; /* Espaciado interno para evitar cortes en móviles */
+  box-sizing: border-box;
+}
+
+.admin-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  width: 100%; /* Asegura que las opciones no se salgan del contenedor */
+  max-width: 1200px; /* Limita el ancho en pantallas grandes */
+}
+
+.admin-option {
+  background-color: #374151; /* Color de tarjeta */
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  color: #ffffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  width: calc(100% - 2rem); /* Ocupa todo el ancho con un margen en pantallas pequeñas */
+  max-width: 200px; /* Máximo ancho en pantallas grandes */
+  box-sizing: border-box;
+}
+
+.admin-option:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.admin-option h3 {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.admin-option p {
+  font-size: 0.9rem;
+  color: #d1d5db;
+}
+
+.admin-option a {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: #c7aa68;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.admin-option a:hover {
+  text-decoration: underline;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .admin-options {
+    gap: 1rem; /* Reduce el espacio entre opciones */
+  }
+
+  .admin-option {
+    width: 100%; /* Ocupa todo el ancho disponible en pantallas pequeñas */
+    max-width: none; /* Elimina el límite de ancho */
+    padding: 1rem; /* Reduce el padding para ahorrar espacio */
+  }
+
+  .admin-option h3 {
+    font-size: 1rem; /* Reduce el tamaño del título */
+  }
+
+  .admin-option p {
+    font-size: 0.8rem; /* Reduce el tamaño de la descripción */
+  }
+}
