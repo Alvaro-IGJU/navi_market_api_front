@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Html, SpotLight, Environment } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Base from "../components/Base";
 import api from "../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,6 +16,7 @@ const supportsWebGL = () => {
 
 const EventPage = () => {
   const { eventId } = useParams();
+  const [searchParams] = useSearchParams();
   const [eventDetails, setEventDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
@@ -26,7 +27,7 @@ const EventPage = () => {
   useEffect(() => {
     const header = document.querySelector("header");
     if (header) {
-      header.style.display = "none";
+      header.style.display = "block";
     }
   }, []);
 
@@ -74,7 +75,7 @@ const EventPage = () => {
 
   return (
     <>
-      <button
+      {searchParams.get('unique') !== "true" && <button
         onClick={handleBack}
         style={{
           position: "fixed",
@@ -96,7 +97,7 @@ const EventPage = () => {
           size="lg" 
           style={{ color: "#FFD43B" }} 
         />
-      </button>
+      </button>}
 
       <Canvas
         style={{ width: "100vw", height: "100vh", backgroundColor: "#111111" }}

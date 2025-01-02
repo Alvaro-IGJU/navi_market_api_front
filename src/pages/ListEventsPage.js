@@ -24,6 +24,10 @@ const ListEventsPage = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
+        if(response.data.length === 1){
+          navigate(`/events/${response.data[0].id}?unique=true`); // Redirigir a la página del evento específico
+        }
+
         setEvents(response.data);
         setLoading(false);
       } catch (err) {
