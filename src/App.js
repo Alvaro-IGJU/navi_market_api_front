@@ -22,6 +22,7 @@ import AdminMenu from './pages/AdminMenu';
 import AdminManageSectors from './pages/AdminManageSectors';
 import AdminManagePositions from './pages/AdminManagePositions';
 import EditEventPage from './pages/AdminEditEventPage';
+import EditStandPage from './pages/AdminEditStandPage';
 
 const App = () => {
   return (
@@ -102,6 +103,14 @@ const App = () => {
             element={
               <PrivateRoute>
                 <AdminStandsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/stands/edit/:standId"
+            element={
+              <PrivateRoute>
+                <EditStandPage />
               </PrivateRoute>
             }
           />

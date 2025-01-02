@@ -270,6 +270,12 @@ const AdminStandsPage = () => {
                   </a>
                 </p>
               )}
+              <button
+                onClick={() => navigate(`/admin/stands/edit/${stand.id}`)}
+                className="edit-button"
+              >
+                Editar
+              </button>
               <button onClick={() => handleDelete(stand.id)} className="delete-button">
                 Eliminar
               </button>
