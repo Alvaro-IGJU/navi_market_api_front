@@ -13,18 +13,26 @@ const AuthPage = () => {
     password: "",
     sector: "",
     position: "",
+    username: "", // Asegúrate de incluir 'username' en el estado
   });
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [sectors, setSectors] = useState([]);
   const [positions, setPositions] = useState([]);
   const { loginUser } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // Estados para el modal de recuperación de contraseña
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [recoveryEmail, setRecoveryEmail] = useState("");
+  const [isRecovering, setIsRecovering] = useState(false);
+
   useEffect(() => {
-      const header = document.querySelector("header");
-      if (header) {
-        header.style.display = "block";
-      }
-    })
+    const header = document.querySelector("header");
+    if (header) {
+      header.style.display = "block";
+    }
+  });
+
   // Obtener sectores y posiciones desde el backend
   useEffect(() => {
     const fetchSectorsAndPositions = async () => {
@@ -32,28 +40,27 @@ const AuthPage = () => {
         // Realiza las solicitudes a la API
         const sectorResponse = await api.get("/users/sectors/");
         const positionResponse = await api.get("/users/positions/");
-  
+
         // Verifica si las respuestas son válidas antes de usarlas
         if (sectorResponse && sectorResponse.data) {
           setSectors(sectorResponse.data);
         } else {
           console.error("Error: sectorResponse no contiene datos válidos");
-          console.log(sectorResponse, sectorResponse.data)
+          console.log(sectorResponse, sectorResponse.data);
         }
-  
+
         if (positionResponse && positionResponse.data) {
           setPositions(positionResponse.data);
         } else {
           console.error("Error: positionResponse no contiene datos válidos");
-          console.log(positionResponse, positionResponse.data)
-
+          console.log(positionResponse, positionResponse.data);
         }
       } catch (error) {
         console.error("Error fetching sectors and positions:", error);
         toast.error("No se pudieron cargar los sectores y cargos.");
       }
     };
-  
+
     fetchSectorsAndPositions();
   }, []);
 
@@ -104,10 +111,38 @@ const AuthPage = () => {
       console.error(error);
       toast.error(
         "Error: " +
-        (error.response?.data?.email ||
-          error.response?.data?.password ||
-          "Ha ocurrido un error inesperado.")
+          (error.response?.data?.email ||
+            error.response?.data?.password ||
+            "Ha ocurrido un error inesperado.")
       );
+    }
+  };
+
+  // Función para manejar la recuperación de contraseña
+  const handlePasswordRecovery = async (e) => {
+    e.preventDefault();
+    if (!recoveryEmail) {
+      toast.error("Por favor, ingresa tu correo electrónico.");
+      return;
+    }
+
+    setIsRecovering(true);
+    try {
+      // Asegúrate de que esta ruta exista en tu backend
+      await api.post("/users/forgot-password/", { email: recoveryEmail });
+      toast.success("Se ha enviado un correo de recuperación.");
+      setIsModalOpen(false);
+      setRecoveryEmail("");
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        "Error: " +
+          (error.response?.data?.email ||
+            error.response?.data?.message ||
+            "Ha ocurrido un error inesperado.")
+      );
+    } finally {
+      setIsRecovering(false);
     }
   };
 
@@ -226,6 +261,14 @@ const AuthPage = () => {
                 {isLogin ? "Iniciar Sesión" : "Registrarse"}
               </button>
             </form>
+            {isLogin && (
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="w-full mt-2 text-sm text-[#C7AA68] hover:underline focus:outline-none"
+              >
+                ¿Olvidaste tu contraseña?
+              </button>
+            )}
             <button
               onClick={() => setIsLogin(!isLogin)}
               className="w-full mt-4 text-sm text-[#C7AA68] hover:underline focus:outline-none"
@@ -235,6 +278,65 @@ const AuthPage = () => {
                 : "¿Ya tienes cuenta? Inicia sesión"}
             </button>
           </motion.div>
+        </AnimatePresence>
+
+        {/* Modal de Recuperación de Contraseña */}
+        <AnimatePresence>
+          {isModalOpen && (
+            <>
+              {/* Overlay */}
+              <motion.div
+                className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsModalOpen(false)}
+              />
+
+              {/* Contenido del Modal */}
+              <motion.div
+                className="fixed inset-0 flex items-center justify-center z-50"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0 }}
+              >
+                <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-sm relative">
+                  <h2 className="text-2xl font-bold mb-4 text-[#C7AA68] text-center">
+                    Recuperar Contraseña
+                  </h2>
+                  <form onSubmit={handlePasswordRecovery} className="space-y-4">
+                    <div>
+                      <label className="block mb-1 text-[#C7AA68]">Correo Electrónico:</label>
+                      <input
+                        type="email"
+                        value={recoveryEmail}
+                        onChange={(e) => setRecoveryEmail(e.target.value)}
+                        required
+                        className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
+                        placeholder="ejemplo@correo.com"
+                      />
+                    </div>
+                    <div className="flex justify-end space-x-2">
+                      <button
+                        type="button"
+                        onClick={() => setIsModalOpen(false)}
+                        className="px-4 py-2 bg-gray-600 text-gray-200 rounded hover:bg-gray-500 transition duration-300"
+                      >
+                        Cancelar
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={isRecovering}
+                        className="px-4 py-2 bg-[#C7AA68] text-gray-900 rounded hover:bg-[#9E8A52] transition duration-300"
+                      >
+                        {isRecovering ? "Enviando..." : "Enviar"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </motion.div>
+            </>
+          )}
         </AnimatePresence>
       </div>
       <ToastContainer />
