@@ -208,7 +208,7 @@ const EditStandPage = () => {
           <div className="edit-stand-form-field">
             <label>URL del Video</label>
             <input
-              type="url"
+              type="text"
               name="url_video"
               value={stand.url_video || ""}
               onChange={handleInputChange}

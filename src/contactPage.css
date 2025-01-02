@@ -1,0 +1,116 @@
+.contact-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    background-color: #1e293b;
+    padding: 2rem;
+  }
+  
+  .contact-container {
+    background-color: #2d3748;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .contact-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #c7aa68;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .contact-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    color: #f7fafc;
+  }
+  
+  .contact-item {
+    flex: 1;
+    margin: 0 1rem;
+    text-align: center;
+  }
+  
+  .contact-item h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #c7aa68;
+  }
+  
+  .success-message {
+    text-align: center;
+    font-size: 1rem;
+    color: #2f855a;
+    margin-bottom: 1rem;
+  }
+  
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .form-field label {
+    font-size: 1rem;
+    color: #e2e8f0;
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-field input,
+  .form-field textarea {
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid #4a5568;
+    background-color: #4a5568;
+    color: #f7fafc;
+    font-size: 1rem;
+  }
+  
+  .form-field input:focus,
+  .form-field textarea:focus {
+    outline: none;
+    border-color: #c7aa68;
+    box-shadow: 0 0 4px #c7aa68;
+  }
+  
+  .contact-button {
+    background-color: #c7aa68;
+    color: #1e293b;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .contact-button:hover {
+    background-color: #9e8a52;
+  }
+  
+  .contact-map {
+    margin-top: 2rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .contact-details {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .contact-item {
+      margin: 1rem 0;
+    }
+  }
+  

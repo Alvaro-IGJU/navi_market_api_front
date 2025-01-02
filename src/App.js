@@ -23,6 +23,7 @@ import AdminManageSectors from './pages/AdminManageSectors';
 import AdminManagePositions from './pages/AdminManagePositions';
 import EditEventPage from './pages/AdminEditEventPage';
 import EditStandPage from './pages/AdminEditStandPage';
+import ContactPage from './pages/ContactPage';
 
 const App = () => {
   return (
@@ -50,6 +51,7 @@ const App = () => {
               </PrivateRoute>
             }
           />
+          
           <Route
             path="/admin"
             element={

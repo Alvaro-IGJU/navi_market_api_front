@@ -192,46 +192,8 @@ const Header = () => {
                   </NavLink>
                 </li>
               )}
-              {user?.is_superuser && (
-                <>
-                  <li>
-                    <NavLink
-                      to="/admin/dashboard"
-                      className={({ isActive }) =>
-                        isActive
-                          ? 'block py-2 pr-4 pl-3 text-[#C7AA68] rounded lg:bg-transparent lg:p-0 dark:text-[#C7AA68]'
-                          : 'block py-2 pr-4 pl-3 text-white hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-primary-700 lg:p-0 dark:text-white hover:border-white'
-                      }
-                    >
-                      Dashboard Admin
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/admin/stands"
-                      className={({ isActive }) =>
-                        isActive
-                          ? 'block py-2 pr-4 pl-3 text-[#C7AA68] rounded lg:bg-transparent lg:p-0 dark:text-[#C7AA68]'
-                          : 'block py-2 pr-4 pl-3 text-white hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-primary-700 lg:p-0 dark:text-white hover:border-white'
-                      }
-                    >
-                      Stands
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/admin/create-company-user"
-                      className={({ isActive }) =>
-                        isActive
-                          ? 'block py-2 pr-4 pl-3 text-[#C7AA68] rounded lg:bg-transparent lg:p-0 dark:text-[#C7AA68]'
-                          : 'block py-2 pr-4 pl-3 text-white hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-primary-700 lg:p-0 dark:text-white hover:border-white'
-                      }
-                    >
-                      Crear Usuario Empresa
-                    </NavLink>
-                  </li>
-                </>
-              )}
+             
+              
             </ul>
           </div>
         </div>
