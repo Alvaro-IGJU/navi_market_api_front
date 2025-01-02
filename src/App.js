@@ -24,7 +24,7 @@ import AdminManagePositions from './pages/AdminManagePositions';
 import EditEventPage from './pages/AdminEditEventPage';
 import EditStandPage from './pages/AdminEditStandPage';
 import ContactPage from './pages/ContactPage';
-
+import ResetPasswordPage from './components/ResetPassword';
 const App = () => {
   return (
     <Router>
@@ -60,6 +60,7 @@ const App = () => {
               </PrivateRoute>
             }
           />
+           <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
           <Route
             path="/company"
             element={
