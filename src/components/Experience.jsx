@@ -34,6 +34,7 @@ const Experience = ({ eventId }) => {
           type: stand.type,
           catalog_pdf: stand.catalog_pdf,
           url_video: stand.url_video,
+          url_web: stand.url_web,
         };
       });
 
@@ -118,6 +119,7 @@ const Experience = ({ eventId }) => {
             isInteracting={isInteracting} // Pass isInteracting
             setIsInteracting={setIsInteracting} // Pass setIsInteracting
             url_video={stand.url_video}
+            url_web={stand.url_web}
           />
         ))}
 

@@ -20,6 +20,7 @@ const AdminStandsPage = () => {
     catalog_pdf: null,
     prompts_pdf: null,
     url_video: "",
+    url_web: "",
   });
   const [message, setMessage] = useState("");
 
@@ -120,6 +121,7 @@ const AdminStandsPage = () => {
         catalog_pdf: null,
         prompts_pdf: null,
         url_video: "",
+        url_web: "",
       });
     } catch (error) {
       console.error("Error al crear el stand:", error);
@@ -250,6 +252,16 @@ const AdminStandsPage = () => {
               value={newStand.url_video}
               onChange={handleInputChange}
               placeholder="https://example.com/video"
+            />
+          </div>
+          <div className="form-group">
+            <label>URL de la WEB</label>
+            <input
+              type="url"
+              name="url_web"
+              value={newStand.url_web}
+              onChange={handleInputChange}
+              placeholder="https://example.com"
             />
           </div>
           <button type="submit" className="form-button">

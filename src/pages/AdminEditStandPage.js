@@ -215,6 +215,16 @@ const EditStandPage = () => {
               placeholder="https://example.com/video"
             />
           </div>
+          <div className="edit-stand-form-field">
+            <label>URL de la WEB</label>
+            <input
+              type="text"
+              name="url_web"
+              value={stand.url_web || ""}
+              onChange={handleInputChange}
+              placeholder="https://example.com"
+            />
+          </div>
           <div className="edit-stand-form-buttons">
             <button type="submit" className="edit-stand-form-button">
               Actualizar Stand

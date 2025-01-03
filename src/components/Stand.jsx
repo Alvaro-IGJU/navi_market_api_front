@@ -12,6 +12,7 @@ import Video from "./Video";
 import Mailbox from "./Mailbox";
 import Catalog from "./Catalog";
 import StandSilver from "./StandSilver";
+import Computer from "./Computer";
 
 const Stand = ({
   id,
@@ -26,6 +27,7 @@ const Stand = ({
   setIsInteracting,
   getPlayerCamera,
   url_video,
+  url_web
 }) => {
   const { posX, posY, posZ, rotX, rotY, rotZ } = useControls(`Stand ${id}`, {
     posX: { value: position[0], min: -100, max: 100, step: 0.1 },
@@ -198,13 +200,16 @@ const Stand = ({
   const layoutConfig = {
     bronze: {
       mailboxPosition: [0.6, -1, -1.3],
-      videoPosition: [0.28, 0.02, -0.15],
-      catalogPosition: [0, -0.28, 0.33],
+      videoPosition: [0.29, 0.0, -0],
+      screenPosition:[3.5, -8.2, -0.01],
+      computerPosition:[0, -0.4, -0.3],
+      catalogPosition: [0, -0.29, 0.33],
       chatbotPosition: [0, -0.2, -1],
     },
     silver: {
       mailboxPosition: [-1, -1, 3.5],
-      videoPosition: [0.3, 0.3, 4],
+      videoPosition: [0.01, 0, -0.66],
+      screenPosition:[0, 0.3, 0],
       catalogPosition: [0.6, -0.5, 3.8],
       chatbotPosition: [0, -0.2, -1],
     },
@@ -215,7 +220,7 @@ const Stand = ({
     },
   };
 
-  const { mailboxPosition, videoPosition, catalogPosition, chatbotPosition } =
+  const { mailboxPosition, videoPosition, screenPosition, computerPosition, catalogPosition, chatbotPosition } =
     layoutConfig[type] || layoutConfig["bronze"];
 
   return (
@@ -236,10 +241,10 @@ const Stand = ({
         <meshStandardMaterial color="green" transparent opacity={0.2} />
       </mesh>
 
-     
+    
 
 <Mailbox scale={[0.1, 0.1, 0.1]}
-         rotation={[0,Math.PI / 2,0]} 
+         rotation={[0,- Math.PI / 2,0]} 
          position={mailboxPosition} 
          handleClick={handleClick} 
          canInteract={canInteract}   
@@ -252,15 +257,27 @@ const Stand = ({
   showVideo={showVideo}
   setShowVideo={setShowVideo}
   setIsInteracting={setIsInteracting}
-  position={videoPosition}
-  rotation={[]}
+  screenPosition={screenPosition}
+  videoPosition={videoPosition}
   handleClick={handleClick}
   canInteract={canInteract} // Pasa la capacidad de interacción
   isInteracting={isInteracting}
 />
 
+<Computer 
+  position={computerPosition} // Posición en el espacio 3D
+  scale={[1.5, 1.5, 1.5]} // Escala del modelo
+  rotation={[0, Math.PI / 2, 0]} // Rotación en radianes (eje X, Y, Z)
+  canInteract={true} // Habilita la interacción con el modelo
+  isInteracting={false} // Controla si actualmente está interactuando
+  handleClick={handleClick}
+  webUrl={url_web}
+/>
+
+
 <Catalog
   position={catalogPosition}
+  rotation-x={-0.1}
   scale={[0.1, 0.1, 0.1]} // Ajusta la escala según sea necesario
   handleClick={handleClick} // Pasa la función de clic
   canInteract={canInteract} // Pasa la capacidad de interacción

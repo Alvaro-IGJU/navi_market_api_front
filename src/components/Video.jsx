@@ -1,61 +1,90 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Html } from "@react-three/drei";
-import Screen from "./Screen"; // Importa el componente Screen
+import Screen from "./Screen";
 
-const Video = ({ videoUrl, showVideo, setShowVideo, position, handleClick, canInteract, isInteracting }) => {
-  const [hoverMessage, setHoverMessage] = useState(null); // Estado para el mensaje interactivo
+const Video = ({
+  videoUrl,
+  showVideo,
+  setShowVideo,
+  screenPosition,
+  videoPosition,
+  handleClick,
+  canInteract,
+  isInteracting,
+}) => {
+  const [hoverMessage, setHoverMessage] = useState(null);
+  const [isHovering, setIsHovering] = useState(false);
+  const materialsRef = useRef([]); // Almacena referencias a los materiales del modelo
+
+  const setMaterialsEmissive = (color, intensity) => {
+    materialsRef.current.forEach((material) => {
+      material.emissive.set(color);
+      material.emissiveIntensity = intensity;
+    });
+  };
 
   const handleVideoClick = () => {
     if (canInteract && !isInteracting) {
-      console.log("Opening video with URL:", videoUrl); // Imprime el valor al abrir el video
-      setShowVideo(true); // Mostrar el video
-      handleClick("show_video"); // Llama a la función pasada como prop
+      setShowVideo(true);
+      handleClick("show_video");
     }
   };
 
+  const handlePointerOver = (e) => {
+    if (canInteract && !isInteracting) {
+      setIsHovering(true);
+
+      if (!materialsRef.current.length) {
+        const { material } = e.object;
+        if (Array.isArray(material)) {
+          materialsRef.current = material;
+        } else {
+          materialsRef.current = [material];
+        }
+      }
+
+      setMaterialsEmissive("yellow", 0.1);
+      document.body.style.cursor = "pointer";
+      setHoverMessage("Ver vídeo");
+    }
+  };
+
+  const handlePointerOut = () => {
+    setIsHovering(false);
+    setMaterialsEmissive("black", 0);
+    document.body.style.cursor = "default";
+    setHoverMessage(null);
+  };
+
   const handleCloseVideo = () => {
-    console.log("Closing video"); // Imprime al cerrar el video
-    setShowVideo(false); // Ocultar el video
+    setShowVideo(false);
   };
 
   return (
     <group>
       {/* Modelo interactivo */}
       <group
-        position={position}
+        screenPosition={screenPosition}
         rotation={[Math.PI / 2, Math.PI, Math.PI]}
-        scale={[0.08, 0.08, 0.08]} // Ajusta el tamaño del modelo
+        scale={[0.08, 0.08, 0.08]}
         onClick={handleVideoClick}
-        onPointerOver={(e) => {
-          if (canInteract && !isInteracting) {
-            e.object.material.emissive.set("yellow"); // Añade brillo amarillo
-            e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad
-            document.body.style.cursor = "pointer";
-            setHoverMessage("Ver vídeo"); // Establece el mensaje interactivo
-          }
-        }}
-        onPointerOut={(e) => {
-          e.object.material.emissive.set("black"); // Elimina el brillo
-          e.object.material.emissiveIntensity = 0;
-          document.body.style.cursor = "default";
-          setHoverMessage(null); // Limpia el mensaje interactivo
-        }}
+        onPointerOver={handlePointerOver}
+        onPointerOut={handlePointerOut}
       >
-        {/* Usa el componente Screen aquí con la rotación adecuada */}
-        <Screen position={[0, -10, 0]} />
+        <Screen position={screenPosition} />
       </group>
 
-      {/* Muestra el mensaje interactivo */}
-      {hoverMessage && canInteract && !isInteracting && (
+      {/* Mensaje interactivo */}
+      {hoverMessage && isHovering && canInteract && !isInteracting && (
         <Html
-        position={[position[0], position[1] + 0.2, position[2] + 0.2]}
+          position={[videoPosition[0], videoPosition[1] + 0.2, videoPosition[2] + 0.2]}
           style={{
             background: "rgba(0, 0, 0, 0.8)",
             color: "white",
             padding: "5px 20px",
             borderRadius: "5px",
             fontSize: "12px",
-            width: "91px"
+            width: "91px",
           }}
         >
           {hoverMessage}
@@ -66,12 +95,12 @@ const Video = ({ videoUrl, showVideo, setShowVideo, position, handleClick, canIn
       {showVideo && (
         <Html
           rotation={[0, Math.PI / 2, 0]}
-          position={[0.29, 0.02, 0]}
+          position={[videoPosition[0], videoPosition[1], videoPosition[2]]}
           scale={[0.41, 0.41, 0.41]}
           transform
           distanceFactor={1.5}
-          occlude // Activa el occlude para ocultar detrás de otros objetos
-          zIndexRange={[1, 10]} // Ajusta el rango del índice Z si es necesario
+          occlude
+          zIndexRange={[1, 10]}
         >
           <div
             style={{
@@ -81,6 +110,7 @@ const Video = ({ videoUrl, showVideo, setShowVideo, position, handleClick, canIn
               borderRadius: "10px",
               padding: "10px",
               boxShadow: "0 0 20px rgba(0, 0, 0, 0.5)",
+              position: "relative",
             }}
           >
             <iframe
