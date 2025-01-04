@@ -1,10 +1,24 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
 import api from "../api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { motion, AnimatePresence } from "framer-motion";
+
+const AuroraBackground = () => (
+  <div className="fixed inset-0 -z-10">
+    <div className="relative w-full h-full overflow-hidden bg-[#0A0F14]">
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0A0F14] via-[#0A0F14] to-black opacity-98"></div>
+      <div className="absolute -inset-[10px] opacity-10">
+        <div className="absolute top-1/4 -left-1/4 w-1/2 h-1/2 rounded-full bg-[#C7AA68]/10 blur-[120px] animate-pulse"></div>
+        <div className="absolute top-1/3 left-1/2 w-1/2 h-1/2 rounded-full bg-[#0A0F14]/20 blur-[120px] animate-pulse delay-700"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-1/2 h-1/2 rounded-full bg-[#C7AA68]/5 blur-[120px] animate-pulse delay-1000"></div>
+        <div className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 rounded-full bg-[#0A0F14]/15 blur-[120px] animate-pulse delay-300"></div>
+      </div>
+    </div>
+  </div>
+);
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -13,50 +27,29 @@ const AuthPage = () => {
     password: "",
     sector: "",
     position: "",
-    username: "", // Asegúrate de incluir 'username' en el estado
+    username: "",
   });
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [sectors, setSectors] = useState([]);
   const [positions, setPositions] = useState([]);
-  const { loginUser } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  // Estados para el modal de recuperación de contraseña
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [recoveryEmail, setRecoveryEmail] = useState("");
   const [isRecovering, setIsRecovering] = useState(false);
+  
+  const { loginUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const header = document.querySelector("header");
-    if (header) {
-      header.style.display = "block";
-    }
-  });
-
-  // Obtener sectores y posiciones desde el backend
   useEffect(() => {
     const fetchSectorsAndPositions = async () => {
       try {
-        // Realiza las solicitudes a la API
-        const sectorResponse = await api.get("/users/sectors/");
-        const positionResponse = await api.get("/users/positions/");
-
-        // Verifica si las respuestas son válidas antes de usarlas
-        if (sectorResponse && sectorResponse.data) {
-          setSectors(sectorResponse.data);
-        } else {
-          console.error("Error: sectorResponse no contiene datos válidos");
-          console.log(sectorResponse, sectorResponse.data);
-        }
-
-        if (positionResponse && positionResponse.data) {
-          setPositions(positionResponse.data);
-        } else {
-          console.error("Error: positionResponse no contiene datos válidos");
-          console.log(positionResponse, positionResponse.data);
-        }
+        const [sectorResponse, positionResponse] = await Promise.all([
+          api.get("/users/sectors/"),
+          api.get("/users/positions/")
+        ]);
+        
+        setSectors(sectorResponse.data || []);
+        setPositions(positionResponse.data || []);
       } catch (error) {
-        console.error("Error fetching sectors and positions:", error);
         toast.error("No se pudieron cargar los sectores y cargos.");
       }
     };
@@ -64,18 +57,8 @@ const AuthPage = () => {
     fetchSectorsAndPositions();
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleCheckboxChange = (e) => {
-    setAcceptTerms(e.target.checked);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!isLogin && !acceptTerms) {
       toast.error("Debes aceptar los términos y condiciones para registrarte.");
       return;
@@ -87,38 +70,25 @@ const AuthPage = () => {
           email_or_username: formData.email,
           password: formData.password,
         });
-        const { tokens } = response.data;
-        await loginUser(tokens);
+        await loginUser(response.data.tokens);
         toast.success("Inicio de sesión exitoso");
-        if (response.data.role === "Company") {
-          navigate("/dashboard");
-        } else {
-          navigate("/events");
-        }
+        navigate(response.data.role === "Company" ? "/dashboard" : "/events");
       } else {
-        const registerData = {
+        await api.post("/users/register/", {
           email: formData.email,
           password: formData.password,
           username: formData.username,
           sector: formData.sector,
           position: formData.position,
-        };
-        await api.post("/users/register/", registerData);
+        });
         toast.success("Registro exitoso. Ahora puedes iniciar sesión.");
         setIsLogin(true);
       }
     } catch (error) {
-      console.error(error);
-      toast.error(
-        "Error: " +
-          (error.response?.data?.email ||
-            error.response?.data?.password ||
-            "Ha ocurrido un error inesperado.")
-      );
+      toast.error(error.response?.data?.message || "Ha ocurrido un error inesperado.");
     }
   };
 
-  // Función para manejar la recuperación de contraseña
   const handlePasswordRecovery = async (e) => {
     e.preventDefault();
     if (!recoveryEmail) {
@@ -128,218 +98,247 @@ const AuthPage = () => {
 
     setIsRecovering(true);
     try {
-      // Asegúrate de que esta ruta exista en tu backend
       await api.post("/users/forgot-password/", { email: recoveryEmail });
       toast.success("Se ha enviado un correo de recuperación.");
       setIsModalOpen(false);
       setRecoveryEmail("");
     } catch (error) {
-      console.error(error);
-      toast.error(
-        "Error: " +
-          (error.response?.data?.email ||
-            error.response?.data?.message ||
-            "Ha ocurrido un error inesperado.")
-      );
+      toast.error(error.response?.data?.message || "Error al procesar la solicitud.");
     } finally {
       setIsRecovering(false);
     }
   };
 
   return (
-    <div className="bg-gray-900 min-h-screen flex items-center justify-center text-gray-100">
-      <div className="w-full max-w-md bg-gray-800 p-6 rounded-lg shadow-lg overflow-hidden relative">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={isLogin ? "login" : "register"}
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.6, ease: "easeInOut" }}
-          >
-            <h1 className="text-3xl font-bold mb-6 text-center text-[#C7AA68]">
-              {isLogin ? "Iniciar Sesión" : "Registrarse"}
-            </h1>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block mb-1 text-[#C7AA68]">Email:</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
-                />
-              </div>
-              {!isLogin && (
-                <>
-                  <div>
-                    <label className="block mb-1 text-[#C7AA68]">Usuario:</label>
-                    <input
-                      type="text"
-                      name="username"
-                      value={formData.username}
-                      onChange={handleChange}
-                      required
-                      className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-1 text-[#C7AA68]">Sector:</label>
-                    <select
-                      name="sector"
-                      value={formData.sector}
-                      onChange={handleChange}
-                      required
-                      className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
-                    >
-                      <option value="">Selecciona un sector</option>
-                      {sectors.map((sector) => (
-                        <option key={sector.id} value={sector.id}>
-                          {sector.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block mb-1 text-[#C7AA68]">Cargo:</label>
-                    <select
-                      name="position"
-                      value={formData.position}
-                      onChange={handleChange}
-                      required
-                      className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
-                    >
-                      <option value="">Selecciona un cargo</option>
-                      {positions.map((position) => (
-                        <option key={position.id} value={position.id}>
-                          {position.title}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </>
-              )}
-              <div>
-                <label className="block mb-1 text-[#C7AA68]">Contraseña:</label>
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
-                />
-              </div>
-              <div>
-                {!isLogin && (
-                  <label className="flex items-center text-sm text-[#C7AA68]">
-                    <input
-                      type="checkbox"
-                      checked={acceptTerms}
-                      onChange={handleCheckboxChange}
-                      className="mr-2"
-                    />
-                    Acepto los{" "}
-                    <a
-                      href="/terms"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline ml-1 text-[#C7AA68] hover:text-[#9E8A52]"
-                    >
-                      términos y condiciones
-                    </a>
-                  </label>
-                )}
-              </div>
+    <div className="relative min-h-screen font-sans text-white overflow-hidden">
+      <AuroraBackground />
+      
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="relative min-h-screen flex items-center justify-center"
+      >
+        <video
+          autoPlay
+          loop
+          muted
+          className="absolute top-0 left-0 w-full h-full object-cover opacity-30"
+        >
+          <source src="/multimedia/videos/navi-market-video.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#283941]/50 via-transparent to-[#283941]"></div>
 
-              <button
-                type="submit"
-                className="w-full bg-[#C7AA68] text-gray-900 py-2 rounded hover:bg-[#9E8A52] transition duration-300"
-              >
-                {isLogin ? "Iniciar Sesión" : "Registrarse"}
-              </button>
-            </form>
-            {isLogin && (
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="w-full mt-2 text-sm text-[#C7AA68] hover:underline focus:outline-none"
-              >
-                ¿Olvidaste tu contraseña?
-              </button>
-            )}
-            <button
-              onClick={() => setIsLogin(!isLogin)}
-              className="w-full mt-4 text-sm text-[#C7AA68] hover:underline focus:outline-none"
-            >
-              {isLogin
-                ? "¿No tienes cuenta? Regístrate"
-                : "¿Ya tienes cuenta? Inicia sesión"}
-            </button>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Modal de Recuperación de Contraseña */}
-        <AnimatePresence>
-          {isModalOpen && (
-            <>
-              {/* Overlay */}
+        <motion.div 
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="relative z-10 w-full max-w-sm"
+        >
+          <div className="backdrop-blur-md bg-white/5 p-6 rounded-2xl border border-[#C7AA68]/20 shadow-xl">
+            <AnimatePresence mode="wait">
               <motion.div
-                className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setIsModalOpen(false)}
-              />
-
-              {/* Contenido del Modal */}
-              <motion.div
-                className="fixed inset-0 flex items-center justify-center z-50"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0 }}
+                key={isLogin ? "login" : "register"}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.6 }}
               >
-                <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-sm relative">
-                  <h2 className="text-2xl font-bold mb-4 text-[#C7AA68] text-center">
-                    Recuperar Contraseña
-                  </h2>
-                  <form onSubmit={handlePasswordRecovery} className="space-y-4">
-                    <div>
-                      <label className="block mb-1 text-[#C7AA68]">Correo Electrónico:</label>
+                <h1 className="text-3xl font-bold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-[#C7AA68] via-[#D4BC87] to-[#C7AA68]">
+                  {isLogin ? "Bienvenido" : "Registro"}
+                </h1>
+                
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <motion.div whileHover={{ scale: 1.01 }} className="space-y-1">
+                    <label className="block text-sm text-[#C7AA68]">Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      className="w-full px-3 py-2 bg-white/5 border border-[#C7AA68]/20 rounded-lg focus:border-[#C7AA68] focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300"
+                      required
+                    />
+                  </motion.div>
+
+                  {!isLogin && (
+                    <>
+                      <motion.div whileHover={{ scale: 1.01 }} className="space-y-1">
+                        <label className="block text-sm text-[#C7AA68]">Usuario</label>
+                        <input
+                          type="text"
+                          name="username"
+                          value={formData.username}
+                          onChange={(e) => setFormData({...formData, username: e.target.value})}
+                          className="w-full px-3 py-2 bg-white/5 border border-[#C7AA68]/20 rounded-lg focus:border-[#C7AA68] focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300"
+                          required
+                        />
+                      </motion.div>
+
+                      <motion.div whileHover={{ scale: 1.01 }} className="space-y-1">
+                        <label className="block text-sm text-[#C7AA68]">Sector</label>
+                        <select
+                          name="sector"
+                          value={formData.sector}
+                          onChange={(e) => setFormData({...formData, sector: e.target.value})}
+                          className="w-full px-3 py-2 bg-white/5 border border-[#C7AA68]/20 rounded-lg focus:border-[#C7AA68] focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300"
+                          required
+                        >
+                          <option value="">Seleccionar</option>
+                          {sectors.map((sector) => (
+                            <option key={sector.id} value={sector.id}>{sector.name}</option>
+                          ))}
+                        </select>
+                      </motion.div>
+
+                      <motion.div whileHover={{ scale: 1.01 }} className="space-y-1">
+                        <label className="block text-sm text-[#C7AA68]">Cargo</label>
+                        <select
+                          name="position"
+                          value={formData.position}
+                          onChange={(e) => setFormData({...formData, position: e.target.value})}
+                          className="w-full px-3 py-2 bg-white/5 border border-[#C7AA68]/20 rounded-lg focus:border-[#C7AA68] focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300"
+                          required
+                        >
+                          <option value="">Seleccionar</option>
+                          {positions.map((position) => (
+                            <option key={position.id} value={position.id}>{position.title}</option>
+                          ))}
+                        </select>
+                      </motion.div>
+                    </>
+                  )}
+
+                  <motion.div whileHover={{ scale: 1.01 }} className="space-y-1">
+                    <label className="block text-sm text-[#C7AA68]">Contraseña</label>
+                    <input
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={(e) => setFormData({...formData, password: e.target.value})}
+                      className="w-full px-3 py-2 bg-white/5 border border-[#C7AA68]/20 rounded-lg focus:border-[#C7AA68] focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300"
+                      required
+                    />
+                  </motion.div>
+
+                  {!isLogin && (
+                    <div className="flex items-center space-x-2 text-xs">
                       <input
-                        type="email"
-                        value={recoveryEmail}
-                        onChange={(e) => setRecoveryEmail(e.target.value)}
-                        required
-                        className="w-full p-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C7AA68]"
-                        placeholder="ejemplo@correo.com"
+                        type="checkbox"
+                        checked={acceptTerms}
+                        onChange={(e) => setAcceptTerms(e.target.checked)}
+                        className="rounded border-[#C7AA68]/20 text-[#C7AA68]"
                       />
+                      <label className="text-gray-300">
+                        Acepto los{" "}
+                        <a href="/terms" className="text-[#C7AA68] hover:text-[#D4BC87] underline">
+                          términos y condiciones
+                        </a>
+                      </label>
                     </div>
-                    <div className="flex justify-end space-x-2">
-                      <button
-                        type="button"
-                        onClick={() => setIsModalOpen(false)}
-                        className="px-4 py-2 bg-gray-600 text-gray-200 rounded hover:bg-gray-500 transition duration-300"
-                      >
-                        Cancelar
-                      </button>
-                      <button
-                        type="submit"
-                        disabled={isRecovering}
-                        className="px-4 py-2 bg-[#C7AA68] text-gray-900 rounded hover:bg-[#9E8A52] transition duration-300"
-                      >
-                        {isRecovering ? "Enviando..." : "Enviar"}
-                      </button>
-                    </div>
-                  </form>
-                </div>
+                  )}
+
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    type="submit"
+                    className="w-full py-2 bg-gradient-to-r from-[#C7AA68] to-[#A68A50] hover:from-[#A68A50] hover:to-[#8A6E40] text-white font-medium rounded-lg shadow-lg shadow-[#C7AA68]/20 hover:shadow-[#C7AA68]/40 transition-all duration-300"
+                  >
+                    {isLogin ? "Iniciar Sesión" : "Registrarse"}
+                  </motion.button>
+                </form>
+
+                {isLogin && (
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="w-full mt-2 text-xs text-[#C7AA68] hover:text-[#D4BC87]"
+                  >
+                    ¿Olvidaste tu contraseña?
+                  </button>
+                )}
+
+                <button
+                  onClick={() => setIsLogin(!isLogin)}
+                  className="w-full mt-2 text-xs text-[#C7AA68] hover:text-[#D4BC87]"
+                >
+                  {isLogin ? "¿No tienes cuenta? Regístrate" : "¿Ya tienes cuenta? Inicia sesión"}
+                </button>
               </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-      </div>
-      <ToastContainer />
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* Modal de recuperación de contraseña */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-[#1A1F25] p-8 rounded-2xl border border-[#C7AA68]/20 w-full max-w-sm"
+            >
+              <h2 className="text-2xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-[#C7AA68] to-[#D4BC87]">
+                Recuperar Contraseña
+              </h2>
+              
+              <form onSubmit={handlePasswordRecovery} className="space-y-6">
+                <div className="space-y-2">
+                  <label className="block text-sm text-[#C7AA68]">Email</label>
+                  <input
+                    type="email"
+                    value={recoveryEmail}
+                    onChange={(e) => setRecoveryEmail(e.target.value)}
+                    className="w-full px-4 py-3 bg-white/5 border border-[#C7AA68]/20 rounded-lg focus:border-[#C7AA68] focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300"
+                    required
+                  />
+                </div>
+
+                <div className="flex justify-between space-x-4">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    type="button"
+                    onClick={() => setIsModalOpen(false)}
+                    className="w-1/2 py-3 border border-[#C7AA68] text-[#C7AA68] rounded-lg hover:bg-[#C7AA68]/10 transition-all duration-300"
+                  >
+                    Cancelar
+                  </motion.button>
+
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    type="submit"
+                    disabled={isRecovering}
+                    className="w-1/2 py-3 bg-gradient-to-r from-[#C7AA68] to-[#A68A50] hover:from-[#A68A50] hover:to-[#8A6E40] text-white rounded-lg shadow-lg shadow-[#C7AA68]/20 hover:shadow-[#C7AA68]/40 transition-all duration-300"
+                  >
+                    {isRecovering ? "Enviando..." : "Recuperar"}
+                  </motion.button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };
