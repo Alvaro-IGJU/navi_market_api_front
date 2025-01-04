@@ -5,24 +5,37 @@ Command: npx gltfjsx@6.5.3 public/models/stand_silver.glb -o src/components/Stan
 
 import React from 'react'
 import { useGLTF } from '@react-three/drei'
+import { RigidBody } from '@react-three/rapier'
 
 export function StandSilver(props) {
   const { nodes, materials } = useGLTF('/models/stand_silver.glb')
   return (
+    <RigidBody type="fixed" name="ground" colliders="trimesh">
+    
     <group {...props} dispose={null}>
-      <mesh geometry={nodes.Cube.geometry} material={materials.Material} position={[0, 0.007, 0]} scale={[3.648, 0.065, 4.447]} />
-      <mesh geometry={nodes.Cube001.geometry} material={nodes.Cube001.material} position={[-2.448, 2.963, 3.131]} scale={[0.616, 2.886, 0.222]} />
-      <mesh geometry={nodes.Cube002.geometry} material={nodes.Cube002.material} position={[0, 2.44, -4.175]} scale={[3.544, 2.453, 0.122]} />
-      <mesh geometry={nodes.Cube003.geometry} material={nodes.Cube003.material} position={[3.423, 4.772, -2.417]} scale={[0.109, 0.107, 1.669]} />
-      <mesh geometry={nodes.Cube004.geometry} material={nodes.Cube004.material} position={[3.419, 2.415, -0.643]} scale={[0.112, 2.468, 0.118]} />
-      <mesh geometry={nodes.Cube005.geometry} material={nodes.Cube005.material} position={[-0.021, 4.756, -0.643]} rotation={[0, 0, -Math.PI / 2]} scale={[0.128, 3.259, 0.122]} />
-      <mesh geometry={nodes.Cube006.geometry} material={nodes.Cube006.material} position={[0, 1.886, -3.755]} scale={[2.234, 0.054, 0.323]} />
-      <mesh geometry={nodes.Cube007.geometry} material={nodes.Cube007.material} position={[2.298, 0.943, -3.738]} rotation={[-Math.PI, 0, 0]} scale={[-0.07, -1, -0.308]} />
-      <mesh geometry={nodes.Cube008.geometry} material={nodes.Cube008.material} position={[-2.295, 0.943, -3.738]} rotation={[-Math.PI, 0, 0]} scale={[-0.07, -1, -0.308]} />
-      <mesh geometry={nodes.Cube009.geometry} material={nodes.Cube009.material} position={[2.259, 1.033, 3.066]} scale={[1, 1, 0.292]} />
+      <group position={[-3.749, 2.963, 3.131]} scale={[0.616, 2.886, 0.222]}>
+        <mesh geometry={nodes.Cube001_1.geometry} material={materials.NEGRO} />
+        <mesh geometry={nodes.Cube001_2.geometry} material={materials.SILVER} />
+      </group>
+      <mesh geometry={nodes.Cube002.geometry} material={materials.NEGRO} position={[0, 2.44, -4.175]} scale={[3.544, 2.453, 0.122]} />
+      <mesh geometry={nodes.Cube003.geometry} material={materials.SILVER} position={[3.423, 4.772, -2.417]} scale={[0.109, 0.107, 1.669]} />
+      <mesh geometry={nodes.Cube004.geometry} material={materials.SILVER} position={[3.419, 2.415, -0.643]} scale={[0.112, 2.468, 0.118]} />
+      <mesh geometry={nodes.Cube005.geometry} material={materials.SILVER} position={[-0.021, 4.756, -0.643]} rotation={[0, 0, -Math.PI / 2]} scale={[0.128, 3.259, 0.122]} />
+      <mesh geometry={nodes.Cube006.geometry} material={materials.NEGRO} position={[0, 1.223, -3.755]} scale={[2.234, 0.054, 0.323]} />
+      <mesh geometry={nodes.Cube007.geometry} material={materials.SILVER} position={[2.298, 0.943, -3.738]} rotation={[-Math.PI, 0, 0]} scale={[-0.07, -1, -0.308]} />
+      <mesh geometry={nodes.Cube008.geometry} material={materials.SILVER} position={[-2.295, 0.943, -3.738]} rotation={[-Math.PI, 0, 0]} scale={[-0.07, -1, -0.308]} />
+      <mesh geometry={nodes.Cube009.geometry} material={materials.NEGRO} position={[2.359, 1.204, 2.908]} scale={[1.018, 0.049, 0.373]} />
+      <mesh geometry={nodes.Cube010.geometry} material={materials.SILVER} position={[3.405, 0.952, 2.907]} rotation={[-Math.PI, 0, 0]} scale={[-0.032, -0.901, -0.375]} />
+      <mesh geometry={nodes.Cube011.geometry} material={materials.SILVER} position={[1.313, 0.952, 2.907]} rotation={[-Math.PI, 0, 0]} scale={[-0.032, -0.901, -0.375]} />
+      <group position={[2.362, 0.659, 3.302]} scale={[1.075, 0.596, 0.03]}>
+        <mesh geometry={nodes.Cube013.geometry} material={materials.NEGRO} />
+        <mesh geometry={nodes.Cube013_1.geometry} material={materials.SILVER} />
+      </group>
+      <mesh geometry={nodes.Cylinder.geometry} material={nodes.Cylinder.material} position={[0, 0.021, -0.242]} scale={[1, 0.068, 1]} />
     </group>
+      </RigidBody>
+    
   )
 }
-
 export default StandSilver;
 useGLTF.preload('/models/stand_silver.glb')

@@ -13,6 +13,7 @@ import Mailbox from "./Mailbox";
 import Catalog from "./Catalog";
 import StandSilver from "./StandSilver";
 import Computer from "./Computer";
+import layoutConfig from "../utils/interactiveConfig";
 
 const Stand = ({
   id,
@@ -197,32 +198,12 @@ const Stand = ({
   }, []);
 
 
-  const layoutConfig = {
-    bronze: {
-      mailboxPosition: [0.6, -1, -1.3],
-      videoPosition: [0.29, 0.0, -0],
-      screenPosition:[3.5, -8.2, -0.01],
-      computerPosition:[0, -0.4, -0.3],
-      catalogPosition: [0, -0.29, 0.33],
-      chatbotPosition: [0, -0.2, -1],
-    },
-    silver: {
-      mailboxPosition: [-1, -1, 3.5],
-      videoPosition: [0.01, 0, -0.66],
-      screenPosition:[0, 0.3, 0],
-      catalogPosition: [0.6, -0.5, 3.8],
-      chatbotPosition: [0, -0.2, -1],
-    },
-    gold: {
-      mailboxPosition: [-1.5, -0.5, 4],
-      videoPosition: [0.4, 0.4, 4.5],
-      catalogPosition: [0.7, -0.5, 4.3],
-    },
-  };
 
   const { mailboxPosition, videoPosition, screenPosition, computerPosition, catalogPosition, chatbotPosition } =
-    layoutConfig[type] || layoutConfig["bronze"];
+    layoutConfig.position[type] || layoutConfig.position["bronze"];
 
+  const { mailboxRotation, videoRotation, screenRotation, computerRotation, catalogRotation, chatbotRotation } =
+    layoutConfig.rotation[type] || layoutConfig.rotation["bronze"];
   return (
     <>
     <group position={[posX, posY, posZ]} rotation={[rotX, rotY, rotZ]}>
@@ -244,7 +225,7 @@ const Stand = ({
     
 
 <Mailbox scale={[0.1, 0.1, 0.1]}
-         rotation={[0,- Math.PI / 2,0]} 
+         rotation={mailboxRotation} 
          position={mailboxPosition} 
          handleClick={handleClick} 
          canInteract={canInteract}   
@@ -258,7 +239,9 @@ const Stand = ({
   setShowVideo={setShowVideo}
   setIsInteracting={setIsInteracting}
   screenPosition={screenPosition}
+  screenRotation={screenRotation}
   videoPosition={videoPosition}
+  videoRotation={videoRotation}
   handleClick={handleClick}
   canInteract={canInteract} // Pasa la capacidad de interacción
   isInteracting={isInteracting}
@@ -267,7 +250,7 @@ const Stand = ({
 <Computer 
   position={computerPosition} // Posición en el espacio 3D
   scale={[1.5, 1.5, 1.5]} // Escala del modelo
-  rotation={[0, Math.PI / 2, 0]} // Rotación en radianes (eje X, Y, Z)
+  rotation={computerRotation} // Rotación en radianes (eje X, Y, Z)
   canInteract={true} // Habilita la interacción con el modelo
   isInteracting={false} // Controla si actualmente está interactuando
   handleClick={handleClick}
@@ -277,7 +260,7 @@ const Stand = ({
 
 <Catalog
   position={catalogPosition}
-  rotation-x={-0.1}
+  rotation={catalogRotation}
   scale={[0.1, 0.1, 0.1]} // Ajusta la escala según sea necesario
   handleClick={handleClick} // Pasa la función de clic
   canInteract={canInteract} // Pasa la capacidad de interacción
@@ -285,7 +268,7 @@ const Stand = ({
 />
 
 
-<RigidBody type="fixed">
+{/* <RigidBody type="fixed">
   <mesh
     position={[0.7, -0.3, 3]}
     onClick={() => handleClick("schedule_meeting")}
@@ -305,13 +288,13 @@ const Stand = ({
     <boxGeometry args={[0.1, 0.2, 0.1]} />
     <meshStandardMaterial color="red" />
   </mesh>
-</RigidBody>
+</RigidBody> */}
 
 
       <ChatBot
         canInteract={canInteract}
         position={chatbotPosition}
-        rotation = {[0, Math.PI , 0]}
+        rotation = {chatbotRotation}
         standId={id}
         isInteracting={isInteracting}
         setIsInteracting={setIsInteracting}

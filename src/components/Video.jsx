@@ -7,7 +7,9 @@ const Video = ({
   showVideo,
   setShowVideo,
   screenPosition,
+  screenRotation,
   videoPosition,
+  videoRotation,
   handleClick,
   canInteract,
   isInteracting,
@@ -65,7 +67,7 @@ const Video = ({
       {/* Modelo interactivo */}
       <group
         screenPosition={screenPosition}
-        rotation={[Math.PI / 2, Math.PI, Math.PI]}
+        rotation={screenRotation}
         scale={[0.08, 0.08, 0.08]}
         onClick={handleVideoClick}
         onPointerOver={handlePointerOver}
@@ -94,7 +96,7 @@ const Video = ({
       {/* Video HTML anclado al modelo */}
       {showVideo && (
         <Html
-          rotation={[0, Math.PI / 2, 0]}
+          rotation={videoRotation}
           position={[videoPosition[0], videoPosition[1], videoPosition[2]]}
           scale={[0.41, 0.41, 0.41]}
           transform
