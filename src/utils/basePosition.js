@@ -1,7 +1,7 @@
 // Configuración de la posición de la base
 export const getBasePosition = () => {
   return {
-    position: [0, -20, 35], // Coordenadas de la base
-    scale: [1.5, 1, 1.5], // Escala de la base
+    position: [0, -20, 30], // Coordenadas de la base
+    scale: [10, 10, 10], // Escala de la base
   };
 };

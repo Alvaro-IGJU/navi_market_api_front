@@ -10,8 +10,8 @@ const layoutConfig = {
       },
       silver: {
         mailboxPosition: [-1, -1, 3.5],
-        videoPosition: [0.29, 0.0, -0],
-        screenPosition:[-25.1, -8.2, -0.03],
+        videoPosition: [0.29, 0.0, -2],
+        screenPosition:[-25.2, 0, -0.03],
         computerPosition:[0.7, -0.37, 1.6],
         catalogPosition: [0.6, -0.55, 1.93],
         chatbotPosition: [0, -0.2, -1],
@@ -33,7 +33,7 @@ const layoutConfig = {
       },
       silver: {
         mailboxRotation: [0, Math.PI / 2,0],
-        videoRotation: [0, Math.PI / 40, 0],
+        videoRotation: [0, -1 *  Math.PI / 10 , 0],
         screenRotation:[Math.PI / 2, Math.PI, Math.PI / 2.42],
         computerRotation:[0, Math.PI / 2.45, 0],
         catalogRotation: [0, -0.3, 0],

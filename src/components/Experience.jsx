@@ -98,11 +98,11 @@ const Experience = ({ eventId }) => {
     <CameraManager>
       {/* Environment */}
       <Environment
-        files="models/textures/kloofendal_48d_partly_cloudy_puresky_1k.hdr"
-        background
+        files="models/textures/autumn_field_puresky_1k.hdr"
+        background={false}
       />
       {/* Physics simulation */}
-      <Physics >
+      <Physics debug>
         {/* Base model */}
         <Base position={baseConfig.position} scale={baseConfig.scale} />
         {/* Render stands dynamically */}

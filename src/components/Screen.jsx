@@ -10,7 +10,7 @@ export function Screen(props) {
   const { nodes, materials } = useGLTF('/models/screen.glb')
   return (
     <group {...props} dispose={null}>
-      <group position={[0, 8.19, 0.052]} scale={[0.118, 3.645, 2.093]}>
+      <group scale={[0.118, 3.645, 2.093]}>
         <mesh geometry={nodes.Cube003.geometry} material={materials['Material.001']} />
         <mesh geometry={nodes.Cube003_1.geometry} material={materials['Material.002']} />
       </group>

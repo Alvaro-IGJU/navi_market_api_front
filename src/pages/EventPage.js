@@ -118,7 +118,7 @@ const EventPage = () => {
             />
             <Environment preset="city" background={false} />
             <Physics>
-              <Base shouldRotate={true} scale={0.15} position={[2, 0.5, 0]} rotation={[0.4, 0, 0.4]} />
+              <Base shouldRotate={true} scale={0.4} position={[0, -0.3, 3]} rotation={[0, 0, 0]} />
             </Physics>
           </>
         )}
