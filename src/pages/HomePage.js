@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Globe, Laptop, Brain, Send, Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+import LogoSlider from './LogoSlider';
 
 const AuroraBackground = () => (
   <div className="fixed inset-0 -z-10">
@@ -128,7 +129,7 @@ const HomePage = () => {
           ))}
         </motion.div>
       </div>
-
+      <LogoSlider />
       {/* Contact Form */}
       <motion.div 
         initial={{ opacity: 0 }}
