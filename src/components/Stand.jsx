@@ -113,7 +113,7 @@ const Stand = ({
       console.error("No PDF data available.");
       return;
     }
-
+    console.log(catalog_pdf)
     try {
       const binary = atob(catalog_pdf);
       const array = new Uint8Array(binary.length);
@@ -265,10 +265,12 @@ const Stand = ({
   handleClick={handleClick} // Pasa la función de clic
   canInteract={canInteract} // Pasa la capacidad de interacción
   isInteracting={isInteracting}
+  setIsInteracting={setIsInteracting}
+  catalogBase64={catalog_pdf}
 />
 
 
-{/* <RigidBody type="fixed">
+<RigidBody type="fixed">
   <mesh
     position={[0.7, -0.3, 3]}
     onClick={() => handleClick("schedule_meeting")}
@@ -288,7 +290,7 @@ const Stand = ({
     <boxGeometry args={[0.1, 0.2, 0.1]} />
     <meshStandardMaterial color="red" />
   </mesh>
-</RigidBody> */}
+</RigidBody>
 
 
       <ChatBot

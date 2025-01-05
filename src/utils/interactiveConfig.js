@@ -3,7 +3,7 @@ const layoutConfig = {
       bronze: {
         mailboxPosition: [0.6, -1, -1.3],
         videoPosition: [0.29, 0.0, -0],
-        screenPosition:[3.5, -8.2, -0.01],
+        screenPosition:[3.5, -0, -0.01],
         computerPosition:[0, -0.4, -0.3],
         catalogPosition: [0, -0.29, 0.33],
         chatbotPosition: [0, -0.2, -1],

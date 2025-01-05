@@ -102,7 +102,7 @@ const Experience = ({ eventId }) => {
         background={false}
       />
       {/* Physics simulation */}
-      <Physics debug>
+      <Physics >
         {/* Base model */}
         <Base position={baseConfig.position} scale={baseConfig.scale} />
         {/* Render stands dynamically */}
