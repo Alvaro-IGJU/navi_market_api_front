@@ -36,6 +36,8 @@ const InterestedUsersTable = ({ companyId }) => {
       users.map((user) => ({
         Nombre: `${user.username}`,
         Email: user.email,
+        Ubicación: user.location,
+        Empresa: user.company,
         Posición: user.position_title,
         Sector: user.sector_name,
       }))
@@ -68,6 +70,8 @@ const InterestedUsersTable = ({ companyId }) => {
           <tr className="bg-gray-800">
             <th className="px-4 py-2">Nombre</th>
             <th className="px-4 py-2">Email</th>
+            <th className="px-4 py-2">Ubicación</th>
+            <th className="px-4 py-2">Empresa</th>
             <th className="px-4 py-2">Posición</th>
             <th className="px-4 py-2">Sector</th>
           </tr>
@@ -77,6 +81,8 @@ const InterestedUsersTable = ({ companyId }) => {
             <tr key={user.id} className="border-b border-gray-600">
               <td className="px-4 py-2">{user.username}</td>
               <td className="px-4 py-2">{user.email}</td>
+              <td className="px-4 py-2">{user.location}</td>
+              <td className="px-4 py-2">{user.company}</td>
               <td className="px-4 py-2">{user.position_title}</td>
               <td className="px-4 py-2">{user.sector_name}</td>
             </tr>

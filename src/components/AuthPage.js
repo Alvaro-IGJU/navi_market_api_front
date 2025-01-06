@@ -29,6 +29,7 @@ const AuthPage = () => {
     password: "",
     sector: "",
     position: "",
+    company: "",
     username: "",
   });
   const [acceptTerms, setAcceptTerms] = useState(false);
@@ -80,6 +81,7 @@ const AuthPage = () => {
           email: formData.email,
           password: formData.password,
           username: formData.username,
+          company: formData.company,
           sector: formData.sector,
           position: formData.position,
         });
@@ -171,7 +173,17 @@ const AuthPage = () => {
                           required
                         />
                       </motion.div>
-
+                      <motion.div whileHover={{ scale: 1.01 }} className="space-y-2">
+                        <label className="block text-sm font-medium text-[#C7AA68]">Empresa</label>
+                        <input
+                          type="text"
+                          name="company"
+                          value={formData.company}
+                          onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                          className="w-full px-4 py-3 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 text-white"
+                          required
+                        />
+                      </motion.div>
                       <div className="grid grid-cols-2 gap-4">
                         <motion.div whileHover={{ scale: 1.01 }} className="space-y-2">
                           <label className="block text-sm font-medium text-[#C7AA68]">Sector</label>

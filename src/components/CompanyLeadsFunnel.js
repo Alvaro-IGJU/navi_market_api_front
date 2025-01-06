@@ -1,54 +1,48 @@
 import React, { useEffect, useState } from "react";
 import { ResponsiveFunnel } from "@nivo/funnel";
+import api from "../api"; // Asegúrate de que esta importación apunte correctamente a tu cliente API
 
-const CompanyLeadsFunnel = ({ interactionsData }) => {
+const CompanyLeadsFunnel = ({ companyId }) => {
   const [funnelData, setFunnelData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  const fetchFunnelData = async () => {
     try {
-      if (!interactionsData || !interactionsData.interaction_details) {
-        throw new Error("Datos de interacción no disponibles.");
-      }
+      const token = localStorage.getItem("accessToken");
 
-      const { interaction_details } = interactionsData;
+      const response = await api.get(
+        `/interactions/companies/${companyId}/interest-funnel/`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-      const standVisits =
-        interaction_details.find((detail) => detail.interaction_type === "stand_entry")
-          ?.total_interactions || 0;
-      const catalogDownloads =
-        interaction_details.find((detail) => detail.interaction_type === "download_catalog")
-          ?.total_interactions || 0;
-      const meetingsScheduled =
-        interaction_details.find((detail) => detail.interaction_type === "schedule_meeting")
-          ?.total_interactions || 0;
+      const interestData = response.data || []; // Asegúrate de que los datos estén en formato de arreglo
+      console.log("Datos del backend:", interestData);
 
-      // Preparar datos para el embudo
-      const funnelData = [
-        { id: "Visitas al Stand", value: standVisits },
-        { id: "Descargas de Catálogo", value: catalogDownloads },
-        { id: "Reuniones Agendadas", value: meetingsScheduled },
-      ];
-
-      setFunnelData(funnelData);
+      setFunnelData(interestData);
       setLoading(false);
     } catch (err) {
-      console.error("Error al procesar datos del embudo:", err);
+      console.error("Error fetching funnel data:", err);
       setError("No se pudieron cargar los datos del embudo.");
       setLoading(false);
     }
-  }, [interactionsData]);
+  };
+
+  useEffect(() => {
+    fetchFunnelData();
+  }, [companyId]);
 
   if (loading) return <p className="text-gray-300">Cargando datos del embudo...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
     <div className="p-6 pb-10 rounded-lg" style={{ height: "100%" }}>
-      <h2 className="text-lg font-bold text-[#C7AA68] mb-4 text-center">Embudo de Leads</h2>
+      <h2 className="text-lg font-bold text-[#C7AA68] mb-4 text-center">Embudo de Interés</h2>
       <ResponsiveFunnel
         data={funnelData}
-        margin={{ right: 20, bottom: 20, left: 20 }}
+        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
         valueFormat=">-.4s"
         colors={{ scheme: "spectral" }}
         borderWidth={20}

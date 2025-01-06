@@ -25,6 +25,7 @@ import EditEventPage from './pages/AdminEditEventPage';
 import EditStandPage from './pages/AdminEditStandPage';
 import ContactPage from './pages/ContactPage';
 import ResetPasswordPage from './components/ResetPassword';
+import InterestedUsersTablePage from './pages/CompanyInterestedUsersTablePage';
 const App = () => {
   return (
     <Router>
@@ -41,6 +42,7 @@ const App = () => {
               </PrivateRoute>
             }
           />
+          <Route path="/users-table" element={<InterestedUsersTablePage />} />
           <Route path="/events" element={ <PrivateRoute><ListEventsPage /></PrivateRoute>} />
           <Route path="/events/:eventId" element={<PrivateRoute><EventPage /></PrivateRoute>} />
           <Route

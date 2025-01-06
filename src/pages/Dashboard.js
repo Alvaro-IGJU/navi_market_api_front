@@ -98,9 +98,17 @@ const Dashboard = () => {
 
   return (
     <div className="bg-gray-800 min-h-screen p-6">
-      <h1 className="text-3xl font-bold mt-3 mb-8 text-center text-white">
-        Dashboard de {companyName || "Interacciones"}
-      </h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold mt-20 mb-8 text-center text-white">
+          Dashboard de {companyName || "Interacciones"}
+        </h1>
+        <button
+          className="bg-blue-500 text-white px-4 mt-20 py-2 rounded hover:bg-blue-600"
+          onClick={() => navigate("/users-table", { state: { companyId } })}
+        >
+          Ver Tabla de Usuarios
+        </button>
+      </div>
 
       <ResponsiveGridLayout
         className="layout"
@@ -108,16 +116,8 @@ const Dashboard = () => {
         breakpoints={{ lg: 1350, md: 996, sm: 768 }}
         cols={{ lg: 12, md: 12, sm: 12 }}
         rowHeight={150}
-        style={{
-          margin: "0 auto",
-          maxWidth: "100%",
-          backgroundColor: "#1F2937",
-          borderRadius: "8px",
-          padding: "10px",
-          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-        }}
-        isDraggable={false} // Desactivar arrastre
-        isResizable={false} // Desactivar redimensionamiento
+        isDraggable={false}
+        isResizable={false}
       >
         <div key="stats">
           <CompanyEventBasicStatistics companyId={companyId} interactionsData={interactionsData} />
@@ -126,13 +126,13 @@ const Dashboard = () => {
           <CompanyLeadsFunnel companyId={companyId} interactionsData={interactionsData} />
         </div>
         <div key="map">
-          <CompanyUsersMap companyId={companyId}  />
+          <CompanyUsersMap companyId={companyId} />
         </div>
         <div key="interactions">
           <CompanyStandInteractionsChart companyId={companyId} interactionsData={interactionsData} />
         </div>
         <div key="positions">
-          <CompanyUserPositions companyId={companyId}  />
+          <CompanyUserPositions companyId={companyId} />
         </div>
         <div key="sectors">
           <CompanyUserSectorsPieChart companyId={companyId} />
@@ -140,14 +140,10 @@ const Dashboard = () => {
         <div key="other">
           <TotalScheduleMeetings companyId={companyId} interactionsData={interactionsData} />
         </div>
-        
       </ResponsiveGridLayout>
-      <div key="usersTable">
-          <InterestedUsersTable companyId={companyId} />
-        </div>
     </div>
-    
   );
 };
+
 
 export default Dashboard;
