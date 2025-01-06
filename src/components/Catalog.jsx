@@ -18,8 +18,28 @@ export function Catalog({
   const [downloadCooldown, setDownloadCooldown] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [showPDF, setShowPDF] = useState(false); // Controla si el PDF se muestra
+  const [dimensions, setDimensions] = useState({ width: 300, height: 300 }); // Dimensiones iniciales
   const cameraRef = useRef(); // Referencia para la cámara
   const isHovering = useRef(false);
+
+  useEffect(() => {
+    // Función para calcular dimensiones dinámicas según el dispositivo
+    const calculateDimensions = () => {
+      const widthMultiplier = window.innerWidth <= 768 ? 0.4 : window.innerWidth <= 1024 ? 0.7 : 0.6;
+      const heightMultiplier = window.innerWidth <= 768 ? 0.3 : window.innerWidth <= 1024 ? 0.6 : 0.35;
+      const maxWidth = window.innerWidth * widthMultiplier;
+      const maxHeight = window.innerHeight * heightMultiplier;
+      const width = Math.min(maxWidth, 400); // Máximo de 400px de ancho
+      const height = Math.min(maxHeight, 500); // Máximo de 500px de alto
+      setDimensions({ width, height });
+    };
+
+    // Configurar dimensiones iniciales y escuchar cambios de tamaño
+    calculateDimensions();
+    window.addEventListener("resize", calculateDimensions);
+
+    return () => window.removeEventListener("resize", calculateDimensions);
+  }, []);
 
   const handleCatalogClick = () => {
     handleClick("view_catalog"); // Notificar la acción
@@ -129,11 +149,11 @@ export function Catalog({
             position={[0, 0.5, 10]} // Ajusta la posición de la cámara
             fov={50}
           />
-          <Html position={[0, 0, 0]} transform>
+          <Html position={[0, 0.4, 0]} transform>
             <div
               style={{
-                width: "400px",
-                height: "300px",
+                width: `${dimensions.width}px`,
+                height: `${dimensions.height}px`,
                 background: "white",
                 borderRadius: "10px",
                 overflow: "hidden",
@@ -164,7 +184,9 @@ export function Catalog({
                   position: "absolute",
                   bottom: "10px",
                   left: "10px",
-                  backgroundColor: downloadCooldown ? "gray" : "blue",
+                  backgroundColor: downloadCooldown
+                    ? "rgba(199, 170, 104, 0.5)" // Opacidad para cooldown
+                    : "rgb(199, 170, 104)",
                   color: "white",
                   border: "none",
                   borderRadius: "5px",
