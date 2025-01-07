@@ -40,6 +40,7 @@ const InterestedUsersTable = ({ companyId }) => {
         Posición: user.position_title,
         Sector: user.sector_name,
         Interés: user.total_points,
+        Categoría: user.priority
       }))
     );
 
@@ -80,6 +81,7 @@ const InterestedUsersTable = ({ companyId }) => {
             <th className="px-4 py-2">Posición</th>
             <th className="px-4 py-2">Sector</th>
             <th className="px-4 py-2">Interés</th>
+            <th className="px-4 py-2">Categoría</th>
           </tr>
         </thead>
         <tbody>
@@ -94,6 +96,7 @@ const InterestedUsersTable = ({ companyId }) => {
               <td className={`px-4 py-2 text-center ${getInterestClass(user.total_points)}`}>
                 {user.total_points}
               </td>
+              <td className="px-4 py-2">{user.priority}</td>
             </tr>
           ))}
         </tbody>
