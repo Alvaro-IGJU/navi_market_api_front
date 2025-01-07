@@ -40,6 +40,7 @@ const InterestedUsersTable = ({ companyId }) => {
         Empresa: user.company,
         Posición: user.position_title,
         Sector: user.sector_name,
+        Interés: user.total_points,
       }))
     );
 
@@ -74,6 +75,7 @@ const InterestedUsersTable = ({ companyId }) => {
             <th className="px-4 py-2">Empresa</th>
             <th className="px-4 py-2">Posición</th>
             <th className="px-4 py-2">Sector</th>
+            <th className="px-4 py-2">Interés</th>
           </tr>
         </thead>
         <tbody>
@@ -85,6 +87,7 @@ const InterestedUsersTable = ({ companyId }) => {
               <td className="px-4 py-2">{user.company}</td>
               <td className="px-4 py-2">{user.position_title}</td>
               <td className="px-4 py-2">{user.sector_name}</td>
+              <td className="px-4 py-2">{user.total_points}</td>
             </tr>
           ))}
         </tbody>

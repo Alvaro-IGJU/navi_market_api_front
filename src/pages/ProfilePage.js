@@ -85,15 +85,32 @@ const ProfilePage = () => {
     if (!accessToken) {
       accessToken = await renewAccessToken(localStorage.getItem('refreshToken'));
     }
-
+  
     try {
       const response = await api.put('/users/profile/', formData, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-      setUser(response.data);
-      toast.success('Perfil actualizado exitosamente.');
+  
+      if (response.status === 200 || response.status === 201) {
+        toast.success('Perfil actualizado exitosamente.');
+      } else {
+        toast.error(
+          response.data?.detail || 'Error desconocido al actualizar el perfil.'
+        );
+      }
     } catch (error) {
-      toast.error('Error al actualizar el perfil.');
+      if (error.response) {
+        // Error del servidor
+        toast.error(
+          error.response.data?.detail || 'Error al actualizar el perfil.'
+        );
+      } else if (error.request) {
+        // No se recibió respuesta del servidor
+        toast.error('No se pudo conectar con el servidor.');
+      } else {
+        // Otro tipo de error
+        toast.error('Error inesperado.');
+      }
     }
   };
 
@@ -125,6 +142,16 @@ const ProfilePage = () => {
               type="text"
               name="username"
               value={formData.username}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="profile-form-group">
+            <label>Empresa</label>
+            <input
+              type="text"
+              name="company"
+              value={formData.company}
               onChange={handleChange}
               required
             />
