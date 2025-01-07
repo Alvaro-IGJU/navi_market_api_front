@@ -42,7 +42,6 @@ export function Catalog({
   }, []);
 
   const handleCatalogClick = () => {
-    handleClick("view_catalog"); // Notificar la acción
     setShowPDF(true); // Mostrar el PDF
     setIsInteracting(true); // Indicar que se está interactuando
   };
@@ -101,6 +100,8 @@ export function Catalog({
     link.download = "catalog.pdf";
     link.click();
     URL.revokeObjectURL(url); // Liberar memoria
+    handleClick("download_catalog"); // Notificar la acción
+
   };
 
   return (

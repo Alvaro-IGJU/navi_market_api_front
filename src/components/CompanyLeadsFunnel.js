@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ResponsiveFunnel } from "@nivo/funnel";
-import api from "../api"; // Asegúrate de que esta importación apunte correctamente a tu cliente API
+import api from "../api";
 
 const CompanyLeadsFunnel = ({ companyId }) => {
   const [funnelData, setFunnelData] = useState([]);
@@ -18,16 +18,51 @@ const CompanyLeadsFunnel = ({ companyId }) => {
         }
       );
 
-      const interestData = response.data || []; // Asegúrate de que los datos estén en formato de arreglo
-      console.log("Datos del backend:", interestData);
+      const interestData = response.data || [];
 
-      setFunnelData(interestData);
+      // Ordenar los datos en el orden deseado
+      const order = [
+        "Usuarios Confundidos",
+        "Usuarios Lejanos",
+        "Usuarios Curiosos",
+        "Usuarios Exploradores",
+        "Usuarios Evaluadores",
+        "Usuarios Estratégicos",
+        "Usuarios Decididos",
+      ];
+
+      const formattedData = interestData
+        .map((item) => ({
+          id: item.category.toLowerCase().replace(/\s+/g, "_"), // Ejemplo: "Usuarios Decididos" -> "usuarios_decididos"
+          value: item.count,
+          label: item.category,
+        }))
+        .sort((a, b) => order.indexOf(a.label) - order.indexOf(b.label)); // Ordenar según el array `order`
+
+      setFunnelData(formattedData);
       setLoading(false);
     } catch (err) {
       console.error("Error fetching funnel data:", err);
       setError("No se pudieron cargar los datos del embudo.");
       setLoading(false);
     }
+  };
+
+  // Definir los colores personalizados para cada categoría
+  const getColorByCategory = (id) => {
+    const redCategories = ["usuarios_confundidos", "usuarios_lejanos"];
+    const orangeCategories = ["usuarios_curiosos", "usuarios_exploradores"];
+    const greenCategories = [
+      "usuarios_evaluadores",
+      "usuarios_estratégicos",
+      "usuarios_decididos",
+    ];
+
+    if (redCategories.includes(id)) return "#ffcccc"; // Rojo suave
+    if (orangeCategories.includes(id)) return "#ffe4b5"; // Naranja suave
+    if (greenCategories.includes(id)) return "#d4f7d4"; // Verde suave
+
+    return "#cccccc"; // Gris por defecto si no coincide
   };
 
   useEffect(() => {
@@ -44,7 +79,7 @@ const CompanyLeadsFunnel = ({ companyId }) => {
         data={funnelData}
         margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
         valueFormat=">-.4s"
-        colors={{ scheme: "spectral" }}
+        colors={({ id }) => getColorByCategory(id)} // Asignar colores personalizados
         borderWidth={20}
         labelColor={{
           from: "color",
