@@ -31,7 +31,6 @@ const InterestedUsersTable = ({ companyId }) => {
   }, [companyId]);
 
   const handleDownloadExcel = () => {
-    // Crear una hoja de cálculo
     const worksheet = XLSX.utils.json_to_sheet(
       users.map((user) => ({
         Nombre: `${user.username}`,
@@ -47,28 +46,33 @@ const InterestedUsersTable = ({ companyId }) => {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Usuarios Interesados");
 
-    // Generar archivo Excel
     const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
     const data = new Blob([excelBuffer], { type: "application/octet-stream" });
 
     saveAs(data, `Usuarios_Interesados_${new Date().toISOString()}.xlsx`);
   };
 
-  if (loading) return <p className="text-gray-300">Cargando usuarios interesados...</p>;
+  const getInterestClass = (points) => {
+    if (points <= 50) return "bg-red-200 text-red-800"; // Rojo suave
+    if (points <= 100) return "bg-yellow-200 text-yellow-800"; // Amarillo suave
+    return "bg-green-200 text-green-800"; // Verde suave
+  };
+
+  if (loading) return <p className="text-gray-500">Cargando usuarios interesados...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="p-6 bg-gray-700 rounded-lg shadow-lg">
-      <h2 className="text-lg font-bold text-[#C7AA68] mb-4">Usuarios Interesados</h2>
+    <div className="p-6 rounded-lg">
+      <h2 className="text-lg font-bold text-gray-800 mb-4">Usuarios Interesados</h2>
       <button
         onClick={handleDownloadExcel}
         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-300 mb-4"
       >
         Descargar Excel
       </button>
-      <table className="table-auto w-full text-gray-100">
+      <table className="table-auto w-full bg-white text-gray-800 border-collapse border border-gray-300">
         <thead>
-          <tr className="bg-gray-800">
+          <tr className="bg-gray-200">
             <th className="px-4 py-2">Nombre</th>
             <th className="px-4 py-2">Email</th>
             <th className="px-4 py-2">Ubicación</th>
@@ -80,14 +84,16 @@ const InterestedUsersTable = ({ companyId }) => {
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.id} className="border-b border-gray-600">
+            <tr key={user.id} className="border-b border-gray-300">
               <td className="px-4 py-2">{user.username}</td>
               <td className="px-4 py-2">{user.email}</td>
               <td className="px-4 py-2">{user.location}</td>
               <td className="px-4 py-2">{user.company}</td>
               <td className="px-4 py-2">{user.position_title}</td>
               <td className="px-4 py-2">{user.sector_name}</td>
-              <td className="px-4 py-2">{user.total_points}</td>
+              <td className={`px-4 py-2 text-center ${getInterestClass(user.total_points)}`}>
+                {user.total_points}
+              </td>
             </tr>
           ))}
         </tbody>
