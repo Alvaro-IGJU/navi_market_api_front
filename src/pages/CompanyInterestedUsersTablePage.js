@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import InterestedUsersTable from "./InterestedUsersTable";
+import ScheduledMeetingUsers from "../components/ScheduledMeetingUsers";
 
 const InterestedUsersTablePage = () => {
     const { user } = useContext(AuthContext);
@@ -17,6 +18,9 @@ const InterestedUsersTablePage = () => {
         </h1>
         <div>
           <InterestedUsersTable companyId={companyId} />
+        </div>
+        <div>
+          <ScheduledMeetingUsers companyId={companyId} />
         </div>
       </div>
     );

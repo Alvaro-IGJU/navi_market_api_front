@@ -70,7 +70,7 @@ const Stand = ({
       const token = localStorage.getItem("accessToken");
       await api.post(
         `/interactions/update-duration/${interactionId.current}/`,
-        { duration: Math.round(timeInside.current) },
+        { duration: Math.round(timeInside.current * 100) / 100},
         {
           headers: { Authorization: `Bearer ${token}` },
         }
