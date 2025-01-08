@@ -198,7 +198,7 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
         <group ref={cameraTarget} position-z={1.5} />
         <group ref={cameraPosition} position-y={1} position-z={-2} />
         <group ref={character}>
-          <Avatar scale={0.4} position-y={-0.25} animation={animation} />
+          <Avatar scale={0.1} position-y={-0.25} animation={animation} />
         </group>
       </group>
       <CapsuleCollider args={[0.2, 0.18]} />

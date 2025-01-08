@@ -26,11 +26,14 @@ import EditStandPage from './pages/AdminEditStandPage';
 import ContactPage from './pages/ContactPage';
 import ResetPasswordPage from './components/ResetPassword';
 import InterestedUsersTablePage from './pages/CompanyInterestedUsersTablePage';
+import ChatWidget from './components/ChatWidget';
 const App = () => {
   return (
     <Router>
         <AuthProvider>
         <Header /> {/* Mueve la lógica de AuthContext dentro del Header */}
+        <ChatWidget />
+
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/auth" element={<AuthPage />} />
