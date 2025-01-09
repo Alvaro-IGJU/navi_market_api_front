@@ -7,7 +7,6 @@ const ScheduledMeetingUsers = ({ companyId }) => {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [activeChatUser, setActiveChatUser] = useState(null);
 
   const fetchScheduledMeetingUsers = async (page = 1) => {
     try {
@@ -26,7 +25,7 @@ const ScheduledMeetingUsers = ({ companyId }) => {
       setLoading(false);
     } catch (err) {
       console.error("Error fetching scheduled meeting users:", err);
-      setError("Failed to load users.");
+      setError("No se pudieron cargar los usuarios.");
       setLoading(false);
     }
   };
@@ -35,17 +34,56 @@ const ScheduledMeetingUsers = ({ companyId }) => {
     fetchScheduledMeetingUsers(currentPage);
   }, [companyId, currentPage]);
 
-  const handleAccept = (user) => {
-    setActiveChatUser(user);
+  const handleAccept = async (user) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      await api.post(
+        `/companies/create-chat/`,
+        {
+          participant_id: user.id,
+          company_id: companyId,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      alert("¡Chat creado exitosamente!");
+
+      // Eliminar el usuario de la lista
+      setUsers((prevUsers) => prevUsers.filter((u) => u.id !== user.id));
+    } catch (err) {
+      console.error("Error creating chat:", err);
+      alert(
+        err.response?.data?.error || "No se pudo iniciar el chat. Inténtalo de nuevo."
+      );
+    }
   };
 
-  const handleReject = (userId) => {
-    console.log(`Rejecting meeting for user with ID: ${userId}`);
-    // Implement your reject logic here
-  };
+  const handleReject = async (userId) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      await api.post(
+        `/companies/reject-meeting/`,
+        {
+          user_id: userId,
+          company_id: companyId,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-  const closeChat = () => {
-    setActiveChatUser(null);
+      alert("¡Solicitud rechazada con éxito!");
+
+      // Eliminar el usuario de la lista
+      setUsers((prevUsers) => prevUsers.filter((u) => u.id !== userId));
+    } catch (err) {
+      console.error("Error rejecting meeting:", err);
+      alert(
+        err.response?.data?.error || "No se pudo rechazar la solicitud. Inténtalo de nuevo."
+      );
+    }
   };
 
   if (loading) return <p className="text-gray-500">Cargando usuarios...</p>;
@@ -118,36 +156,6 @@ const ScheduledMeetingUsers = ({ companyId }) => {
               Siguiente
             </button>
           </div>
-
-          {/* Chat Modal */}
-          {activeChatUser && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-              <div className="bg-white rounded-lg p-6 w-full max-w-md">
-                <h3 className="text-lg font-bold mb-4">
-                  Chat con {activeChatUser.username}
-                </h3>
-                <div className="border border-gray-300 rounded p-4 mb-4 h-48 overflow-y-auto">
-                  {/* Chat messages will be displayed here */}
-                  <p className="text-gray-600">Chat iniciado...</p>
-                </div>
-                <textarea
-                  className="border border-gray-300 rounded w-full p-2 mb-4"
-                  placeholder="Escribe tu mensaje..."
-                ></textarea>
-                <div className="flex justify-between">
-                  <button
-                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700"
-                    onClick={closeChat}
-                  >
-                    Cerrar
-                  </button>
-                  <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
-                    Enviar
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       )}
     </div>

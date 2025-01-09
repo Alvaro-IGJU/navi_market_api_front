@@ -5,12 +5,13 @@ const ChatList = ({ onSelectChat }) => {
   const [chats, setChats] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeSocket, setActiveSocket] = useState(null);
 
   useEffect(() => {
     const fetchChats = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const response = await api.get("/api/companies/chats/", {
+        const response = await api.get("/companies/chats/", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setChats(response.data.chats || []);
@@ -25,6 +26,40 @@ const ChatList = ({ onSelectChat }) => {
     fetchChats();
   }, []);
 
+  const handleSelectChat = (chat) => {
+    onSelectChat(chat);
+
+    // Cerrar cualquier conexión WebSocket activa
+    if (activeSocket) {
+      activeSocket.close();
+    }
+
+    // Establecer una nueva conexión WebSocket
+    const socket = new WebSocket(
+      `ws://localhost:8000/ws/companies/chats/${chat.room_name}/`
+    );
+
+    socket.onopen = () => {
+      console.log(`Conexión WebSocket abierta para la sala: ${chat.room_name}`);
+    };
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log(`Mensaje recibido en la sala ${chat.room_name}:`, data.message);
+    };
+
+    socket.onclose = () => {
+      console.log(`Conexión WebSocket cerrada para la sala: ${chat.room_name}`);
+    };
+
+    socket.onerror = (error) => {
+      console.error(`Error en WebSocket para la sala ${chat.room_name}:`, error);
+    };
+
+    // Guarda el socket activo para futuras interacciones
+    setActiveSocket(socket);
+  };
+
   if (loading) return <p className="text-gray-500">Cargando chats...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
@@ -36,7 +71,7 @@ const ChatList = ({ onSelectChat }) => {
           <li
             key={chat.id}
             className="cursor-pointer p-2 rounded hover:bg-gray-100 flex items-center gap-3"
-            onClick={() => onSelectChat(chat)}
+            onClick={() => handleSelectChat(chat)}
           >
             <img
               src={chat.profile_picture || "/multimedia/images/default-avatar.jpg"}
