@@ -5,34 +5,247 @@ Command: npx gltfjsx@6.5.3 public/models/base.glb -o src/components/Base.jsx -r 
 
 import React from 'react'
 import { useGLTF } from '@react-three/drei'
-import { RigidBody } from '@react-three/rapier';
+import { RigidBody } from '@react-three/rapier'
 
 export function Base(props) {
   const { nodes, materials } = useGLTF('/models/base.glb')
   return (
     <RigidBody type="fixed" name="ground" colliders="trimesh">
+    
     <group {...props} dispose={null}>
-      <mesh geometry={nodes.Plane.geometry} material={materials['Material.002']} position={[0, 0.102, 0]} scale={[1.72, 45.319, 1.72]} />
+      <group position={[0, 0.102, 0]} scale={[1.72, 24.125, 1.72]}>
+        <mesh geometry={nodes.Plane_1.geometry} material={materials['Material.002']} />
+        <mesh geometry={nodes.Plane_2.geometry} material={materials['Material.005']} />
+      </group>
       <mesh geometry={nodes.Plane001.geometry} material={materials['Material.001']} position={[0, 0.012, 0]} scale={68.367} />
-      <mesh geometry={nodes.Cube.geometry} material={nodes.Cube.material} position={[2.953, 0, 0]} rotation={[-Math.PI, 0, 0]} scale={[-0.439, -0.261, -0.548]} />
-      <mesh geometry={nodes.Cube001.geometry} material={nodes.Cube001.material} position={[-2.912, 0, 0]} rotation={[-Math.PI, 0, 0]} scale={[-0.439, -0.261, -0.548]} />
-      <mesh geometry={nodes.Cube002.geometry} material={nodes.Cube002.material} position={[-0.004, 0, -2.94]} rotation={[Math.PI, -Math.PI / 2, 0]} scale={[-0.416, -0.261, -0.548]} />
-      <mesh geometry={nodes.Cube003.geometry} material={nodes.Cube003.material} position={[-0.004, 0, 2.897]} rotation={[Math.PI, -Math.PI / 2, 0]} scale={[-0.416, -0.261, -0.548]} />
-      <mesh geometry={nodes.Cube004.geometry} material={nodes.Cube004.material} position={[2.074, 0, -2.072]} rotation={[Math.PI, -0.772, 0]} scale={[-0.422, -0.261, -0.548]} />
-      <mesh geometry={nodes.Cube005.geometry} material={nodes.Cube005.material} position={[-2.094, 0, 1.985]} rotation={[Math.PI, -0.772, 0]} scale={[-0.422, -0.261, -0.548]} />
-      <mesh geometry={nodes.Cube006.geometry} material={nodes.Cube006.material} position={[2.056, 0, 2.122]} rotation={[-Math.PI, 0.816, 0]} scale={[-0.439, -0.261, -0.548]} />
-      <mesh geometry={nodes.Cube007.geometry} material={nodes.Cube007.material} position={[-1.987, 0, -2.173]} rotation={[-Math.PI, 0.816, 0]} scale={[-0.439, -0.261, -0.548]} />
-      <mesh geometry={nodes.Cube008.geometry} material={nodes.Cube008.material} position={[-1.823, 0.078, 0]} scale={[0.018, 0.021, 0.172]} />
-      <mesh geometry={nodes.Cube009.geometry} material={nodes.Cube009.material} position={[1.863, 0.078, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[0.018, 0.021, 0.172]} />
-      <mesh geometry={nodes.Cube010.geometry} material={nodes.Cube010.material} position={[0.015, 0.078, 1.831]} rotation={[0, Math.PI / 2, 0]} scale={[0.018, 0.021, 0.172]} />
-      <mesh geometry={nodes.Cube011.geometry} material={nodes.Cube011.material} position={[0.015, 0.078, 1.831]} rotation={[0, Math.PI / 2, 0]} scale={[0.018, 0.021, 0.172]} />
-      <mesh geometry={nodes.Cube012.geometry} material={nodes.Cube012.material} position={[0.015, 0.078, -1.874]} rotation={[0, -Math.PI / 2, 0]} scale={[0.018, 0.021, 0.172]} />
-      <mesh geometry={nodes.Cube013.geometry} material={nodes.Cube013.material} position={[-1.236, 0.078, -1.383]} rotation={[0, -0.808, 0]} scale={[0.018, 0.021, 0.172]} />
-      <mesh geometry={nodes.Cube014.geometry} material={nodes.Cube014.material} position={[1.332, 0.078, 1.306]} rotation={[-Math.PI, 0.806, -Math.PI]} scale={[0.018, 0.021, 0.172]} />
-      <mesh geometry={nodes.Cube015.geometry} material={nodes.Cube015.material} position={[1.318, 0.078, -1.314]} rotation={[Math.PI, -0.788, Math.PI]} scale={[0.018, 0.021, 0.172]} />
-      <mesh geometry={nodes.Cube016.geometry} material={nodes.Cube016.material} position={[-1.333, 0.078, 1.236]} rotation={[0, 0.79, 0]} scale={[0.018, 0.021, 0.172]} />
+      <mesh geometry={nodes.Cube001.geometry} material={materials.texturas_plataformas} position={[-3.236, 0, 0]} rotation={[-Math.PI, 0, 0]} scale={[-0.629, -0.261, -0.548]} />
+      <mesh geometry={nodes.Cube002.geometry} material={materials.texturas_plataformas} position={[-0.004, 0, -3.303]} rotation={[Math.PI, -Math.PI / 2, 0]} scale={[-0.67, -0.261, -0.548]} />
+      <mesh geometry={nodes.Cube003.geometry} material={materials.texturas_plataformas} position={[-0.004, 0, 3.239]} rotation={[Math.PI, -Math.PI / 2, 0]} scale={[-0.677, -0.261, -0.548]} />
+      <mesh geometry={nodes.Cube004.geometry} material={materials.texturas_plataformas} position={[2.319, 0, -2.311]} rotation={[Math.PI, -0.772, 0]} scale={[-0.599, -0.261, -0.548]} />
+      <mesh geometry={nodes.Cube005.geometry} material={materials.texturas_plataformas} position={[-2.275, 0, 2.205]} rotation={[Math.PI, -0.772, 0]} scale={[-0.606, -0.261, -0.548]} />
+      <mesh geometry={nodes.Cube006.geometry} material={materials.texturas_plataformas} position={[2.298, 0, 2.379]} rotation={[-Math.PI, 0.816, 0]} scale={[-0.733, -0.261, -0.548]} />
+      <mesh geometry={nodes.Cube007.geometry} material={materials.texturas_plataformas} position={[-2.216, 0, -2.417]} rotation={[-Math.PI, 0.816, 0]} scale={[-0.69, -0.261, -0.548]} />
+      <mesh geometry={nodes.Cube017.geometry} material={materials.texturas_plataformas} position={[3.32, 0, 0]} rotation={[-Math.PI, 0, 0]} scale={[-0.648, -0.261, -0.548]} />
+      <mesh geometry={nodes.walkroad.geometry} material={materials.color_Palette} position={[0.003, 0.104, -0.07]} scale={[0.258, 0.466, 0.245]} />
+      <mesh geometry={nodes.walkroad001.geometry} material={materials.color_Palette} position={[0.029, 0.104, 0.045]} rotation={[-Math.PI, 0.019, -Math.PI]} scale={[0.258, 0.466, 0.245]} />
+      <mesh geometry={nodes.bridge.geometry} material={materials['color_Palette.001']} position={[0.003, 0.237, 2.181]} rotation={[2.93, -0.045, Math.PI]} scale={[0.237, 0.237, 0.364]} />
+      <mesh geometry={nodes.walkroad002.geometry} material={materials.color_Palette} position={[0.041, 0.104, 1.705]} rotation={[0, 1.531, 0]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.tree007.geometry} material={materials['color_Palette.002']} position={[-1.117, 0.256, 1.378]} scale={0.138} />
+      <mesh geometry={nodes.bridge001.geometry} material={materials['color_Palette.001']} position={[1.535, 0.254, 1.582]} rotation={[2.918, -0.769, 2.994]} scale={[0.237, 0.237, 0.384]} />
+      <mesh geometry={nodes.bridge002.geometry} material={materials['color_Palette.001']} position={[-1.455, 0.232, -1.646]} rotation={[0.233, 0.754, -0.169]} scale={[0.237, 0.237, 0.37]} />
+      <mesh geometry={nodes.bridge003.geometry} material={materials['color_Palette.001']} position={[0.06, 0.23, -2.212]} rotation={[0.169, 0.015, 0.03]} scale={[0.237, 0.237, 0.388]} />
+      <mesh geometry={nodes.bridge004.geometry} material={materials['color_Palette.001']} position={[-1.603, 0.23, 1.485]} rotation={[2.873, 0.744, -2.938]} scale={[0.237, 0.237, 0.362]} />
+      <mesh geometry={nodes.bridge005.geometry} material={materials['color_Palette.001']} position={[-2.23, 0.225, 0.023]} rotation={[1.487, 1.416, -1.477]} scale={[0.237, 0.237, 0.358]} />
+      <mesh geometry={nodes.bridge006.geometry} material={materials['color_Palette.001']} position={[2.287, 0.235, -0.014]} rotation={[1.649, -1.401, 1.681]} scale={[0.237, 0.237, 0.358]} />
+      <mesh geometry={nodes.bridge007.geometry} material={materials['color_Palette.001']} position={[1.592, 0.231, -1.608]} rotation={[0.28, -0.788, 0.218]} scale={[0.237, 0.237, 0.436]} />
+      <mesh geometry={nodes.tree001.geometry} material={materials['color_Palette.002']} position={[-0.383, 0.256, 1.741]} scale={0.138} />
+      <mesh geometry={nodes.tree002.geometry} material={materials['color_Palette.002']} position={[0.289, 0.256, 1.741]} scale={0.138} />
+      <mesh geometry={nodes.tree003.geometry} material={materials['color_Palette.002']} position={[0.965, 0.256, 1.519]} scale={0.138} />
+      <mesh geometry={nodes.tree004.geometry} material={materials['color_Palette.002']} position={[0.368, 0.256, -1.752]} scale={0.138} />
+      <mesh geometry={nodes.tree005.geometry} material={materials['color_Palette.002']} position={[1.001, 0.256, -1.514]} scale={0.138} />
+      <mesh geometry={nodes.tree006.geometry} material={materials['color_Palette.002']} position={[-0.883, 0.256, -1.533]} scale={0.138} />
+      <mesh geometry={nodes.tree008.geometry} material={materials['color_Palette.002']} position={[-0.223, 0.256, -1.778]} scale={0.138} />
+      <mesh geometry={nodes.tree009.geometry} material={materials['color_Palette.002']} position={[-1.382, 0.256, -1.081]} scale={0.138} />
+      <mesh geometry={nodes.tree010.geometry} material={materials['color_Palette.002']} position={[1.501, 0.256, -1.025]} scale={0.138} />
+      <mesh geometry={nodes.tree011.geometry} material={materials['color_Palette.002']} position={[-1.759, 0.256, -0.28]} scale={0.138} />
+      <mesh geometry={nodes.tree012.geometry} material={materials['color_Palette.002']} position={[-1.75, 0.256, 0.351]} scale={0.138} />
+      <mesh geometry={nodes.tree013.geometry} material={materials['color_Palette.002']} position={[-1.514, 0.256, 0.963]} scale={0.138} />
+      <mesh geometry={nodes.tree014.geometry} material={materials['color_Palette.002']} position={[1.502, 0.256, 1.01]} scale={0.138} />
+      <mesh geometry={nodes.tree015.geometry} material={materials['color_Palette.002']} position={[1.747, 0.256, 0.313]} scale={0.138} />
+      <mesh geometry={nodes.tree016.geometry} material={materials['color_Palette.002']} position={[1.747, 0.256, -0.328]} scale={0.138} />
+      <mesh geometry={nodes.stone003.geometry} material={materials.Mat_tree} position={[1.605, 0.064, -0.906]} rotation={[Math.PI, -1.459, Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone002.geometry} material={materials.Mat_tree} position={[1.654, 0.065, -0.799]} rotation={[0, 1.385, 0]} scale={0.103} />
+      <mesh geometry={nodes.stone001.geometry} material={materials.Mat_tree} position={[1.751, 0.065, -0.521]} rotation={[0, -0.994, 0]} scale={0.103} />
+      <mesh geometry={nodes.stone004.geometry} material={materials.Mat_tree} position={[1.697, 0.064, -0.654]} rotation={[Math.PI, -1.459, Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone005.geometry} material={materials['Mat_tree.001']} position={[1.697, 0.064, -0.654]} rotation={[Math.PI, -1.459, Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone006.geometry} material={materials['Mat_tree.001']} position={[1.605, 0.064, -0.906]} rotation={[Math.PI, -1.459, Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone007.geometry} material={materials['Mat_tree.001']} position={[1.654, 0.065, -0.799]} rotation={[0, 1.385, 0]} scale={0.103} />
+      <mesh geometry={nodes.stone008.geometry} material={materials['Mat_tree.001']} position={[1.751, 0.065, -0.521]} rotation={[0, -0.994, 0]} scale={0.103} />
+      <mesh geometry={nodes.stone009.geometry} material={materials['Mat_tree.002']} position={[0.845, 0.065, -1.599]} rotation={[0, -0.134, 0]} scale={0.103} />
+      <mesh geometry={nodes.stone010.geometry} material={materials['Mat_tree.002']} position={[0.571, 0.065, -1.707]} rotation={[-Math.PI, 0.897, -Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone011.geometry} material={materials['Mat_tree.002']} position={[0.458, 0.064, -1.74]} rotation={[0, -0.823, 0]} scale={0.103} />
+      <mesh geometry={nodes.stone012.geometry} material={materials['Mat_tree.002']} position={[0.709, 0.064, -1.644]} rotation={[0, -0.823, 0]} scale={0.103} />
+      <mesh geometry={nodes.walkroad003.geometry} material={materials['color_Palette.003']} position={[0.034, 0.104, 1.365]} rotation={[-Math.PI, 1.526, -Math.PI]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad004.geometry} material={materials['color_Palette.004']} position={[0.05, 0.104, 1.042]} rotation={[0, 1.406, 0]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad005.geometry} material={materials['color_Palette.005']} position={[1.722, 0.104, -0.079]} rotation={[-Math.PI, 0.17, -Math.PI]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.stone013.geometry} material={materials['Mat_tree.003']} position={[1.653, 0.064, 0.804]} rotation={[Math.PI, -0.68, Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone014.geometry} material={materials['Mat_tree.003']} position={[1.765, 0.064, 0.503]} rotation={[Math.PI, -0.68, Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone015.geometry} material={materials['Mat_tree.003']} position={[1.696, 0.065, 0.652]} rotation={[0, 0.605, 0]} scale={0.103} />
+      <mesh geometry={nodes.stone016.geometry} material={materials['Mat_tree.003']} position={[1.598, 0.065, 0.937]} rotation={[Math.PI, -1.368, Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone017.geometry} material={materials['Mat_tree.004']} position={[0.428, 0.065, 1.742]} rotation={[Math.PI, -0.546, Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone018.geometry} material={materials['Mat_tree.004']} position={[0.733, 0.065, 1.688]} rotation={[0, -0.217, 0]} scale={0.103} />
+      <mesh geometry={nodes.stone019.geometry} material={materials['Mat_tree.004']} position={[0.857, 0.064, 1.612]} rotation={[-Math.PI, 0.143, -Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone020.geometry} material={materials['Mat_tree.004']} position={[0.587, 0.064, 1.742]} rotation={[3.139, 0.156, -3.136]} scale={0.103} />
+      <mesh geometry={nodes.stone021.geometry} material={materials['Mat_tree.005']} position={[-0.879, 0.064, 1.6]} rotation={[-Math.PI, 0.888, -Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone022.geometry} material={materials['Mat_tree.005']} position={[-0.572, 0.064, 1.719]} rotation={[-Math.PI, 0.888, -Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone023.geometry} material={materials['Mat_tree.005']} position={[-0.745, 0.065, 1.67]} rotation={[0, -0.962, 0]} scale={0.103} />
+      <mesh geometry={nodes.stone024.geometry} material={materials['Mat_tree.005']} position={[-1.012, 0.065, 1.489]} rotation={[-Math.PI, 0.199, -Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone025.geometry} material={materials['Mat_tree.006']} position={[-1.731, 0.065, 0.52]} rotation={[-Math.PI, 0.976, -Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone026.geometry} material={materials['Mat_tree.006']} position={[-1.643, 0.065, 0.796]} rotation={[Math.PI, -1.403, Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone027.geometry} material={materials['Mat_tree.006']} position={[-1.573, 0.064, 0.903]} rotation={[0, 1.477, 0]} scale={0.103} />
+      <mesh geometry={nodes.stone028.geometry} material={materials['Mat_tree.006']} position={[-1.692, 0.064, 0.652]} rotation={[0, 1.477, 0]} scale={0.103} />
+      <mesh geometry={nodes.stone029.geometry} material={materials['Mat_tree.007']} position={[-1.59, 0.064, -0.824]} rotation={[0, 0.679, 0]} scale={0.103} />
+      <mesh geometry={nodes.stone030.geometry} material={materials['Mat_tree.007']} position={[-1.711, 0.064, -0.513]} rotation={[0, 0.679, 0]} scale={0.103} />
+      <mesh geometry={nodes.stone031.geometry} material={materials['Mat_tree.007']} position={[-1.655, 0.065, -0.681]} rotation={[Math.PI, -0.605, Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone032.geometry} material={materials['Mat_tree.007']} position={[-1.513, 0.065, -0.96]} rotation={[0, 1.368, 0]} scale={0.103} />
+      <mesh geometry={nodes.stone033.geometry} material={materials['Mat_tree.008']} position={[-0.392, 0.065, -1.758]} rotation={[0, 0.559, 0]} scale={0.103} />
+      <mesh geometry={nodes.stone034.geometry} material={materials['Mat_tree.008']} position={[-0.686, 0.065, -1.672]} rotation={[-Math.PI, 0.203, -Math.PI]} scale={0.103} />
+      <mesh geometry={nodes.stone035.geometry} material={materials['Mat_tree.008']} position={[-0.794, 0.064, -1.641]} rotation={[0, -0.129, 0]} scale={0.103} />
+      <mesh geometry={nodes.stone036.geometry} material={materials['Mat_tree.008']} position={[-0.54, 0.064, -1.728]} rotation={[0, -0.129, 0]} scale={0.103} />
+      <mesh geometry={nodes.walkroad006.geometry} material={materials['color_Palette.006']} position={[-0.366, 0.104, 1.353]} rotation={[0, -0.596, 0]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad007.geometry} material={materials['color_Palette.007']} position={[-0.653, 0.104, 1.212]} rotation={[0, -0.241, 0]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad008.geometry} material={materials['color_Palette.008']} position={[-1.211, 0.104, 1.183]} rotation={[0, 0.589, 0]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad009.geometry} material={materials['color_Palette.009']} position={[-0.994, 0.104, 1.066]} rotation={[0, -0.747, 0]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad010.geometry} material={materials['color_Palette.010']} position={[0.253, 0.104, 1.41]} rotation={[0, 0.198, 0]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad011.geometry} material={materials['color_Palette.011']} position={[0.571, 0.104, 1.221]} rotation={[0, 0.703, 0]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad012.geometry} material={materials['color_Palette.012']} position={[0.87, 0.104, 0.965]} rotation={[Math.PI, -0.088, Math.PI]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad013.geometry} material={materials['color_Palette.013']} position={[1.215, 0.104, 1.149]} rotation={[-Math.PI, 0.995, -Math.PI]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad014.geometry} material={materials['color_Palette.005']} position={[-1.713, 0.104, 0.092]} rotation={[0, -0.027, 0]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad015.geometry} material={materials.color_Palette} position={[0.123, 0.104, -1.683]} rotation={[0, 1.531, 0]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad016.geometry} material={materials['color_Palette.008']} position={[1.22, 0.104, -1.172]} rotation={[0, 0.589, 0]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad017.geometry} material={materials['color_Palette.013']} position={[-1.028, 0.104, -1.294]} rotation={[-Math.PI, 0.995, -Math.PI]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad018.geometry} material={materials['color_Palette.006']} position={[-1.193, 0.104, 0.735]} rotation={[0, -1.333, 0]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad019.geometry} material={materials['color_Palette.007']} position={[-1.311, 0.104, 0.437]} rotation={[0, -0.978, 0]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad020.geometry} material={materials['color_Palette.009']} position={[-1.465, 0.104, 0.099]} rotation={[0, -1.483, 0]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad021.geometry} material={materials['color_Palette.006']} position={[-1.416, 0.104, -0.32]} rotation={[Math.PI, -0.922, Math.PI]} scale={[0.179, 0.482, 0.202]} />
+      <mesh geometry={nodes.walkroad022.geometry} material={materials['color_Palette.007']} position={[-1.255, 0.104, -0.609]} rotation={[Math.PI, -1.277, Math.PI]} scale={[0.179, 0.482, 0.202]} />
+      <mesh geometry={nodes.walkroad023.geometry} material={materials['color_Palette.009']} position={[-1.085, 0.104, -0.953]} rotation={[Math.PI, -0.772, Math.PI]} scale={[0.179, 0.482, 0.202]} />
+      <mesh geometry={nodes.walkroad024.geometry} material={materials['color_Palette.006']} position={[-0.745, 0.104, -1.186]} rotation={[Math.PI, -0.199, Math.PI]} scale={[0.179, 0.482, 0.202]} />
+      <mesh geometry={nodes.walkroad025.geometry} material={materials['color_Palette.007']} position={[-0.433, 0.104, -1.297]} rotation={[Math.PI, -0.554, Math.PI]} scale={[0.179, 0.482, 0.202]} />
+      <mesh geometry={nodes.walkroad026.geometry} material={materials['color_Palette.009']} position={[-0.078, 0.104, -1.442]} rotation={[Math.PI, -0.049, Math.PI]} scale={[0.179, 0.482, 0.202]} />
+      <mesh geometry={nodes.walkroad027.geometry} material={materials['color_Palette.006']} position={[0.316, 0.104, -1.383]} rotation={[-Math.PI, 0.626, -Math.PI]} scale={[0.179, 0.482, 0.202]} />
+      <mesh geometry={nodes.walkroad028.geometry} material={materials['color_Palette.007']} position={[0.609, 0.104, -1.229]} rotation={[-Math.PI, 0.271, -Math.PI]} scale={[0.179, 0.482, 0.202]} />
+      <mesh geometry={nodes.walkroad029.geometry} material={materials['color_Palette.009']} position={[0.956, 0.104, -1.067]} rotation={[-Math.PI, 0.776, -Math.PI]} scale={[0.179, 0.482, 0.202]} />
+      <mesh geometry={nodes.walkroad030.geometry} material={materials['color_Palette.006']} position={[1.182, 0.104, -0.777]} rotation={[-Math.PI, 1.362, -Math.PI]} scale={[0.179, 0.482, 0.202]} />
+      <mesh geometry={nodes.walkroad031.geometry} material={materials['color_Palette.007']} position={[1.296, 0.104, -0.465]} rotation={[-Math.PI, 1.006, -Math.PI]} scale={[0.179, 0.482, 0.202]} />
+      <mesh geometry={nodes.walkroad032.geometry} material={materials['color_Palette.009']} position={[1.478, 0.104, -0.107]} rotation={[-Math.PI, 1.512, -Math.PI]} scale={[0.179, 0.482, 0.202]} />
+      <mesh geometry={nodes.walkroad033.geometry} material={materials['color_Palette.006']} position={[1.419, 0.104, 0.249]} rotation={[0, 0.981, 0]} scale={[0.158, 0.427, 0.178]} />
+      <mesh geometry={nodes.walkroad034.geometry} material={materials['color_Palette.007']} position={[1.292, 0.104, 0.513]} rotation={[0, 1.336, 0]} scale={[0.158, 0.427, 0.178]} />
+      <mesh geometry={nodes.walkroad035.geometry} material={materials['color_Palette.009']} position={[1.16, 0.104, 0.826]} rotation={[0, 0.831, 0]} scale={[0.158, 0.427, 0.178]} />
+      <mesh geometry={nodes.walkroad036.geometry} material={materials['color_Palette.005']} position={[1.122, 0.104, -0.079]} rotation={[-Math.PI, 0.17, -Math.PI]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad037.geometry} material={materials['color_Palette.005']} position={[-1.108, 0.104, -0.042]} rotation={[-Math.PI, 0.17, -Math.PI]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad038.geometry} material={materials.color_Palette} position={[0.123, 0.104, -1.098]} rotation={[0, 1.531, 0]} scale={[0.173, 0.466, 0.195]} />
+      <mesh geometry={nodes.walkroad039.geometry} material={materials['color_Palette.006']} position={[-0.23, 0.104, 0.795]} rotation={[0, -0.741, 0]} scale={[0.179, 0.484, 0.202]} />
+      <mesh geometry={nodes.walkroad040.geometry} material={materials['color_Palette.007']} position={[-0.5, 0.104, 0.598]} rotation={[0, -0.467, 0]} scale={[0.155, 0.418, 0.175]} />
+      <mesh geometry={nodes.walkroad041.geometry} material={materials['color_Palette.009']} position={[-0.783, 0.104, 0.357]} rotation={[0, -1.278, 0]} scale={[0.179, 0.484, 0.202]} />
+      <mesh geometry={nodes.walkroad042.geometry} material={materials['color_Palette.009']} position={[-0.763, 0.104, 0.023]} rotation={[0, 1.49, 0]} scale={[0.179, 0.484, 0.202]} />
+      <mesh geometry={nodes.walkroad043.geometry} material={materials['color_Palette.006']} position={[-0.848, 0.104, -0.354]} rotation={[Math.PI, -0.783, Math.PI]} scale={[0.152, 0.409, 0.171]} />
+      <mesh geometry={nodes.walkroad044.geometry} material={materials['color_Palette.007']} position={[-0.689, 0.104, -0.658]} rotation={[Math.PI, -0.988, Math.PI]} scale={[0.179, 0.484, 0.202]} />
+      <mesh geometry={nodes.walkroad045.geometry} material={materials['color_Palette.009']} position={[-0.365, 0.104, -0.886]} rotation={[-Math.PI, 0.069, -Math.PI]} scale={[0.179, 0.484, 0.202]} />
+      <mesh geometry={nodes.walkroad046.geometry} material={materials['color_Palette.009']} position={[-0.043, 0.104, -0.764]} rotation={[0, -0.197, 0]} scale={[0.179, 0.484, 0.202]} />
+      <mesh geometry={nodes.walkroad048.geometry} material={materials['color_Palette.007']} position={[0.622, 0.104, -0.697]} rotation={[-Math.PI, 0.689, -Math.PI]} scale={[0.179, 0.484, 0.202]} />
+      <mesh geometry={nodes.walkroad049.geometry} material={materials['color_Palette.009']} position={[0.809, 0.104, -0.365]} rotation={[0, 1.562, 0]} scale={[0.179, 0.484, 0.202]} />
+      <mesh geometry={nodes.walkroad050.geometry} material={materials['color_Palette.009']} position={[0.725, 0.104, -0.035]} rotation={[Math.PI, -1.434, Math.PI]} scale={[0.179, 0.484, 0.202]} />
+      <mesh geometry={nodes.walkroad051.geometry} material={materials['color_Palette.006']} position={[0.76, 0.104, 0.346]} rotation={[0, 0.727, 0]} scale={[0.152, 0.409, 0.171]} />
+      <mesh geometry={nodes.walkroad052.geometry} material={materials['color_Palette.007']} position={[0.53, 0.104, 0.605]} rotation={[0, 0.513, 0]} scale={[0.179, 0.484, 0.202]} />
+      <mesh geometry={nodes.walkroad053.geometry} material={materials['color_Palette.009']} position={[0.205, 0.104, 0.795]} rotation={[0, 0.293, 0]} scale={[0.179, 0.484, 0.202]} />
+      <mesh geometry={nodes.walkroad047.geometry} material={materials['color_Palette.007']} position={[0.34, 0.104, -0.841]} rotation={[-Math.PI, 0.413, -Math.PI]} scale={[0.156, 0.422, 0.176]} />
+      <mesh geometry={nodes.walkroad054.geometry} material={materials['color_Palette.008']} position={[-0.385, 0.104, 0.238]} rotation={[Math.PI, -0.544, Math.PI]} scale={[0.158, 0.426, 0.178]} />
+      <mesh geometry={nodes.walkroad055.geometry} material={materials['color_Palette.008']} position={[0.395, 0.104, -0.385]} rotation={[Math.PI, -0.544, Math.PI]} scale={[0.151, 0.407, 0.17]} />
+      <mesh geometry={nodes.walkroad056.geometry} material={materials['color_Palette.008']} position={[0.254, 0.104, 0.335]} rotation={[0, -1.028, 0]} scale={[0.131, 0.353, 0.148]} />
+      <mesh geometry={nodes.walkroad057.geometry} material={materials['color_Palette.008']} position={[-0.358, 0.104, -0.417]} rotation={[0, -1.061, 0]} scale={[0.148, 0.4, 0.167]} />
+      <mesh geometry={nodes.bush1.geometry} material={materials['color_Palette.015']} position={[-0.903, 0.091, 0.813]} rotation={[0, -1.326, 0]} scale={0.097} />
+      <mesh geometry={nodes.tree017.geometry} material={materials['color_Palette.002']} position={[-0.838, 0.256, 0.882]} scale={0.138} />
+      <mesh geometry={nodes.tree018.geometry} material={materials['color_Palette.002']} position={[-0.741, 0.256, 0.588]} scale={0.138} />
+      <mesh geometry={nodes.bush1001.geometry} material={materials['color_Palette.015']} position={[-0.656, 0.091, 0.671]} rotation={[0, -1.326, 0]} scale={0.097} />
+      <mesh geometry={nodes.stone071.geometry} material={materials['Mat_tree.009']} position={[-0.83, 0.101, 0.714]} rotation={[-Math.PI, 1.562, -Math.PI]} scale={0.089} />
+      <mesh geometry={nodes.stone072.geometry} material={materials['Mat_tree.009']} position={[-0.734, 0.101, 0.769]} rotation={[-Math.PI, 1.562, -Math.PI]} scale={0.062} />
+      <mesh geometry={nodes.bush1002.geometry} material={materials['color_Palette.015']} position={[0.735, 0.091, 0.607]} rotation={[Math.PI, -0.011, Math.PI]} scale={0.097} />
+      <mesh geometry={nodes.tree019.geometry} material={materials['color_Palette.002']} position={[0.653, 0.256, 0.653]} rotation={[Math.PI, -1.337, Math.PI]} scale={0.138} />
+      <mesh geometry={nodes.tree020.geometry} material={materials['color_Palette.002']} position={[0.916, 0.256, 0.816]} rotation={[Math.PI, -1.337, Math.PI]} scale={0.138} />
+      <mesh geometry={nodes.bush1003.geometry} material={materials['color_Palette.015']} position={[0.816, 0.091, 0.88]} rotation={[Math.PI, -0.011, Math.PI]} scale={0.097} />
+      <mesh geometry={nodes.stone073.geometry} material={materials['Mat_tree.009']} position={[0.814, 0.101, 0.7]} rotation={[0, -0.225, 0]} scale={0.089} />
+      <mesh geometry={nodes.stone074.geometry} material={materials['Mat_tree.009']} position={[0.739, 0.101, 0.781]} rotation={[0, -0.225, 0]} scale={0.062} />
+      <mesh geometry={nodes.bush1004.geometry} material={materials['color_Palette.015']} position={[0.69, 0.091, -0.675]} rotation={[0, -1.41, 0]} scale={0.097} />
+      <mesh geometry={nodes.tree021.geometry} material={materials['color_Palette.002']} position={[0.748, 0.256, -0.601]} rotation={[0, -0.084, 0]} scale={0.138} />
+      <mesh geometry={nodes.tree022.geometry} material={materials['color_Palette.002']} position={[0.87, 0.256, -0.886]} rotation={[0, -0.084, 0]} scale={0.138} />
+      <mesh geometry={nodes.bush1005.geometry} material={materials['color_Palette.015']} position={[0.948, 0.091, -0.796]} rotation={[0, -1.41, 0]} scale={0.097} />
+      <mesh geometry={nodes.stone075.geometry} material={materials['Mat_tree.009']} position={[0.77, 0.101, -0.768]} rotation={[0, 1.495, 0]} scale={0.089} />
+      <mesh geometry={nodes.stone076.geometry} material={materials['Mat_tree.009']} position={[0.861, 0.101, -0.705]} rotation={[0, 1.495, 0]} scale={0.062} />
+      <mesh geometry={nodes.bush1006.geometry} material={materials['color_Palette.015']} position={[-0.814, 0.103, -0.751]} rotation={[0, -0.728, 0]} scale={0.077} />
+      <mesh geometry={nodes.tree023.geometry} material={materials['color_Palette.002']} position={[-0.74, 0.234, -0.735]} rotation={[0, 0.599, 0]} scale={0.11} />
+      <mesh geometry={nodes.tree024.geometry} material={materials['color_Palette.002']} position={[-0.808, 0.234, -0.972]} rotation={[0, 0.599, 0]} scale={0.11} />
+      <mesh geometry={nodes.bush1007.geometry} material={materials['color_Palette.015']} position={[-0.715, 0.103, -0.956]} rotation={[0, -0.728, 0]} scale={0.077} />
+      <mesh geometry={nodes.stone077.geometry} material={materials['Mat_tree.009']} position={[-0.81, 0.111, -0.849]} rotation={[-Math.PI, 0.964, -Math.PI]} scale={0.071} />
+      <mesh geometry={nodes.stone078.geometry} material={materials['Mat_tree.009']} position={[-0.723, 0.111, -0.856]} rotation={[-Math.PI, 0.964, -Math.PI]} scale={0.049} />
+      <mesh geometry={nodes.tree025.geometry} material={materials['color_Palette.016']} position={[1.202, 0.088, 0.166]} scale={0.165} />
+      <mesh geometry={nodes.tree026.geometry} material={materials['color_Palette.016']} position={[0.934, 0.093, 0.128]} rotation={[0, 1.21, 0]} scale={0.165} />
+      <mesh geometry={nodes.bush1008.geometry} material={materials['color_Palette.015']} position={[0.984, 0.091, 0.134]} rotation={[Math.PI, -0.011, Math.PI]} scale={0.097} />
+      <mesh geometry={nodes.stone079.geometry} material={materials['Mat_tree.009']} position={[1.094, 0.101, 0.166]} rotation={[0, -0.225, 0]} scale={0.068} />
+      <mesh geometry={nodes.tree027.geometry} material={materials['color_Palette.016']} position={[0.106, 0.088, 1.202]} rotation={[0, -1.496, 0]} scale={0.165} />
+      <mesh geometry={nodes.tree028.geometry} material={materials['color_Palette.016']} position={[0.125, 0.093, 0.933]} rotation={[0, -0.286, 0]} scale={0.165} />
+      <mesh geometry={nodes.bush1009.geometry} material={materials['color_Palette.015']} position={[0.123, 0.091, 0.983]} rotation={[-Math.PI, 1.485, -Math.PI]} scale={0.097} />
+      <mesh geometry={nodes.stone080.geometry} material={materials['Mat_tree.009']} position={[0.124, 0.101, 1.095]} rotation={[Math.PI, -1.42, Math.PI]} scale={0.068} />
+      <mesh geometry={nodes.tree029.geometry} material={materials['color_Palette.016']} position={[-0.188, 0.088, 1.202]} rotation={[0, -1.496, 0]} scale={0.165} />
+      <mesh geometry={nodes.tree030.geometry} material={materials['color_Palette.016']} position={[-0.17, 0.093, 0.933]} rotation={[0, -0.286, 0]} scale={0.165} />
+      <mesh geometry={nodes.bush1010.geometry} material={materials['color_Palette.015']} position={[-0.172, 0.091, 0.983]} rotation={[-Math.PI, 1.485, -Math.PI]} scale={0.097} />
+      <mesh geometry={nodes.stone081.geometry} material={materials['Mat_tree.009']} position={[-0.196, 0.101, 1.095]} rotation={[Math.PI, -1.42, Math.PI]} scale={0.068} />
+      <mesh geometry={nodes.tree031.geometry} material={materials['color_Palette.016']} position={[-1.208, 0.088, 0.193]} rotation={[Math.PI, -0.344, Math.PI]} scale={0.165} />
+      <mesh geometry={nodes.tree032.geometry} material={materials['color_Palette.016']} position={[-0.944, 0.093, 0.139]} rotation={[Math.PI, -1.554, Math.PI]} scale={0.165} />
+      <mesh geometry={nodes.bush1011.geometry} material={materials['color_Palette.015']} position={[-0.993, 0.091, 0.151]} rotation={[0, 0.355, 0]} scale={0.097} />
+      <mesh geometry={nodes.stone082.geometry} material={materials['Mat_tree.009']} position={[-1.107, 0.101, 0.19]} rotation={[Math.PI, -0.119, Math.PI]} scale={0.068} />
+      <mesh geometry={nodes.tree033.geometry} material={materials['color_Palette.016']} position={[-1.257, 0.088, -0.12]} rotation={[Math.PI, -0.129, Math.PI]} scale={0.165} />
+      <mesh geometry={nodes.tree034.geometry} material={materials['color_Palette.016']} position={[-0.987, 0.093, -0.117]} rotation={[Math.PI, -1.339, Math.PI]} scale={0.165} />
+      <mesh geometry={nodes.bush1012.geometry} material={materials['color_Palette.015']} position={[-1.038, 0.091, -0.116]} rotation={[0, 0.14, 0]} scale={0.097} />
+      <mesh geometry={nodes.stone083.geometry} material={materials['Mat_tree.009']} position={[-1.157, 0.101, -0.102]} rotation={[-Math.PI, 0.096, -Math.PI]} scale={0.068} />
+      <mesh geometry={nodes.tree035.geometry} material={materials['color_Palette.016']} position={[-0.117, 0.097, -1.245]} rotation={[-Math.PI, 1.421, -Math.PI]} scale={0.165} />
+      <mesh geometry={nodes.tree036.geometry} material={materials['color_Palette.016']} position={[-0.115, 0.101, -0.975]} rotation={[-Math.PI, 0.212, -Math.PI]} scale={0.165} />
+      <mesh geometry={nodes.bush1013.geometry} material={materials['color_Palette.015']} position={[-0.116, 0.1, -1.026]} rotation={[0, -1.41, 0]} scale={0.097} />
+      <mesh geometry={nodes.stone084.geometry} material={materials['Mat_tree.009']} position={[-0.133, 0.11, -1.145]} rotation={[0, 1.495, 0]} scale={0.068} />
+      <mesh geometry={nodes.tree037.geometry} material={materials['color_Palette.016']} position={[0.181, 0.097, -1.245]} rotation={[-Math.PI, 1.421, -Math.PI]} scale={0.165} />
+      <mesh geometry={nodes.tree038.geometry} material={materials['color_Palette.016']} position={[0.183, 0.101, -0.975]} rotation={[-Math.PI, 0.212, -Math.PI]} scale={0.165} />
+      <mesh geometry={nodes.bush1014.geometry} material={materials['color_Palette.015']} position={[0.181, 0.1, -1.026]} rotation={[0, -1.41, 0]} scale={0.097} />
+      <mesh geometry={nodes.stone085.geometry} material={materials['Mat_tree.009']} position={[0.201, 0.11, -1.145]} rotation={[0, 1.495, 0]} scale={0.068} />
+      <mesh geometry={nodes.tree039.geometry} material={materials['color_Palette.016']} position={[1.199, 0.088, -0.206]} rotation={[0, 0.353, 0]} scale={0.165} />
+      <mesh geometry={nodes.tree040.geometry} material={materials['color_Palette.016']} position={[0.935, 0.093, -0.149]} rotation={[0, 1.563, 0]} scale={0.165} />
+      <mesh geometry={nodes.bush1015.geometry} material={materials['color_Palette.015']} position={[0.984, 0.091, -0.161]} rotation={[Math.PI, -0.364, Math.PI]} scale={0.097} />
+      <mesh geometry={nodes.stone086.geometry} material={materials['Mat_tree.009']} position={[1.098, 0.101, -0.169]} rotation={[0, 0.128, 0]} scale={0.068} />
+      <mesh geometry={nodes.tree041.geometry} material={materials['color_Palette.002']} position={[0.365, 0.256, -0.536]} rotation={[0, -0.084, 0]} scale={0.138} />
+      <mesh geometry={nodes.tree042.geometry} material={materials['color_Palette.002']} position={[-0.2, 0.256, -0.638]} rotation={[0, -0.084, 0]} scale={0.138} />
+      <mesh geometry={nodes.tree043.geometry} material={materials['color_Palette.016']} position={[0.189, 0.093, -0.386]} rotation={[0, 1.563, 0]} scale={0.165} />
+      <mesh geometry={nodes.tree044.geometry} material={materials['color_Palette.016']} position={[-0.124, 0.093, -0.435]} rotation={[0, 0.315, 0]} scale={0.165} />
+      <mesh geometry={nodes.bush1016.geometry} material={materials['color_Palette.015']} position={[0.127, 0.091, -0.361]} rotation={[0, -1.41, 0]} scale={0.097} />
+      <mesh geometry={nodes.bush1017.geometry} material={materials['color_Palette.015']} position={[-0.079, 0.091, -0.361]} rotation={[0, -1.41, 0]} scale={0.097} />
+      <mesh geometry={nodes.bush1018.geometry} material={materials['color_Palette.015']} position={[0.023, 0.093, -0.361]} rotation={[0, -0.696, 0]} scale={0.168} />
+      <mesh geometry={nodes.bush1019.geometry} material={materials['color_Palette.015']} position={[0.249, 0.091, -0.403]} rotation={[0, -0.457, 0]} scale={0.097} />
+      <mesh geometry={nodes.bush1020.geometry} material={materials['color_Palette.015']} position={[0.304, 0.091, -0.455]} rotation={[0, -1.437, 0]} scale={0.097} />
+      <mesh geometry={nodes.bush1021.geometry} material={materials['color_Palette.015']} position={[-0.162, 0.091, -0.492]} rotation={[0, -0.473, 0]} scale={0.097} />
+      <mesh geometry={nodes.bush1022.geometry} material={materials['color_Palette.015']} position={[-0.199, 0.091, -0.57]} rotation={[0, -0.473, 0]} scale={0.074} />
+      <mesh geometry={nodes.tree045.geometry} material={materials['color_Palette.002']} position={[-0.484, 0.256, -0.374]} rotation={[-Math.PI, 1.569, -Math.PI]} scale={0.138} />
+      <mesh geometry={nodes.tree046.geometry} material={materials['color_Palette.002']} position={[-0.538, 0.256, 0.199]} rotation={[-Math.PI, 1.569, -Math.PI]} scale={0.138} />
+      <mesh geometry={nodes.tree047.geometry} material={materials['color_Palette.016']} position={[-0.32, 0.093, -0.211]} rotation={[Math.PI, -0.078, Math.PI]} scale={0.165} />
+      <mesh geometry={nodes.tree048.geometry} material={materials['color_Palette.016']} position={[-0.342, 0.093, 0.105]} rotation={[-Math.PI, 1.17, -Math.PI]} scale={0.165} />
+      <mesh geometry={nodes.bush1023.geometry} material={materials['color_Palette.015']} position={[-0.29, 0.091, -0.151]} rotation={[0, 0.246, 0]} scale={0.097} />
+      <mesh geometry={nodes.bush1024.geometry} material={materials['color_Palette.015']} position={[-0.272, 0.091, 0.054]} rotation={[0, 0.246, 0]} scale={0.097} />
+      <mesh geometry={nodes.bush1025.geometry} material={materials['color_Palette.015']} position={[-0.281, 0.093, -0.048]} rotation={[0, 0.961, 0]} scale={0.168} />
+      <mesh geometry={nodes.bush1026.geometry} material={materials['color_Palette.015']} position={[-0.342, 0.091, -0.27]} rotation={[0, 1.2, 0]} scale={0.097} />
+      <mesh geometry={nodes.bush1027.geometry} material={materials['color_Palette.015']} position={[-0.398, 0.091, -0.32]} rotation={[0, 0.219, 0]} scale={0.097} />
+      <mesh geometry={nodes.bush1028.geometry} material={materials['color_Palette.015']} position={[-0.396, 0.091, 0.148]} rotation={[0, 1.183, 0]} scale={0.097} />
+      <mesh geometry={nodes.bush1029.geometry} material={materials['color_Palette.015']} position={[-0.47, 0.091, 0.192]} rotation={[0, 1.183, 0]} scale={0.074} />
+      <mesh geometry={nodes.tree049.geometry} material={materials['color_Palette.002']} position={[0.511, 0.256, 0.33]} rotation={[Math.PI, -1.532, Math.PI]} scale={0.138} />
+      <mesh geometry={nodes.tree050.geometry} material={materials['color_Palette.002']} position={[0.577, 0.256, -0.221]} rotation={[Math.PI, -1.532, Math.PI]} scale={0.138} />
+      <mesh geometry={nodes.tree051.geometry} material={materials['color_Palette.016']} position={[0.343, 0.093, 0.18]} rotation={[0, 0.038, 0]} scale={0.165} />
+      <mesh geometry={nodes.tree052.geometry} material={materials['color_Palette.016']} position={[0.378, 0.093, -0.135]} rotation={[0, -1.21, 0]} scale={0.165} />
+      <mesh geometry={nodes.bush1030.geometry} material={materials['color_Palette.015']} position={[0.315, 0.091, 0.119]} rotation={[Math.PI, -0.206, Math.PI]} scale={0.097} />
+      <mesh geometry={nodes.bush1031.geometry} material={materials['color_Palette.015']} position={[0.305, 0.091, -0.087]} rotation={[Math.PI, -0.206, Math.PI]} scale={0.097} />
+      <mesh geometry={nodes.bush1032.geometry} material={materials['color_Palette.015']} position={[0.31, 0.093, 0.015]} rotation={[Math.PI, -0.921, Math.PI]} scale={0.168} />
+      <mesh geometry={nodes.bush1033.geometry} material={materials['color_Palette.015']} position={[0.392, 0.091, 0.24]} rotation={[Math.PI, -1.16, Math.PI]} scale={0.097} />
+      <mesh geometry={nodes.bush1034.geometry} material={materials['color_Palette.015']} position={[0.448, 0.091, 0.292]} rotation={[Math.PI, -0.179, Math.PI]} scale={0.097} />
+      <mesh geometry={nodes.bush1035.geometry} material={materials['color_Palette.015']} position={[0.433, 0.091, -0.175]} rotation={[Math.PI, -1.143, Math.PI]} scale={0.097} />
+      <mesh geometry={nodes.bush1036.geometry} material={materials['color_Palette.015']} position={[0.509, 0.091, -0.209]} rotation={[Math.PI, -1.143, Math.PI]} scale={0.074} />
+      <mesh geometry={nodes.tree053.geometry} material={materials['color_Palette.002']} position={[-0.296, 0.256, 0.494]} rotation={[Math.PI, -0.034, Math.PI]} scale={0.138} />
+      <mesh geometry={nodes.tree054.geometry} material={materials['color_Palette.002']} position={[0.261, 0.256, 0.548]} rotation={[Math.PI, -0.034, Math.PI]} scale={0.138} />
+      <mesh geometry={nodes.tree055.geometry} material={materials['color_Palette.016']} position={[-0.156, 0.093, 0.343]} rotation={[0, -1.46, 0]} scale={0.165} />
+      <mesh geometry={nodes.tree056.geometry} material={materials['color_Palette.016']} position={[0.161, 0.093, 0.355]} rotation={[Math.PI, -0.433, Math.PI]} scale={0.165} />
+      <mesh geometry={nodes.bush1037.geometry} material={materials['color_Palette.015']} position={[-0.097, 0.091, 0.311]} rotation={[-Math.PI, 1.292, -Math.PI]} scale={0.097} />
+      <mesh geometry={nodes.bush1038.geometry} material={materials['color_Palette.015']} position={[0.108, 0.091, 0.318]} rotation={[-Math.PI, 1.292, -Math.PI]} scale={0.097} />
+      <mesh geometry={nodes.bush1039.geometry} material={materials['color_Palette.015']} position={[0.006, 0.093, 0.298]} rotation={[-Math.PI, 0.577, -Math.PI]} scale={0.168} />
+      <mesh geometry={nodes.bush1040.geometry} material={materials['color_Palette.015']} position={[-0.242, 0.091, 0.398]} rotation={[-Math.PI, 1.319, -Math.PI]} scale={0.097} />
+      <mesh geometry={nodes.bush1041.geometry} material={materials['color_Palette.015']} position={[0.205, 0.091, 0.407]} rotation={[-Math.PI, 0.355, -Math.PI]} scale={0.097} />
+      <mesh geometry={nodes.bush1042.geometry} material={materials['color_Palette.015']} position={[0.252, 0.091, 0.48]} rotation={[-Math.PI, 0.355, -Math.PI]} scale={0.074} />
     </group>
-    </RigidBody>
+        </RigidBody>
+    
   )
 }
 

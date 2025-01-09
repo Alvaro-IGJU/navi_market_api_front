@@ -11,7 +11,7 @@ export function Base(props) {
   const { nodes, materials } = useGLTF('/models/base.glb')
   return (
     <RigidBody type="fixed" name="ground" colliders="trimesh">
-    
+
     <group {...props} dispose={null}>
       <group position={[0, 0.102, 0]} scale={[1.72, 24.125, 1.72]}>
         <mesh geometry={nodes.Plane_1.geometry} material={materials['Material.002']} />
@@ -243,11 +243,19 @@ export function Base(props) {
       <mesh geometry={nodes.bush1040.geometry} material={materials['color_Palette.015']} position={[-0.242, 0.091, 0.398]} rotation={[-Math.PI, 1.319, -Math.PI]} scale={0.097} />
       <mesh geometry={nodes.bush1041.geometry} material={materials['color_Palette.015']} position={[0.205, 0.091, 0.407]} rotation={[-Math.PI, 0.355, -Math.PI]} scale={0.097} />
       <mesh geometry={nodes.bush1042.geometry} material={materials['color_Palette.015']} position={[0.252, 0.091, 0.48]} rotation={[-Math.PI, 0.355, -Math.PI]} scale={0.074} />
+      <mesh geometry={nodes.Cube.geometry} material={materials.Material} position={[-2.14, 0.118, 0.018]} rotation={[-Math.PI, 0, -3.013]} scale={[-0.032, -0.003, -0.147]} />
+      <mesh geometry={nodes.Cube008.geometry} material={materials.Material} position={[-1.551, 0.121, 1.421]} rotation={[Math.PI, -0.807, -2.939]} scale={[-0.032, -0.003, -0.147]} />
+      <mesh geometry={nodes.Cube009.geometry} material={materials.Material} position={[-0.006, 0.126, 2.098]} rotation={[0.057, -1.526, 0.274]} scale={[-0.032, -0.003, -0.15]} />
+      <mesh geometry={nodes.Cube010.geometry} material={materials.Material} position={[1.463, 0.144, 1.518]} rotation={[0.018, -0.8, 0.111]} scale={[-0.032, -0.003, -0.15]} />
+      <mesh geometry={nodes.Cube011.geometry} material={materials.Material} position={[2.2, 0.127, -0.008]} rotation={[-0.025, -0.02, 0.158]} scale={[-0.032, -0.003, -0.15]} />
+      <mesh geometry={nodes.Cube012.geometry} material={materials.Material} position={[1.516, 0.118, -1.53]} rotation={[-0.014, 0.766, 0.181]} scale={[-0.033, -0.003, -0.142]} />
+      <mesh geometry={nodes.Cube013.geometry} material={materials.Material} position={[0.067, 0.12, -2.116]} rotation={[-2.032, 1.542, 2.2]} scale={[-0.033, -0.003, -0.151]} />
+      <mesh geometry={nodes.Cube014.geometry} material={materials.Material} position={[-1.386, 0.123, -1.586]} rotation={[3.106, 0.811, -2.949]} scale={[-0.032, -0.003, -0.147]} />
     </group>
-        </RigidBody>
+            </RigidBody>
     
   )
 }
-
 export default Base;
+
 useGLTF.preload('/models/base.glb')
