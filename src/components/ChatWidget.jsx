@@ -1,10 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import api from "../api";
 import ChatList from "./ChatList";
 import ChatWindow from "./ChatWindow";
 
 const ChatWidget = () => {
   const [isChatListOpen, setIsChatListOpen] = useState(false);
   const [activeChat, setActiveChat] = useState(null);
+  const [chats, setChats] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchChats = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const response = await api.get("/companies/chats/", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setChats(response.data.chats || []);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error fetching chats:", err);
+      setError("No se pudieron cargar los chats.");
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchChats();
+  }, []);
 
   const toggleChatList = () => {
     setIsChatListOpen(!isChatListOpen);
@@ -29,7 +52,14 @@ const ChatWidget = () => {
       >
         {isChatListOpen ? "Cerrar Chats" : "Abrir Chats"}
       </div>
-      {isChatListOpen && <ChatList onSelectChat={handleChatSelect} />}
+      {isChatListOpen && (
+        <ChatList
+          chats={chats}
+          loading={loading}
+          error={error}
+          onSelectChat={handleChatSelect}
+        />
+      )}
     </div>
   );
 };

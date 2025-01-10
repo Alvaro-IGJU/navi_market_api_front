@@ -6,8 +6,25 @@ const ChatWindow = ({ chat, onClose }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
+    // Cargar mensajes previos del chat
+    const fetchMessages = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const response = await fetch(`/companies/chats/${chat.id}/messages/`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await response.json();
+        setMessages(data.messages || []);
+        console.log("AAAA")
+      } catch (err) {
+        console.error("Error fetching messages:", err);
+      }
+    };
+
+    fetchMessages();
+
     // Establecer conexión WebSocket al abrir el chat
-    const ws = new WebSocket(`ws://localhost:8000/companies/ws/companies/${chat.id}/`);
+    const ws = new WebSocket(`ws://localhost:8000/ws/companies/chats/${chat.id}/`);
 
     ws.onopen = () => {
       console.log("WebSocket conectado");
@@ -20,6 +37,10 @@ const ChatWindow = ({ chat, onClose }) => {
 
     ws.onclose = () => {
       console.log("WebSocket desconectado");
+    };
+
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
     };
 
     setSocket(ws);

@@ -125,7 +125,10 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
       };
     }
   }, []);
-
+  useEffect(() => {
+    console.log("Animación actual:", animation);
+  }, [animation]);
+  
   useFrame(({ camera, mouse }) => {
     if (isInteracting) {
       return; // Detener actualizaciones si hay interacción
@@ -163,7 +166,7 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
         characterRotationTarget.current = Math.atan2(movement.x, movement.z);
         vel.x = Math.sin(rotationTarget.current + characterRotationTarget.current) * speed;
         vel.z = Math.cos(rotationTarget.current + characterRotationTarget.current) * speed;
-        setAnimation("Walking");
+        setAnimation("rigAction.002");
       } else {
         setAnimation("Idle");
       }
@@ -198,7 +201,7 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
         <group ref={cameraTarget} position-z={1.5} />
         <group ref={cameraPosition} position-y={1} position-z={-2} />
         <group ref={character}>
-          <Avatar scale={0.1} position-y={-0.25} animation={animation} />
+          <Avatar scale={0.1} position-y={-0.25} animation="rigAction.002" />
         </group>
       </group>
       <CapsuleCollider args={[0.2, 0.18]} />

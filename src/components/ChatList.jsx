@@ -1,65 +1,6 @@
-import React, { useEffect, useState } from "react";
-import api from "../api";
+import React from "react";
 
-const ChatList = ({ onSelectChat }) => {
-  const [chats, setChats] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [activeSocket, setActiveSocket] = useState(null);
-
-  useEffect(() => {
-    const fetchChats = async () => {
-      try {
-        const token = localStorage.getItem("accessToken");
-        const response = await api.get("/companies/chats/", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setChats(response.data.chats || []);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching chats:", err);
-        setError("No se pudieron cargar los chats.");
-        setLoading(false);
-      }
-    };
-
-    fetchChats();
-  }, []);
-
-  const handleSelectChat = (chat) => {
-    onSelectChat(chat);
-
-    // Cerrar cualquier conexión WebSocket activa
-    if (activeSocket) {
-      activeSocket.close();
-    }
-
-    // Establecer una nueva conexión WebSocket
-    const socket = new WebSocket(
-      `ws://localhost:8000/ws/companies/chats/${chat.room_name}/`
-    );
-
-    socket.onopen = () => {
-      console.log(`Conexión WebSocket abierta para la sala: ${chat.room_name}`);
-    };
-
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      console.log(`Mensaje recibido en la sala ${chat.room_name}:`, data.message);
-    };
-
-    socket.onclose = () => {
-      console.log(`Conexión WebSocket cerrada para la sala: ${chat.room_name}`);
-    };
-
-    socket.onerror = (error) => {
-      console.error(`Error en WebSocket para la sala ${chat.room_name}:`, error);
-    };
-
-    // Guarda el socket activo para futuras interacciones
-    setActiveSocket(socket);
-  };
-
+const ChatList = ({ chats, loading, error, onSelectChat }) => {
   if (loading) return <p className="text-gray-500">Cargando chats...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
@@ -71,7 +12,7 @@ const ChatList = ({ onSelectChat }) => {
           <li
             key={chat.id}
             className="cursor-pointer p-2 rounded hover:bg-gray-100 flex items-center gap-3"
-            onClick={() => handleSelectChat(chat)}
+            onClick={() => onSelectChat(chat)}
           >
             <img
               src={chat.profile_picture || "/multimedia/images/default-avatar.jpg"}
@@ -79,7 +20,7 @@ const ChatList = ({ onSelectChat }) => {
               className="w-10 h-10 rounded-full object-cover"
             />
             <div>
-              <p className="font-semibold text-gray-800">{chat.name}</p>
+              <p className="font-semibold text-gray-800">{chat.participants[0].username}</p>
               <p className="text-gray-600 text-sm">{chat.last_message}</p>
             </div>
           </li>
