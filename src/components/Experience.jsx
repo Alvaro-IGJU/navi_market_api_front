@@ -25,11 +25,12 @@ const Experience = ({ eventId }) => {
       });
 
       const standsData = response.data.map((stand) => {
-        const { position, rotation } = getStandCoordinates(stand.position);
+        const { position, rotation, areaRadius } = getStandCoordinates(stand.position);
         return {
           id: stand.id,
           position,
           rotation,
+          areaRadius,
           size: [3, 3, 3],
           type: stand.type,
           catalog_pdf: stand.catalog_pdf,
@@ -101,6 +102,12 @@ const Experience = ({ eventId }) => {
         files="models/textures/autumn_field_puresky_1k.hdr"
         background={false}
       />
+      <directionalLight 
+        position={[10, 10, 5]} 
+        intensity={1} 
+        castShadow 
+      />
+
       {/* Physics simulation */}
       <Physics >
         {/* Base model */}
@@ -120,6 +127,7 @@ const Experience = ({ eventId }) => {
             setIsInteracting={setIsInteracting} // Pass setIsInteracting
             url_video={stand.url_video}
             url_web={stand.url_web}
+            areaRadius={stand.areaRadius}
           />
         ))}
 
