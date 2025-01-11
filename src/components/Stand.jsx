@@ -206,7 +206,7 @@ const Stand = ({
     layoutConfig.rotation[type] || layoutConfig.rotation["bronze"];
   return (
     <>
-    <group position={position} rotation={[rotX, rotY, rotZ]}>
+    <group position={[posX, posY, posZ]} rotation={[rotX, rotY, rotZ]}>
       {type === "bronze" && (
         <StandBronce scale={[0.1, 0.1, 0.1]} size={size} position={[0, -1, 0]} rotation={[0, 0, 0]} />
       )}
@@ -272,7 +272,7 @@ const Stand = ({
 
 <RigidBody type="fixed">
   <mesh
-    position={[0.7, -0.3, 3]}
+    position={[0.7, -0.3, 0]}
     onClick={() => handleClick("schedule_meeting")}
     onPointerOver={(e) => {
       if(canInteract){
