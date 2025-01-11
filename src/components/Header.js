@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
+import { Home, Calendar, LayoutDashboard, LogIn, User, Building2, Settings } from 'lucide-react';
 
 const Header = () => {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
@@ -20,106 +21,131 @@ const Header = () => {
   };
 
   return (
-    <header className="backdrop-blur-md text-white shadow-lg fixed top-0 w-full z-50">
+    <header className="backdrop-blur-md text-white shadow-lg fixed top-0 w-full z-50 font-['Poppins']">
       <nav className="backdrop-blur-md px-4 lg:px-6 py-2.5">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-        <NavLink
-          to="/"
-          className={({ isActive }) =>
-            isActive
-              ? 'flex items-center  border-white text-white text-decoration-none'
-              : 'flex items-center  border-transparent hover:border-white text-white text-decoration-none'
-          }
-        >
-          <span className="self-center text-xl font-semibold whitespace-nowrap">
-            NAVI MARKET
-          </span>
-        </NavLink>
+          <NavLink
+            to="/"
+            className="flex items-center no-underline transform transition hover:scale-105"
+          >
+            <img
+              src='/multimedia/images/LOGO NAVI.png'
+              alt="Logo"
+              className="self-center h-24 transition-transform duration-300 hover:scale-105"
+            />
+          </NavLink>
 
           <div className="flex items-center space-x-4 lg:order-2">
             {isAuthenticated ? (
               <div className="relative">
                 <button
                   onClick={toggleDropdown}
-                  className="flex items-center space-x-3 focus:outline-none"
+                  className="flex items-center space-x-3 focus:outline-none transform transition-all duration-300 hover:scale-105"
                 >
                   <img
                     src={user?.profile_picture || '/multimedia/images/default-avatar.jpg'}
                     alt="Perfil"
-                    className="w-11 h-11 rounded-full border border-yellow-400"
+                    className="w-11 h-11 rounded-full border-2 border-yellow-400 transition-all duration-300 hover:border-yellow-300 hover:shadow-lg"
                   />
-                  <span className="hidden lg:block text-sm truncate max-w-[150px]">
+                  <span className="hidden lg:block text-sm truncate max-w-[150px] font-medium">
                     <b>{user?.username ? `${user.username}` : 'Usuario'}</b>
                   </span>
                 </button>
                 <ul
-                    className={`absolute right-0 p-0 mt-2 w-48 bg-gray-900 text-white rounded shadow-lg transition-all duration-300 ${
-                      dropdownOpen ? 'block' : 'hidden'
-                    }`}
-                  >
+                  className={`absolute right-0 p-2 mt-2 w-48 bg-gray-900 text-white rounded-lg shadow-xl transition-all duration-300 transform ${
+                    dropdownOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'
+                  }`}
+                >
+                  <li className="flex justify-center items-center w-full">
+                    <NavLink
+                      to="/profile"
+                      className={({ isActive }) =>
+                        `flex items-center gap-2 w-full px-4 py-2 no-underline rounded-md transition-all duration-200 ease-in-out ${
+                          isActive
+                            ? 'bg-gray-700 text-yellow-300'
+                            : 'text-[#C7AA68] hover:bg-gray-700 hover:text-yellow-300'
+                        }`
+                      }
+                      onClick={closeDropdown}
+                    >
+                      <User size={16} />
+                      Perfil
+                    </NavLink>
+                  </li>
+                  {user?.is_superuser && (
                     <li className="flex justify-center items-center w-full">
                       <NavLink
-                        to="/profile"
-                        className="block w-full px-4 py-2 text-[#C7AA68] hover:bg-gray-600 rounded text-center"
+                        to="/admin"
+                        className={({ isActive }) =>
+                          `flex items-center gap-2 w-full px-4 py-2 no-underline rounded-md transition-all duration-200 ease-in-out ${
+                            isActive
+                              ? 'bg-gray-700 text-yellow-300'
+                              : 'text-[#C7AA68] hover:bg-gray-700 hover:text-yellow-300'
+                          }`
+                        }
                         onClick={closeDropdown}
                       >
-                        Perfil
+                        <Settings size={16} />
+                        Administración
                       </NavLink>
                     </li>
-                    {user?.is_superuser && (
-                      <li className="flex justify-center items-center w-full">
-                        <NavLink
-                          to="/admin"
-                          className="block w-full px-4 py-2 text-[#C7AA68] hover:bg-gray-600 rounded text-center"
-                          onClick={closeDropdown}
-                        >
-                          Administración
-                        </NavLink>
-                      </li>
-                    )}
-                    {user?.role === 'Company' && (
-                      <li className="flex justify-center items-center w-full">
-                        <NavLink
-                          to="/company"
-                          className="block w-full px-4 py-2 text-[#C7AA68] hover:bg-gray-600 rounded text-center"
-                          onClick={closeDropdown}
-                        >
-                          Mi empresa
-                        </NavLink>
-                      </li>
-                    )}
+                  )}
+                  {user?.role === 'Company' && (
                     <li className="flex justify-center items-center w-full">
-                      <button
-                        onClick={() => {
-                          closeDropdown();
-                          logout();
-                        }}
-                        className="block w-full text-center px-4 py-2 text-[#C7AA68] hover:bg-gray-600"
+                      <NavLink
+                        to="/company"
+                        className={({ isActive }) =>
+                          `flex items-center gap-2 w-full px-4 py-2 no-underline rounded-md transition-all duration-200 ease-in-out ${
+                            isActive
+                              ? 'bg-gray-700 text-yellow-300'
+                              : 'text-[#C7AA68] hover:bg-gray-700 hover:text-yellow-300'
+                          }`
+                        }
+                        onClick={closeDropdown}
                       >
-                        Cerrar Sesión
-                      </button>
+                        <Building2 size={16} />
+                        Mi empresa
+                      </NavLink>
                     </li>
-                  </ul>
-
-
+                  )}
+                  <li className="flex justify-center items-center w-full">
+                    <button
+                      onClick={() => {
+                        closeDropdown();
+                        logout();
+                      }}
+                      className="flex items-center gap-2 w-full text-center px-4 py-2 text-[#C7AA68] hover:bg-gray-700 rounded-md transition-all duration-200 ease-in-out hover:text-yellow-300"
+                    >
+                      <LogIn size={16} className="rotate-180" />
+                      Cerrar Sesión
+                    </button>
+                  </li>
+                </ul>
               </div>
             ) : (
               <NavLink
                 to="/auth"
-                className="text-[#C7AA68] hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+                className={({ isActive }) =>
+                  `flex items-center gap-2 py-2 px-4 no-underline transition-all duration-300 transform hover:scale-105 relative ${
+                    isActive
+                      ? 'text-yellow-300 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300'
+                      : 'text-[#C7AA68] hover:text-yellow-300 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'
+                  }`
+                }
               >
+                <LogIn size={20} />
                 Iniciar Sesión
               </NavLink>
             )}
             <button
               data-collapse-toggle="mobile-menu-2"
               type="button"
-              className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+              className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors duration-200"
               onClick={toggleMenu}
             >
               <span className="sr-only">Open main menu</span>
               <svg
-                className={`w-6 h-6 ${menuOpen ? 'hidden' : 'block'}`}
+                className={`w-6 h-6 transition-opacity duration-300 ${menuOpen ? 'opacity-0' : 'opacity-100'}`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -131,7 +157,7 @@ const Header = () => {
                 ></path>
               </svg>
               <svg
-                className={`w-6 h-6 ${menuOpen ? 'block' : 'hidden'}`}
+                className={`w-6 h-6 absolute transition-opacity duration-300 ${menuOpen ? 'opacity-100' : 'opacity-0'}`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -148,52 +174,59 @@ const Header = () => {
           <div
             className={`${
               menuOpen ? 'flex' : 'hidden'
-            } justify-between items-center w-full lg:flex lg:w-auto lg:order-1`}
+            } justify-between items-center w-full lg:flex lg:w-auto lg:order-1 transition-all duration-300`}
             id="mobile-menu-2"
           >
             <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
               <li>
-              <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive
-                          ? 'block py-2 pr-4 pl-3 text-[#C7AA68] rounded   lg:bg-transparent lg:p-0 dark:text-[#C7AA68]'
-                          : 'block py-2 pr-4 pl-3 text-white hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-primary-700 lg:p-0 dark:text-white hover:border-white'
-                      }
-            >
-              Home
-            </NavLink>
-              </li>
-              {isAuthenticated  && (
-              <li>
                 <NavLink
-                  to="/events"
+                  to="/"
                   className={({ isActive }) =>
-                    isActive
-                          ? 'block py-2 pr-4 pl-3 text-[#C7AA68] rounded lg:bg-transparent lg:p-0 dark:text-[#C7AA68]'
-                          : 'block py-2 pr-4 pl-3 text-white hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-primary-700 lg:p-0 dark:text-white hover:border-white'
-                      }
+                    `flex items-center gap-2 py-2 pr-4 pl-3 no-underline transition-all duration-300 transform hover:scale-105 relative ${
+                      isActive
+                        ? 'text-yellow-300 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300'
+                        : 'text-white hover:text-[#C7AA68] after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'
+                    }`
+                  }
                 >
-                  Eventos
+                  <Home size={20} />
+                  Home
                 </NavLink>
               </li>
+              {isAuthenticated && (
+                <li>
+                  <NavLink
+                    to="/events"
+                    className={({ isActive }) =>
+                      `flex items-center gap-2 py-2 pr-4 pl-3 no-underline transition-all duration-300 transform hover:scale-105 relative ${
+                        isActive
+                          ? 'text-yellow-300 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300'
+                          : 'text-white hover:text-[#C7AA68] after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'
+                      }`
+                    }
+                  >
+                    <Calendar size={20} />
+                    Eventos
+                  </NavLink>
+                </li>
               )}
               {user?.role === 'Company' && (
                 <li>
                   <NavLink
                     to="/dashboard"
                     className={({ isActive }) =>
-                      isActive
-                          ? 'block py-2 pr-4 pl-3 text-[#C7AA68] rounded lg:bg-transparent lg:p-0 dark:text-[#C7AA68]'
-                          : 'block py-2 pr-4 pl-3 text-white hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-primary-700 lg:p-0 dark:text-white hover:border-white'
-                      }
+                      `flex items-center gap-2 py-2 pr-4 pl-3 no-underline transition-all duration-300 transform hover:scale-105 relative ${
+                        isActive
+                          ? 'text-yellow-300 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300'
+                          : 'text-white hover:text-[#C7AA68] after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'
+                      }`
+                    }
                   >
+                    <LayoutDashboard size={20} />
                     Dashboard
                   </NavLink>
                 </li>
               )}
-             
-              
             </ul>
           </div>
         </div>

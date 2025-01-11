@@ -84,7 +84,7 @@ const HomePage = () => {
           className="absolute inset-0 flex flex-col justify-center items-center text-center p-4"
         >
           <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#C7AA68] via-[#D4BC87] to-[#C7AA68] animate-gradient">
-            NAVI MARKET
+            NAVI FAIR
           </h1>
           <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl leading-relaxed">
             La plataforma definitiva para ferias virtuales y networking empresarial
