@@ -206,7 +206,7 @@ const Stand = ({
     layoutConfig.rotation[type] || layoutConfig.rotation["bronze"];
   return (
     <>
-    <group position={[posX, posY, posZ]} rotation={[rotX, rotY, rotZ]}>
+    <group position={position} rotation={[rotX, rotY, rotZ]}>
       {type === "bronze" && (
         <StandBronce scale={[0.1, 0.1, 0.1]} size={size} position={[0, -1, 0]} rotation={[0, 0, 0]} />
       )}
