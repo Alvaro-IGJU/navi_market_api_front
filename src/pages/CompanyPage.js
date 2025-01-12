@@ -1,8 +1,24 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Building2, Briefcase, Mail, Phone, Globe, FileText, Sparkles } from 'lucide-react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import api from '../api';
-import Header from '../components/Header';
+
+const AuroraBackground = () => (
+  <div className="fixed inset-0 -z-10">
+    <div className="relative w-full h-full overflow-hidden bg-[#0A0F14]">
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0A0F14] via-[#0A0F14] to-black opacity-98"></div>
+      <div className="absolute -inset-[10px] opacity-10">
+        <div className="absolute top-1/4 -left-1/4 w-1/2 h-1/2 rounded-full bg-[#C7AA68]/10 blur-[120px] animate-pulse"></div>
+        <div className="absolute top-1/3 left-1/2 w-1/2 h-1/2 rounded-full bg-[#0A0F14]/20 blur-[120px] animate-pulse delay-700"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-1/2 h-1/2 rounded-full bg-[#C7AA68]/5 blur-[120px] animate-pulse delay-1000"></div>
+      </div>
+    </div>
+  </div>
+);
 
 const CompanyPage = () => {
   const { user, renewAccessToken } = useContext(AuthContext);
@@ -16,47 +32,43 @@ const CompanyPage = () => {
     description: '',
   });
   const [sectors, setSectors] = useState([]);
-  const [message, setMessage] = useState('');
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    // Redirigir si el usuario no es de tipo Company
     if (user?.role !== 'Company') {
-      navigate('/'); // Redirigir al inicio si no es una empresa
+      navigate('/');
       return;
     }
 
     const fetchData = async () => {
-      let accessToken = localStorage.getItem('accessToken');
-      if (!accessToken) {
-        accessToken = await renewAccessToken(localStorage.getItem('refreshToken'));
-      }
-
-      if (!accessToken) {
-        console.error('No se pudo obtener un token válido.');
-        return;
-      }
-
-      const headers = { Authorization: `Bearer ${accessToken}` };
-
       try {
-        // Obtener los datos de la empresa
-        const companyResponse = await api.get('/companies/owner/company/', { headers });
+        let accessToken = localStorage.getItem('accessToken');
+        if (!accessToken) {
+          accessToken = await renewAccessToken(localStorage.getItem('refreshToken'));
+        }
+
+        if (!accessToken) {
+          toast.error('No se pudo obtener un token válido.');
+          return;
+        }
+
+        const headers = { Authorization: `Bearer ${accessToken}` };
+        const [companyResponse, sectorsResponse] = await Promise.all([
+          api.get('/companies/owner/company/', { headers }),
+          api.get('/users/sectors/', { headers })
+        ]);
+
         if (companyResponse.data) {
           setCompanyData(companyResponse.data);
           setIsEditing(true);
         }
-
-        // Obtener los sectores disponibles
-        const sectorsResponse = await api.get('/users/sectors/', { headers });
         setSectors(sectorsResponse.data);
       } catch (error) {
         if (error.response?.status === 404) {
-          setMessage('No tienes una empresa asociada.');
+          toast.warning('No tienes una empresa asociada.');
         } else {
-          setMessage('Error al cargar los datos de la empresa.');
+          toast.error('Error al cargar los datos de la empresa.');
         }
-        console.error('Error al cargar datos:', error.response || error);
       }
     };
 
@@ -65,129 +77,147 @@ const CompanyPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setCompanyData((prevData) => ({
-      ...prevData,
-      [name]: name === 'sector' ? parseInt(value, 10) || '' : value, // Convertir sector a número si no está vacío
+    setCompanyData(prev => ({
+      ...prev,
+      [name]: name === 'sector' ? parseInt(value, 10) || '' : value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let accessToken = localStorage.getItem('accessToken');
-    if (!accessToken) {
-      accessToken = await renewAccessToken(localStorage.getItem('refreshToken'));
-    }
-
-    if (!accessToken) {
-      setMessage('No se pudo autenticar la solicitud.');
-      return;
-    }
-
     try {
-      const response = await api.put(`/companies/owner/company/`, companyData, {
+      let accessToken = localStorage.getItem('accessToken');
+      if (!accessToken) {
+        accessToken = await renewAccessToken(localStorage.getItem('refreshToken'));
+      }
+
+      if (!accessToken) {
+        toast.error('No se pudo autenticar la solicitud.');
+        return;
+      }
+
+      await api.put('/companies/owner/company/', companyData, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
-      setMessage('Empresa actualizada con éxito.');
-      setCompanyData(response.data);
+      toast.success('Empresa actualizada con éxito.');
     } catch (error) {
-      console.error('Error al guardar los datos de la empresa:', error.response || error);
-      setMessage('Error al guardar los datos de la empresa.');
+      toast.error('Error al guardar los datos de la empresa.');
     }
   };
 
-  return (
-    <div className="bg-gray-900 min-h-screen text-gray-100 pt-4">
-      <div className="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg ">
-        <h1 className="text-3xl font-bold mb-6 text-[#C7AA68]">Editar Empresa</h1>
-        {message && <p className={`text-lg ${message.includes('éxito') ? 'text-green-500' : 'text-red-500'}`}>{message}</p>}
-        {isEditing ? (
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label className="block font-semibold text-gray-200">Nombre</label>
-              <input
-                type="text"
-                name="name"
-                value={companyData.name}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-[#212529] rounded focus:ring focus:ring-[#C7AA68]"
-                required
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block font-semibold text-gray-200">Sector</label>
-              <select
-                name="sector"
-                value={companyData.sector}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-[#212529] rounded focus:ring focus:ring-[#C7AA68]"
-              >
-                <option value="">Selecciona un sector</option>
-                {sectors.map((sector) => (
-                  <option key={sector.id} value={sector.id}>
-                    {sector.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="mb-4">
-              <label className="block font-semibold text-gray-200">Email de Contacto</label>
-              <input
-                type="email"
-                name="contact_email"
-                value={companyData.contact_email}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-[#212529] rounded focus:ring focus:ring-[#C7AA68]"
-                required
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block font-semibold text-gray-200">Teléfono de Contacto</label>
-              <input
-                type="text"
-                name="contact_phone"
-                value={companyData.contact_phone}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-[#212529] rounded focus:ring focus:ring-[#C7AA68]"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block font-semibold text-gray-200">Sitio Web</label>
-              <input
-                type="url"
-                name="website"
-                value={companyData.website}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-[#212529] rounded focus:ring focus:ring-[#C7AA68]"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block font-semibold text-gray-200">Descripción</label>
-              <textarea
-                name="description"
-                value={companyData.description}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-[#212529] rounded focus:ring focus:ring-[#C7AA68]"
-                rows="4"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-[#C7AA68] text-gray-900 py-2 rounded hover:bg-[#9E8A52] transition duration-300"
-            >
-              Actualizar Empresa
-            </button>
-          </form>
+  const InputField = ({ icon: Icon, label, name, type = "text", value, options = null }) => (
+    <motion.div whileHover={{ scale: 1.01 }} className="space-y-2">
+      <label className="block text-sm font-medium text-[#C7AA68]">{label}</label>
+      <div className="relative">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <Icon className="h-5 w-5 text-[#C7AA68]" />
+        </div>
+        {options ? (
+          <select
+            name={name}
+            value={value}
+            onChange={handleChange}
+            className="w-full pl-10 pr-4 py-3 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 text-white"
+          >
+            <option value="">Seleccionar sector</option>
+            {options.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.name}
+              </option>
+            ))}
+          </select>
         ) : (
-          <p className="text-center">Cargando datos de la empresa...</p>
+          <input
+            type={type}
+            name={name}
+            value={value}
+            onChange={handleChange}
+            className="w-full pl-10 pr-4 py-3 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 text-white"
+          />
         )}
       </div>
+    </motion.div>
+  );
+
+  return (
+    <div className="relative min-h-screen font-sans text-white pt-20">
+      <AuroraBackground />
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="relative flex items-center justify-center p-4 py-12 min-h-[calc(100vh-5rem)]"
+      >
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="relative z-10 w-full max-w-2xl mt-8"
+        >
+          <div className="backdrop-blur-xl bg-[#0A0F14]/30 p-8 rounded-3xl border border-[#C7AA68]/20 shadow-2xl">
+            <div className="flex items-center justify-center mb-6 space-x-2">
+              <Sparkles className="w-6 h-6 text-[#C7AA68]" />
+              <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#C7AA68] to-[#D4BC87]">
+                Perfil de Empresa
+              </h1>
+            </div>
+
+            {isEditing ? (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <InputField icon={Building2} label="Nombre" name="name" value={companyData.name} />
+                <InputField icon={Briefcase} label="Sector" name="sector" value={companyData.sector} options={sectors} />
+                <InputField icon={Mail} label="Email de Contacto" name="contact_email" type="email" value={companyData.contact_email} />
+                <InputField icon={Phone} label="Teléfono de Contacto" name="contact_phone" value={companyData.contact_phone} />
+                <InputField icon={Globe} label="Sitio Web" name="website" type="url" value={companyData.website} />
+
+                <motion.div whileHover={{ scale: 1.01 }} className="space-y-2">
+                  <label className="block text-sm font-medium text-[#C7AA68]">Descripción</label>
+                  <div className="relative">
+                    <div className="absolute top-3 left-3">
+                      <FileText className="h-5 w-5 text-[#C7AA68]" />
+                    </div>
+                    <textarea
+                      name="description"
+                      value={companyData.description}
+                      onChange={handleChange}
+                      className="w-full pl-10 pr-4 py-3 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 text-white"
+                      rows="4"
+                    />
+                  </div>
+                </motion.div>
+
+                <motion.button
+                  whileHover={{ scale: 1.02, y: -1 }}
+                  whileTap={{ scale: 0.98 }}
+                  type="submit"
+                  className="w-full py-3 bg-gradient-to-r from-[#C7AA68] to-[#D4BC87] hover:from-[#D4BC87] hover:to-[#C7AA68] text-[#0A0F14] font-medium rounded-xl shadow-lg shadow-[#C7AA68]/20 hover:shadow-[#C7AA68]/40 transition-all duration-300"
+                >
+                  Actualizar Empresa
+                </motion.button>
+              </form>
+            ) : (
+              <div className="flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#C7AA68]"></div>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </motion.div>
+
+      <ToastContainer
+        position="top-right"
+        theme="dark"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };
