@@ -54,6 +54,7 @@ const CanvasWrapper = () => {
           style={{
             touchAction: "none",
           }}
+          shadows
         >
           <color attach="background" args={["#f5f3ee"]} />
           {/* <fog attach="fog" args={["#f5f3ee", 10, 50]} /> */}

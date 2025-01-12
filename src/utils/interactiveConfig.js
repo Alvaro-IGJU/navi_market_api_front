@@ -6,7 +6,7 @@ const layoutConfig = {
         screenPosition:[3.5, -0, -0.01],
         computerPosition:[0, -0.4, -0.3],
         catalogPosition: [0, -0.29, 0.33],
-        chatbotPosition: [0, -0.2, -1],
+        chatbotPosition: [-1, -0.2, 0],
       },
       silver: {
         mailboxPosition: [-1, -1, 3.5],

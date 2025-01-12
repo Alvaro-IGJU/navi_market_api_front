@@ -21,7 +21,7 @@ const Stand = ({
   rotation = [0, 0, 0],
   size = [3, 3, 3],
   type,
-  areaRadius = 8,
+  areaRadius,
   catalog_pdf,
   characterRef,
   isInteracting,
@@ -38,7 +38,6 @@ const Stand = ({
     rotY: { value: rotation[1], min: -Math.PI, max: Math.PI, step: 0.01 },
     rotZ: { value: rotation[2], min: -Math.PI, max: Math.PI, step: 0.01 },
   });
-  console.log("A",url_video)
   const isCharacterInside = useRef(false);
   const areaRef = useRef();
   const [canInteract, setCanInteract] = useState(false);
@@ -206,9 +205,9 @@ const Stand = ({
     layoutConfig.rotation[type] || layoutConfig.rotation["bronze"];
   return (
     <>
-    <group position={position} rotation={[rotX, rotY, rotZ]}>
+    <group position={[posX, posY, posZ]} rotation={[rotX, rotY, rotZ]}>
       {type === "bronze" && (
-        <StandBronce scale={[0.1, 0.1, 0.1]} size={size} position={[0, -1, 0]} rotation={[0, 0, 0]} />
+        <StandBronce scale={[0.1, 0.1, 0.1]} size={size} position={[0, -1, 0]} rotation={[0, 0, 0]} castShadow />
       )}
       {type === "silver" && (
         <StandSilver scale={[0.5, 0.5, 0.5]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
@@ -218,7 +217,7 @@ const Stand = ({
       )}
 
       <mesh ref={areaRef}>
-      {/* <sphereGeometry args={[areaRadius, 32, 32]} />  */}
+      <sphereGeometry args={[areaRadius, 32, 32]} /> 
         <meshStandardMaterial color="green" transparent opacity={0.2} />
       </mesh>
 
@@ -272,7 +271,7 @@ const Stand = ({
 
 <RigidBody type="fixed">
   <mesh
-    position={[0.7, -0.3, 3]}
+    position={[0.7, -0.3, 0]}
     onClick={() => handleClick("schedule_meeting")}
     onPointerOver={(e) => {
       if(canInteract){
