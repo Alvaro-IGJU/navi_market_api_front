@@ -44,7 +44,11 @@ const TotalScheduleMeetings = ({ interactionsData }) => {
         <FontAwesomeIcon icon={faHandshake} />
       </div>
       <h2 className="text-lg font-bold text-black">Reuniones Agendadas</h2>
-      <p className="text-xl font-bold text-[#C7AA68]">{totalMeetings}</p>
+      {totalMeetings === 0 ? (
+        <p className="text-gray-500">No hay reuniones agendadas para mostrar.</p>
+      ) : (
+        <p className="text-xl font-bold text-[#C7AA68]">{totalMeetings}</p>
+      )}
     </div>
   );
 };

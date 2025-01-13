@@ -69,7 +69,7 @@ const ChatWindow = ({ chat, onClose }) => {
         </button>
       </div>
       <div className="flex-1 overflow-y-auto p-4">
-        {messages.map((message, index) => (
+        {/* {messages.map((message, index) => (
           <div
             key={index}
             className={`mb-2 ${
@@ -85,7 +85,8 @@ const ChatWindow = ({ chat, onClose }) => {
               <p>{message.text}</p>
             </div>
           </div>
-        ))}
+        ))} */}
+        <p>Este servicio aún no esta disponible</p>
       </div>
       <div className="p-4 border-t border-gray-300">
         <div className="flex items-center gap-2">

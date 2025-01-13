@@ -14,7 +14,6 @@ const CompanyStandInteractionsChart = ({ interactionsData }) => {
     play_video: { label: "Clicks en Vídeo", icon: faPlay },
     download_catalog: { label: "Catálogos descargados", icon: faBookOpen },
     talk_chatbot: { label: "Interacciones Chatbot", icon: faRobot },
-    // Removed `schedule_meeting` from this object
   };
 
   useEffect(() => {
@@ -46,39 +45,43 @@ const CompanyStandInteractionsChart = ({ interactionsData }) => {
       }}
     >
       <h2 className="text-lg font-bold text-[#C7AA68] mb-4 text-center">Interacciones Stand</h2>
-      <div
-        className="grid gap-4 flex-grow"
-        style={{
-          gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", // Columnas flexibles
-        }}
-      >
-        {interactionDetails
-          .filter((interaction) => interaction.interaction_type !== "schedule_meeting") // Filtrar schedule_meeting
-          .map((interaction, index) => {
-            const { label, icon } = interactionTypeLabels[interaction.interaction_type] || {
-              label: interaction.interaction_type,
-              icon: null,
-            };
+      {interactionDetails.length === 0 ? (
+        <p className="text-gray-500 text-center">No hay interacciones disponibles para mostrar.</p>
+      ) : (
+        <div
+          className="grid gap-4 flex-grow"
+          style={{
+            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", // Columnas flexibles
+          }}
+        >
+          {interactionDetails
+            .filter((interaction) => interaction.interaction_type !== "schedule_meeting") // Filtrar schedule_meeting
+            .map((interaction, index) => {
+              const { label, icon } = interactionTypeLabels[interaction.interaction_type] || {
+                label: interaction.interaction_type,
+                icon: null,
+              };
 
-            return (
-              <div
-                key={index}
-                className="bg-gray-50 rounded-lg flex flex-col items-center justify-center"
-                style={{
-                  minWidth: "50px", // Tamaño mínimo de cada tarjeta
-                  minHeight: "50px", // Altura mínima de cada tarjeta
-                  flex: "1 1 auto", // Crecimiento y reducción flexible
-                }}
-              >
-                <div className="text-3xl mt-2 text-[#C7AA68]">
-                  {icon && <FontAwesomeIcon icon={icon} />}
+              return (
+                <div
+                  key={index}
+                  className="bg-gray-50 rounded-lg flex flex-col items-center justify-center"
+                  style={{
+                    minWidth: "50px", // Tamaño mínimo de cada tarjeta
+                    minHeight: "50px", // Altura mínima de cada tarjeta
+                    flex: "1 1 auto", // Crecimiento y reducción flexible
+                  }}
+                >
+                  <div className="text-3xl mt-2 text-[#C7AA68]">
+                    {icon && <FontAwesomeIcon icon={icon} />}
+                  </div>
+                  <p className="text-base text-black font-bold">{label}</p>
+                  <p className="text-xl font-bold text-[#C7AA68]">{interaction.total_interactions}</p>
                 </div>
-                <p className="text-base text-black font-bold">{label}</p>
-                <p className="text-xl font-bold text-[#C7AA68]">{interaction.total_interactions}</p>
-              </div>
-            );
-          })}
-      </div>
+              );
+            })}
+        </div>
+      )}
     </div>
   );
 };

@@ -56,7 +56,7 @@ const CompanyUsersMap = ({ companyId }) => {
         valueFormat=".0f"
         projectionTranslation={[0.5, 0.5]}
         projectionRotation={[0, 0, 0]}
-        enableGraticule={true}
+        // enableGraticule={true}
         graticuleLineColor="#dddddd"
         borderWidth={0.5}
         borderColor="#152538"

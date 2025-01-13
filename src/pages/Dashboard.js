@@ -119,8 +119,8 @@ const Dashboard = () => {
         isDraggable={false}
         isResizable={false}
       >
-        <div key="stats">
-          <CompanyEventBasicStatistics companyId={companyId} interactionsData={interactionsData} />
+        <div key="stats" >
+          <CompanyEventBasicStatistics companyId={companyId} interactionsData={interactionsData}  />
         </div>
         <div key="funnel">
           <CompanyLeadsFunnel companyId={companyId} interactionsData={interactionsData} />
