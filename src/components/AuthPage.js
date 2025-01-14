@@ -114,14 +114,16 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="relative min-h-screen font-sans text-white overflow-hidden">
+    <div className="relative min-h-screen font-sans text-white overflow-hidden"
+    style={{ overflow: "hidden", height: "100vh" }}
+>
       <AuroraBackground />
 
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="relative min-h-screen flex items-center justify-center p-4"
+        className="relative min-h-screen flex items-center justify-center p-4 mt-12"
       >
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0A0F14]/50 to-[#0A0F14]"></div>
 
@@ -131,7 +133,7 @@ const AuthPage = () => {
           transition={{ delay: 0.5, duration: 0.8 }}
           className="relative z-10 w-full max-w-md"
         >
-          <div className="backdrop-blur-xl bg-[#0A0F14]/30 p-8 rounded-3xl border border-[#C7AA68]/20 shadow-2xl">
+          <div className="backdrop-blur-xl bg-[#0A0F14]/30 p-6 rounded-3xl border border-[#C7AA68]/20 shadow-2xl">
             <AnimatePresence mode="wait">
               <motion.div
                 key={isLogin ? "login" : "register"}
@@ -140,58 +142,60 @@ const AuthPage = () => {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="flex items-center justify-center mb-6 space-x-2">
-                  <Sparkles className="w-6 h-6 text-[#C7AA68]" />
-                  <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#C7AA68] to-[#D4BC87]">
+                <div className="flex items-center justify-center mb-4">
+                  <Sparkles className="w-5 h-5 text-[#C7AA68]" />
+                  <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#C7AA68] to-[#D4BC87] ml-2">
                     {isLogin ? "Bienvenido" : "Registro"}
                   </h1>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <motion.div whileHover={{ scale: 1.01 }} className="space-y-2">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <motion.div whileHover={{ scale: 1.01 }} className="space-y-1">
                     <label className="block text-sm font-medium text-[#C7AA68]">Email</label>
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 placeholder-white/30 text-white"
+                      className="w-full px-3 py-2 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 placeholder-white/30 text-white"
                       required
                     />
                   </motion.div>
 
                   {!isLogin && (
                     <>
-                      <motion.div whileHover={{ scale: 1.01 }} className="space-y-2">
+                      <motion.div whileHover={{ scale: 1.01 }} className="space-y-1">
                         <label className="block text-sm font-medium text-[#C7AA68]">Usuario</label>
                         <input
                           type="text"
                           name="username"
                           value={formData.username}
                           onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                          className="w-full px-4 py-3 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 text-white"
+                          className="w-full px-3 py-2 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 text-white"
                           required
                         />
                       </motion.div>
-                      <motion.div whileHover={{ scale: 1.01 }} className="space-y-2">
+
+                      <motion.div whileHover={{ scale: 1.01 }} className="space-y-1">
                         <label className="block text-sm font-medium text-[#C7AA68]">Empresa</label>
                         <input
                           type="text"
                           name="company"
                           value={formData.company}
                           onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                          className="w-full px-4 py-3 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 text-white"
+                          className="w-full px-3 py-2 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 text-white"
                           required
                         />
                       </motion.div>
+
                       <div className="grid grid-cols-2 gap-4">
-                        <motion.div whileHover={{ scale: 1.01 }} className="space-y-2">
+                        <motion.div whileHover={{ scale: 1.01 }} className="space-y-1">
                           <label className="block text-sm font-medium text-[#C7AA68]">Sector</label>
                           <select
                             name="sector"
                             value={formData.sector}
                             onChange={(e) => setFormData({ ...formData, sector: e.target.value })}
-                            className="w-full px-4 py-3 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 text-white"
+                            className="w-full px-3 py-2 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 text-white"
                             required
                           >
                             <option value="">Seleccionar</option>
@@ -201,13 +205,13 @@ const AuthPage = () => {
                           </select>
                         </motion.div>
 
-                        <motion.div whileHover={{ scale: 1.01 }} className="space-y-2">
+                        <motion.div whileHover={{ scale: 1.01 }} className="space-y-1">
                           <label className="block text-sm font-medium text-[#C7AA68]">Cargo</label>
                           <select
                             name="position"
                             value={formData.position}
                             onChange={(e) => setFormData({ ...formData, position: e.target.value })}
-                            className="w-full px-4 py-3 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 text-white"
+                            className="w-full px-3 py-2 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 text-white"
                             required
                           >
                             <option value="">Seleccionar</option>
@@ -220,20 +224,20 @@ const AuthPage = () => {
                     </>
                   )}
 
-                  <motion.div whileHover={{ scale: 1.01 }} className="space-y-2">
+                  <motion.div whileHover={{ scale: 1.01 }} className="space-y-1">
                     <label className="block text-sm font-medium text-[#C7AA68]">Contraseña</label>
                     <input
                       type="password"
                       name="password"
                       value={formData.password}
                       onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      className="w-full px-4 py-3 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 text-white"
+                      className="w-full px-3 py-2 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 text-white"
                       required
                     />
                   </motion.div>
 
                   {!isLogin && (
-                    <div className="flex items-center space-x-2 text-sm mx-auto">
+                    <div className="flex items-center space-x-2 text-sm">
                       <CustomCheckbox
                         checked={acceptTerms}
                         onChange={(e) => setAcceptTerms(e.target.checked)}
@@ -253,7 +257,7 @@ const AuthPage = () => {
                     whileHover={{ scale: 1.02, y: -1 }}
                     whileTap={{ scale: 0.98 }}
                     type="submit"
-                    className="w-full py-3 bg-gradient-to-r from-[#C7AA68] to-[#D4BC87] hover:from-[#D4BC87] hover:to-[#C7AA68] text-[#0A0F14] font-medium rounded-xl shadow-lg shadow-[#C7AA68]/20 hover:shadow-[#C7AA68]/40 transition-all duration-300"
+                    className="w-full py-2.5 bg-gradient-to-r from-[#C7AA68] to-[#D4BC87] hover:from-[#D4BC87] hover:to-[#C7AA68] text-[#0A0F14] font-medium rounded-xl shadow-lg shadow-[#C7AA68]/20 hover:shadow-[#C7AA68]/40 transition-all duration-300"
                   >
                     {isLogin ? "Iniciar Sesión" : "Registrarse"}
                   </motion.button>
@@ -292,71 +296,71 @@ const AuthPage = () => {
             className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
           >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-[#0A0F14] p-8 rounded-3xl border border-[#C7AA68]/20 w-full max-w-md"
-            >
-              <div className="flex items-center justify-center mb-6 space-x-2">
-                <Sparkles className="w-6 h-6 text-[#C7AA68]" />
-                <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#C7AA68] to-[#D4BC87]">
-                  Recuperar Contraseña
-                </h2>
-              </div>
+initial={{ scale: 0.9, opacity: 0 }}
+animate={{ scale: 1, opacity: 1 }}
+exit={{ scale: 0.9, opacity: 0 }}
+className="bg-[#0A0F14] p-8 rounded-3xl border border-[#C7AA68]/20 w-full max-w-md"
+>
+<div className="flex items-center justify-center mb-6 space-x-2">
+  <Sparkles className="w-6 h-6 text-[#C7AA68]" />
+  <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#C7AA68] to-[#D4BC87]">
+    Recuperar Contraseña
+  </h2>
+</div>
 
-              <form onSubmit={handlePasswordRecovery} className="space-y-6">
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-[#C7AA68]">Email</label>
-                  <input
-                    type="email"
-                    value={recoveryEmail}
-                    onChange={(e) => setRecoveryEmail(e.target.value)}
-                    className="w-full px-4 py-3 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 text-white"
-                    required
-                  />
-                </div>
+<form onSubmit={handlePasswordRecovery} className="space-y-6">
+  <div className="space-y-2">
+    <label className="block text-sm font-medium text-[#C7AA68]">Email</label>
+    <input
+      type="email"
+      value={recoveryEmail}
+      onChange={(e) => setRecoveryEmail(e.target.value)}
+      className="w-full px-4 py-3 bg-[#0A0F14]/80 border border-[#C7AA68]/20 rounded-xl focus:border-[#C7AA68]/50 focus:ring-2 focus:ring-[#C7AA68]/20 transition-all duration-300 text-white"
+      required
+    />
+  </div>
 
-                <div className="flex justify-between space-x-4">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    type="button"
-                    onClick={() => setIsModalOpen(false)}
-                    className="w-1/2 py-3 border border-[#C7AA68]/50 text-[#C7AA68] rounded-xl hover:bg-[#C7AA68]/10 transition-all duration-300"
-                  >
-                    Cancelar
-                  </motion.button>
+  <div className="flex justify-between space-x-4">
+    <motion.button
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      type="button"
+      onClick={() => setIsModalOpen(false)}
+      className="w-1/2 py-3 border border-[#C7AA68]/50 text-[#C7AA68] rounded-xl hover:bg-[#C7AA68]/10 transition-all duration-300"
+    >
+      Cancelar
+    </motion.button>
 
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    type="submit"
-                    disabled={isRecovering}
-                    className="w-1/2 py-3 bg-gradient-to-r from-[#C7AA68] to-[#D4BC87] hover:from-[#D4BC87] hover:to-[#C7AA68] text-[#0A0F14] rounded-xl shadow-lg shadow-[#C7AA68]/20 hover:shadow-[#C7AA68]/40 transition-all duration-300"
-                  >
-                    {isRecovering ? "Enviando..." : "Recuperar"}
-                  </motion.button>
-                </div>
-              </form>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <motion.button
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      type="submit"
+      disabled={isRecovering}
+      className="w-1/2 py-3 bg-gradient-to-r from-[#C7AA68] to-[#D4BC87] hover:from-[#D4BC87] hover:to-[#C7AA68] text-[#0A0F14] rounded-xl shadow-lg shadow-[#C7AA68]/20 hover:shadow-[#C7AA68]/40 transition-all duration-300"
+    >
+      {isRecovering ? "Enviando..." : "Recuperar"}
+    </motion.button>
+  </div>
+</form>
+</motion.div>
+</motion.div>
+)}
+</AnimatePresence>
 
-      <ToastContainer
-        position="top-right"
-        theme="light"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-    </div>
-  );
+<ToastContainer
+position="top-right"
+theme="light"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+/>
+</div>
+);
 };
 
 export default AuthPage;
