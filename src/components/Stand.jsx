@@ -218,7 +218,7 @@ const Stand = ({
 
       <mesh ref={areaRef}>
       <sphereGeometry args={[areaRadius, 32, 32]} /> 
-        <meshStandardMaterial color="green" transparent opacity={0.2} />
+        <meshStandardMaterial color="green" transparent opacity={0} />
       </mesh>
 
     

@@ -75,24 +75,28 @@ const CompanyLeadsFunnel = ({ companyId }) => {
   return (
     <div className="p-6 pb-10 rounded-lg" style={{ height: "100%" }}>
       <h2 className="text-lg font-bold text-[#C7AA68] mb-4 text-center">Embudo de Interés</h2>
-      <ResponsiveFunnel
-        data={funnelData}
-        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-        valueFormat=">-.4s"
-        colors={({ id }) => getColorByCategory(id)} // Asignar colores personalizados
-        borderWidth={20}
-        labelColor={{
-          from: "color",
-          modifiers: [["darker", 3]],
-        }}
-        beforeSeparatorLength={100}
-        beforeSeparatorOffset={20}
-        afterSeparatorLength={100}
-        afterSeparatorOffset={20}
-        currentPartSizeExtension={10}
-        currentBorderWidth={40}
-        motionConfig="wobbly"
-      />
+      {funnelData.length === 0 ? (
+        <p className="text-gray-500 text-center">No hay datos disponibles para mostrar en el funnel.</p>
+      ) : (
+        <ResponsiveFunnel
+          data={funnelData}
+          margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+          valueFormat=">-.4s"
+          colors={({ id }) => getColorByCategory(id)} // Asignar colores personalizados
+          borderWidth={20}
+          labelColor={{
+            from: "color",
+            modifiers: [["darker", 3]],
+          }}
+          beforeSeparatorLength={100}
+          beforeSeparatorOffset={20}
+          afterSeparatorLength={100}
+          afterSeparatorOffset={20}
+          currentPartSizeExtension={10}
+          currentBorderWidth={40}
+          motionConfig="wobbly"
+        />
+      )}
     </div>
   );
 };

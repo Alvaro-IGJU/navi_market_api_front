@@ -18,7 +18,7 @@ const CompanyUserPositions = ({ companyId }) => {
         console.log("Datos de posiciones de usuarios (raw):", response.data);
 
         const positionsData = response.data || [];
-        console.log(positionsData)
+        console.log(positionsData);
         const mappedData = positionsData.map((item) => ({
           position: item.position_title || "Desconocido",
           users: item.user_count,
@@ -42,67 +42,71 @@ const CompanyUserPositions = ({ companyId }) => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className=" p-6 pb-10 rounded-lg " style={{ height: "100%" }}>
+    <div className="p-6 pb-10 rounded-lg" style={{ height: "100%" }}>
       <h2 className="text-xl font-bold text-[#C7AA68] mb-4 text-center">Posiciones de Usuarios</h2>
-      <ResponsiveBar
-        data={barData}
-        keys={["users"]}
-        indexBy="position"
-        margin={{ right: 50, bottom: 100, left: 60 }}
-        padding={0.3}
-        colors={{ scheme: "nivo" }}
-        axisTop={null}
-        axisRight={null}
-        axisBottom={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: -45,
-          legend: "Posición",
-          legendPosition: "middle",
-          legendOffset: 70,
-        }}
-        axisLeft={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: "Cantidad de Usuarios",
-          legendPosition: "middle",
-          legendOffset: -50,
-        }}
-        labelSkipWidth={12}
-        labelSkipHeight={12}
-        labelTextColor={{
-          from: "color",
-          modifiers: [["darker", 1.6]],
-        }}
-        tooltip={({ id, value, color }) => (
-          <div
-            style={{
-              padding: "5px",
-              color: "black",
-              background: "white",
-              borderRadius: "3px",
-            }}
-          >
-            <span>{id}</span>: <strong>{value}</strong>
-          </div>
-        )}
-        theme={{
-          axis: {
-            ticks: {
-              text: {
-                fill: "black",
+      {barData.length === 0 ? (
+        <p className="text-gray-500 text-center">No hay datos disponibles para mostrar en el gráfico.</p>
+      ) : (
+        <ResponsiveBar
+          data={barData}
+          keys={["users"]}
+          indexBy="position"
+          margin={{ right: 50, bottom: 100, left: 60 }}
+          padding={0.3}
+          colors={{ scheme: "nivo" }}
+          axisTop={null}
+          axisRight={null}
+          axisBottom={{
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: -45,
+            legend: "Posición",
+            legendPosition: "middle",
+            legendOffset: 70,
+          }}
+          axisLeft={{
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: 0,
+            legend: "Cantidad de Usuarios",
+            legendPosition: "middle",
+            legendOffset: -50,
+          }}
+          labelSkipWidth={12}
+          labelSkipHeight={12}
+          labelTextColor={{
+            from: "color",
+            modifiers: [["darker", 1.6]],
+          }}
+          tooltip={({ id, value, color }) => (
+            <div
+              style={{
+                padding: "5px",
+                color: "black",
+                background: "white",
+                borderRadius: "3px",
+              }}
+            >
+              <span>{id}</span>: <strong>{value}</strong>
+            </div>
+          )}
+          theme={{
+            axis: {
+              ticks: {
+                text: {
+                  fill: "black",
+                },
               },
             },
-          },
-          grid: {
-            line: {
-              stroke: "#444444",
-              strokeWidth: 1,
+            grid: {
+              line: {
+                stroke: "#444444",
+                strokeWidth: 1,
+              },
             },
-          },
-        }}
-      />
+          }}
+        />
+      )}
     </div>
   );
 };
