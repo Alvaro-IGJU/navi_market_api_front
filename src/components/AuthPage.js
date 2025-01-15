@@ -7,20 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Sparkles } from "lucide-react";
 import CustomCheckbox from './CustomCheckbox';
-
-const AuroraBackground = () => (
-  <div className="fixed inset-0 -z-10">
-    <div className="relative w-full h-full overflow-hidden bg-[#0A0F14]">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0A0F14] via-[#0A0F14] to-black opacity-98"></div>
-      <div className="absolute -inset-[10px] opacity-10">
-        <div className="absolute top-1/4 -left-1/4 w-1/2 h-1/2 rounded-full bg-[#C7AA68]/10 blur-[120px] animate-pulse"></div>
-        <div className="absolute top-1/3 left-1/2 w-1/2 h-1/2 rounded-full bg-[#0A0F14]/20 blur-[120px] animate-pulse delay-700"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-1/2 h-1/2 rounded-full bg-[#C7AA68]/5 blur-[120px] animate-pulse delay-1000"></div>
-        <div className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 rounded-full bg-[#0A0F14]/15 blur-[120px] animate-pulse delay-300"></div>
-      </div>
-    </div>
-  </div>
-);
+import AuroraBackground from "../pages/AuroraBackground";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
