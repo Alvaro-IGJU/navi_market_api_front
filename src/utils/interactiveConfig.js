@@ -7,6 +7,7 @@ const layoutConfig = {
         computerPosition:[0, -0.4, -0.3],
         catalogPosition: [0, -0.29, 0.33],
         chatbotPosition: [-1, -0.2, 0],
+        scheduleMeetingPosition: [-0.28, -0.29, 0]
       },
       silver: {
         mailboxPosition: [-2, -1, 3.5],
@@ -15,6 +16,7 @@ const layoutConfig = {
         computerPosition:[0.7, -0.37, 1.6],
         catalogPosition: [0.6, -0.55, 1.93],
         chatbotPosition: [0, -0.2, -1],
+        scheduleMeetingPosition: [-1.68, -0.2, 1.15]
       },
       gold: {
         mailboxPosition: [3, -1, 2.5],
@@ -23,6 +25,7 @@ const layoutConfig = {
         catalogPosition: [1.6, -0.4, -1.3],
         computerPosition:[0.7, -0.4, 1.95],
         chatbotPosition: [0, -0.2, -1],
+        scheduleMeetingPosition: [3.24, -0.2, -2]
       },
     },
     rotation:{
@@ -33,6 +36,7 @@ const layoutConfig = {
         computerRotation:[0, Math.PI / 2, 0],
         catalogRotation: [-0.1, 0, 0],
         chatbotRotation: [0, Math.PI , 0],
+        scheduleMeetingRotation: [Math.PI/2, 0, Math.PI/2]
       },
       silver: {
         mailboxRotation: [0, Math.PI / 2,0],
@@ -41,6 +45,8 @@ const layoutConfig = {
         computerRotation:[0, Math.PI / 2.45, 0],
         catalogRotation: [0, -0.3, 0],
         chatbotRotation: [0, -Math.PI/10 , 0],
+        scheduleMeetingRotation: [Math.PI/2, 0, Math.PI/-2.4]
+
       },
       gold: {
         mailboxRotation: [0, Math.PI / 1,0],
@@ -49,6 +55,7 @@ const layoutConfig = {
         computerRotation:[0, Math.PI / 12, 0],
         catalogRotation: [0, 1, 0],
         chatbotRotation: [0, -Math.PI/10 , 0],
+        scheduleMeetingRotation: [Math.PI/2, 0, Math.PI/-2.5]
       },
     }
   };

@@ -14,6 +14,7 @@ import StandSilver from "./StandSilver";
 import StandGold from "./StandGold";
 import Computer from "./Computer";
 import layoutConfig from "../utils/interactiveConfig";
+import  Phone  from "./Phone";
 
 const Stand = ({
   id,
@@ -198,10 +199,10 @@ const Stand = ({
 
 
 
-  const { mailboxPosition, videoPosition, screenPosition, computerPosition, catalogPosition, chatbotPosition } =
+  const { mailboxPosition, videoPosition, screenPosition, computerPosition, catalogPosition, chatbotPosition, scheduleMeetingPosition } =
     layoutConfig.position[type] || layoutConfig.position["bronze"];
 
-  const { mailboxRotation, videoRotation, screenRotation, computerRotation, catalogRotation, chatbotRotation } =
+  const { mailboxRotation, videoRotation, screenRotation, computerRotation, catalogRotation, chatbotRotation, scheduleMeetingRotation } =
     layoutConfig.rotation[type] || layoutConfig.rotation["bronze"];
   return (
     <>
@@ -268,29 +269,16 @@ const Stand = ({
   catalogBase64={catalog_pdf}
 />
 
+<Phone 
+  position={scheduleMeetingPosition}
+  rotation={scheduleMeetingRotation}
+  scale={[0.1, 0.1, 0.1]} // Ajusta la escala según sea necesario
+  handleClick={handleClick} // Pasa la función de clic
+  canInteract={canInteract} // Pasa la capacidad de interacción
+  isInteracting={isInteracting}
+  setIsInteracting={setIsInteracting}
 
-<RigidBody type="fixed">
-  <mesh
-    position={[0.7, -0.3, 1]}
-    onClick={() => handleClick("schedule_meeting")}
-    onPointerOver={(e) => {
-      if(canInteract){
-        e.object.material.emissive.set("yellow"); // Añade un brillo amarillo
-        e.object.material.emissiveIntensity = 0.1; // Ajusta la intensidad del brillo
-        document.body.style.cursor = "pointer";
-      }
-    }}
-    onPointerOut={(e) => {
-      e.object.material.emissive.set("black");
-      e.object.material.emissiveIntensity = 0;
-      document.body.style.cursor = "default";
-    }}
-  >
-    <boxGeometry args={[0.1, 0.2, 0.1]} />
-    <meshStandardMaterial color="red" />
-  </mesh>
-</RigidBody>
-
+/>
 
       <ChatBot
         canInteract={canInteract}
