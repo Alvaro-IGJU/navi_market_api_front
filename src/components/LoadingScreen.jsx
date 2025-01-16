@@ -6,7 +6,7 @@ const LoadingScreen = () => {
     return (
       <div className={`loading-screen ${active ? "" : "loading-screen--hidden"}`}>
         <div className="loading-screen__container">
-          <h1 className="loading-screen__title">NAVI MARKET</h1>
+          <h1 className="loading-screen__title">NAVI FAIRS</h1>
           <div className="progress__container">
             <div
               className="progress__bar"

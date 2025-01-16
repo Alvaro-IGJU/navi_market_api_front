@@ -24,7 +24,7 @@ const LogoSlider = () => {
   ];
 
   return (
-    <div className="w-full py-20 overflow-hidden bg-gradient-to-b from-[#0A0F14] to-transparent">
+    <div className="w-full py-20 overflow-hidden">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -40,13 +40,13 @@ const LogoSlider = () => {
         {/* Slider de logotipos */}
         <motion.div
           animate={{
-            x: ['0%', '-100%'], // Desplazamiento de izquierda a derecha
+            x: ['0%', '-100%'],
           }}
           transition={{
             x: {
               repeat: Infinity,
               repeatType: 'loop',
-              duration: 120, // Aumentamos la duración para que sea más lento
+              duration: 120,
               ease: 'linear',
             },
           }}

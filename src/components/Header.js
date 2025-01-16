@@ -21,7 +21,7 @@ const Header = () => {
   };
 
   return (
-    <header className="backdrop-blur-md text-white shadow-lg fixed top-0 w-full z-50 font-['Poppins']">
+    <header className="backdrop-blur-md text-[#FFC28F] shadow-lg fixed top-0 w-full z-50 font-['Poppins']">
       <nav className="backdrop-blur-md px-4 lg:px-6 py-2.5">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <NavLink
@@ -45,14 +45,14 @@ const Header = () => {
                   <img
                     src={user?.profile_picture || '/multimedia/images/default-avatar.jpg'}
                     alt="Perfil"
-                    className="w-11 h-11 rounded-full border-2 border-yellow-400 transition-all duration-300 hover:border-yellow-300 hover:shadow-lg"
+                    className="w-11 h-11 rounded-full border-2 border-[#FFC28F] transition-all duration-300 hover:border-yellow-300 hover:shadow-lg"
                   />
                   <span className="hidden lg:block text-sm truncate max-w-[150px] font-medium">
                     <b>{user?.username ? `${user.username}` : 'Usuario'}</b>
                   </span>
                 </button>
                 <ul
-                  className={`absolute right-0 p-2 mt-2 w-48 bg-gray-900 text-white rounded-lg shadow-xl transition-all duration-300 transform ${
+                  className={`absolute right-0 p-2 mt-2 w-48 bg-gray-900 rounded-lg shadow-xl transition-all duration-300 transform ${
                     dropdownOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'
                   }`}
                 >
@@ -63,7 +63,7 @@ const Header = () => {
                         `flex items-center gap-2 w-full px-4 py-2 no-underline rounded-md transition-all duration-200 ease-in-out ${
                           isActive
                             ? 'bg-gray-700 text-yellow-300'
-                            : 'text-[#C7AA68] hover:bg-gray-700 hover:text-yellow-300'
+                            : 'text-[#FFC28F] hover:bg-gray-700 hover:text-yellow-300'
                         }`
                       }
                       onClick={closeDropdown}
@@ -80,7 +80,7 @@ const Header = () => {
                           `flex items-center gap-2 w-full px-4 py-2 no-underline rounded-md transition-all duration-200 ease-in-out ${
                             isActive
                               ? 'bg-gray-700 text-yellow-300'
-                              : 'text-[#C7AA68] hover:bg-gray-700 hover:text-yellow-300'
+                              : 'text-[#FFC28F] hover:bg-gray-700 hover:text-yellow-300'
                           }`
                         }
                         onClick={closeDropdown}
@@ -98,7 +98,7 @@ const Header = () => {
                           `flex items-center gap-2 w-full px-4 py-2 no-underline rounded-md transition-all duration-200 ease-in-out ${
                             isActive
                               ? 'bg-gray-700 text-yellow-300'
-                              : 'text-[#C7AA68] hover:bg-gray-700 hover:text-yellow-300'
+                              : 'text-[#FFC28F] hover:bg-gray-700 hover:text-yellow-300'
                           }`
                         }
                         onClick={closeDropdown}
@@ -114,7 +114,7 @@ const Header = () => {
                         closeDropdown();
                         logout();
                       }}
-                      className="flex items-center gap-2 w-full text-center px-4 py-2 text-[#C7AA68] hover:bg-gray-700 rounded-md transition-all duration-200 ease-in-out hover:text-yellow-300"
+                      className="flex items-center gap-2 w-full text-center px-4 py-2 text-[#FFC28F] hover:bg-gray-700 rounded-md transition-all duration-200 ease-in-out hover:text-yellow-300"
                     >
                       <LogIn size={16} className="rotate-180" />
                       Cerrar Sesión
@@ -129,7 +129,7 @@ const Header = () => {
                   `flex items-center gap-2 py-2 px-4 no-underline transition-all duration-300 transform hover:scale-105 relative ${
                     isActive
                       ? 'text-yellow-300 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300'
-                      : 'text-[#C7AA68] hover:text-yellow-300 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'
+                      : 'text-[#FFC28F] hover:text-yellow-300 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'
                   }`
                 }
               >
@@ -140,7 +140,7 @@ const Header = () => {
             <button
               data-collapse-toggle="mobile-menu-2"
               type="button"
-              className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors duration-200"
+              className="inline-flex items-center p-2 ml-1 text-sm text-[#FFC28F] rounded-lg lg:hidden hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors duration-200"
               onClick={toggleMenu}
             >
               <span className="sr-only">Open main menu</span>
@@ -185,7 +185,7 @@ const Header = () => {
                     `flex items-center gap-2 py-2 pr-4 pl-3 no-underline transition-all duration-300 transform hover:scale-105 relative ${
                       isActive
                         ? 'text-yellow-300 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300'
-                        : 'text-white hover:text-[#C7AA68] after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'
+                        : 'text-[#FFC28F] hover:text-[#FFC28F] after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#FFC28F] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'
                     }`
                   }
                 >
@@ -201,7 +201,7 @@ const Header = () => {
                       `flex items-center gap-2 py-2 pr-4 pl-3 no-underline transition-all duration-300 transform hover:scale-105 relative ${
                         isActive
                           ? 'text-yellow-300 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300'
-                          : 'text-white hover:text-[#C7AA68] after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'
+                          : 'text-[#FFC28F] hover:text-[#FFC28F] after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#FFC28F] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'
                       }`
                     }
                   >
@@ -218,7 +218,7 @@ const Header = () => {
                       `flex items-center gap-2 py-2 pr-4 pl-3 no-underline transition-all duration-300 transform hover:scale-105 relative ${
                         isActive
                           ? 'text-yellow-300 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300'
-                          : 'text-white hover:text-[#C7AA68] after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'
+                          : 'text-[#FFC28F] hover:text-[#FFC28F] after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#FFC28F] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'
                       }`
                     }
                   >

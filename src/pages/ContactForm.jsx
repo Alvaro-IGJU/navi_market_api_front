@@ -50,9 +50,10 @@ const ContactForm = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             type="submit"
-            className="w-full py-4 bg-gradient-to-r from-[#310491] to-[#FFC28F] hover:from-[#FFC28F] hover:to-[#310491] text-[#FBFDF0] font-medium rounded-lg shadow-lg shadow-[#FFC28F]/20 hover:shadow-[#FFC28F]/40 transition-all duration-300 flex items-center justify-center gap-2 backdrop-blur-sm"
+            className="w-full py-4 bg-[#FFC28F] text-[#FBFDF0] font-medium rounded-lg shadow-lg shadow-[#FFC28F]/20 flex items-center justify-center gap-2 backdrop-blur-sm text-black"
+
           >
-            <Send className="w-5 h-5" />
+            <Send className="w-5 h-5 text-indigo-800" />
             Enviar Mensaje
           </motion.button>
           {status && (
