@@ -29,9 +29,9 @@ const Header = () => {
             className="flex items-center no-underline transform transition hover:scale-105"
           >
             <img
-              src='/multimedia/images/LOGO NAVI.png'
+              src='/multimedia/images/FINAL LOGO.png'
               alt="Logo"
-              className="self-center h-24 transition-transform duration-300 hover:scale-105"
+              className="self-center h-12 transition-transform duration-300 hover:scale-105"
             />
           </NavLink>
 
