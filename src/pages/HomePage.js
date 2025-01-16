@@ -5,6 +5,7 @@ import FeatureSection from './FeaturesSection';
 import ContactForm from './ContactForm';
 import Footer from './Footer';
 import LogoSlider from './LogoSlider';
+import ContentSection from './ContentSection';
 
 const HomePage = () => {
   return (
@@ -20,7 +21,10 @@ const HomePage = () => {
 
       {/* Slider de Logos */}
       <LogoSlider />
-      
+
+      {/* Slider de Logos */}
+      <ContentSection />
+
       {/* Formulario de Contacto */}
       <ContactForm />
 
