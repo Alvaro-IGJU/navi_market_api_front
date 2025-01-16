@@ -6,12 +6,12 @@ import api from "../api";
 import { useControls } from "leva";
 import ChatBot from "./ChatBot";
 import StandBronce from "./StandBronce";
-import StandPremium from "./StandPremium";
 import StandVip from "./StandVip";
 import Video from "./Video";
 import Mailbox from "./Mailbox";
 import Catalog from "./Catalog";
 import StandSilver from "./StandSilver";
+import StandGold from "./StandGold";
 import Computer from "./Computer";
 import layoutConfig from "../utils/interactiveConfig";
 
@@ -213,7 +213,7 @@ const Stand = ({
         <StandSilver scale={[0.5, 0.5, 0.5]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
       )}
       {type === "gold" && (
-        <StandVip scale={[1, 1, 1]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
+        <StandGold scale={[2.8, 2.8, 2.8]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
       )}
 
       <mesh ref={areaRef}>
@@ -271,7 +271,7 @@ const Stand = ({
 
 <RigidBody type="fixed">
   <mesh
-    position={[0.7, -0.3, 0]}
+    position={[0.7, -0.3, 1]}
     onClick={() => handleClick("schedule_meeting")}
     onPointerOver={(e) => {
       if(canInteract){

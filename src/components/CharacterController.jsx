@@ -52,7 +52,7 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
   const container = useRef();
   const character = useRef();
   const { playerCameraRef } = useCameraManager(); // Obtener la referencia de la cámara del jugador
-  const [animation, setAnimation] = useState("Idle");
+  const [animation, setAnimation] = useState("rigAction");
   const isDragging = useRef(false);
   const mouseDragStart = useRef(new Vector3());
   const currentMousePosition = useRef(new Vector3());
@@ -133,54 +133,74 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
     if (isInteracting) {
       return; // Detener actualizaciones si hay interacción
     }
-
+  
     if (rb.current) {
       const vel = rb.current.linvel();
       const movement = { x: 0, z: 0 };
-
+  
+      // Detectar teclas de movimiento
       if (get().forward) movement.z = 1;
       if (get().backward) movement.z = -1;
-
+      if (get().left) movement.x = 1;
+      if (get().right) movement.x = -1;
+  
       let speed = get().run ? RUN_SPEED : WALK_SPEED;
-
+  
+      // Lógica de clic y movimiento con el mouse
       if (isClicking.current) {
         if (!movementStarted.current) {
           setTimeout(() => {
             movementStarted.current = true;
-          }, 200); // Delay before starting movement
+          }, 200); // Delay antes de iniciar el movimiento
         }
-
+  
         if (movementStarted.current) {
           if (Math.abs(mouse.x) > 0.1) movement.x = -mouse.x;
           movement.z = mouse.y + 0.4;
           if (Math.abs(movement.x) > 0.5 || Math.abs(movement.z) > 0.5) speed = RUN_SPEED;
         }
       }
-
-      if (get().left) movement.x = 1;
-      if (get().right) movement.x = -1;
-
+  
+      // Manejo del objetivo de rotación
       if (movement.x !== 0) rotationTarget.current += ROTATION_SPEED * movement.x;
-
-      if (movement.x !== 0 || movement.z !== 0) {
+  
+      const isCurrentlyMoving = movement.x !== 0 || movement.z !== 0;
+  
+      if (isCurrentlyMoving) {
+        // Hay movimiento: ajustar velocidad y cambiar a animación de caminar
         characterRotationTarget.current = Math.atan2(movement.x, movement.z);
         vel.x = Math.sin(rotationTarget.current + characterRotationTarget.current) * speed;
         vel.z = Math.cos(rotationTarget.current + characterRotationTarget.current) * speed;
-        setAnimation("rigAction.002");
+  
+        if (animation !== "rigAction") {
+          setAnimation("rigAction"); // Cambiar a animación de caminar
+        }
       } else {
-        setAnimation("Idle");
+        // No hay movimiento: detener velocidades y cambiar a animación Idle
+        vel.x = 0;
+        vel.z = 0;
+  
+        if (animation !== "esqueleto_corbataAction") {
+          setAnimation("esqueleto_corbataAction"); // Cambiar a Idle
+        }
       }
-
-      character.current.rotation.y = lerpAngle(character.current.rotation.y, characterRotationTarget.current, 0.1);
+  
+      // Aplicar la velocidad al cuerpo rígido
       rb.current.setLinvel(vel, true);
+  
+      // Ajustar rotación del personaje
+      character.current.rotation.y = lerpAngle(character.current.rotation.y, characterRotationTarget.current, 0.1);
     }
-
+  
+    // Rotación del contenedor principal
     container.current.rotation.y = MathUtils.lerp(container.current.rotation.y, rotationTarget.current, 0.1);
-
+  
+    // Lógica de la cámara
     if (playerCameraRef.current) {
+      // Obtener posiciones para la cámara
       cameraPosition.current.getWorldPosition(cameraWorldPosition.current);
       playerCameraRef.current.position.lerp(cameraWorldPosition.current, 0.1);
-
+  
       if (cameraTarget.current) {
         cameraTarget.current.getWorldPosition(cameraLookAtWorldPosition.current);
         cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 0.1);
@@ -188,6 +208,8 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
       }
     }
   });
+  
+  const isMoving = movementStarted.current || get().forward || get().backward || get().left || get().right;
 
   return (
     <RigidBody
@@ -201,7 +223,12 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
         <group ref={cameraTarget} position-z={1.5} />
         <group ref={cameraPosition} position-y={1} position-z={-2} />
         <group ref={character}>
-          <Avatar scale={0.1} position-y={-0.25} animation="rigAction.002" />
+        <Avatar
+            scale={0.3}
+            position-y={-0.25}
+            animation={animation}
+            pause={!isMoving} // Pausar si no hay movimiento
+          />;
         </group>
       </group>
       <CapsuleCollider args={[0.2, 0.18]} />

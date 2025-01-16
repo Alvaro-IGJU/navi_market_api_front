@@ -2,14 +2,14 @@ const layoutConfig = {
     position:{
       bronze: {
         mailboxPosition: [0.6, -1, -1.3],
-        videoPosition: [0.29, 0.0, -0],
+        videoPosition: [0.3, 0.0, -0],
         screenPosition:[3.5, -0, -0.01],
         computerPosition:[0, -0.4, -0.3],
         catalogPosition: [0, -0.29, 0.33],
         chatbotPosition: [-1, -0.2, 0],
       },
       silver: {
-        mailboxPosition: [-1, -1, 3.5],
+        mailboxPosition: [-2, -1, 3.5],
         videoPosition: [0.29, 0.0, -2],
         screenPosition:[-25.2, 0, -0.03],
         computerPosition:[0.7, -0.37, 1.6],
@@ -17,9 +17,12 @@ const layoutConfig = {
         chatbotPosition: [0, -0.2, -1],
       },
       gold: {
-        mailboxPosition: [-1.5, -0.5, 4],
-        videoPosition: [0.4, 0.4, 4.5],
-        catalogPosition: [0.7, -0.5, 4.3],
+        mailboxPosition: [3, -1, 2.5],
+        videoPosition: [-2.45, 0.0, -0.7],
+        screenPosition:[-32, 0, -0.03],
+        catalogPosition: [1.6, -0.4, -1.3],
+        computerPosition:[0.7, -0.4, 1.95],
+        chatbotPosition: [0, -0.2, -1],
       },
     },
     rotation:{
@@ -40,9 +43,12 @@ const layoutConfig = {
         chatbotRotation: [0, -Math.PI/10 , 0],
       },
       gold: {
-        mailboxRotation: [-1.5, -0.5, 4],
-        videoRotation: [0.4, 0.4, 4.5],
-        catalogRotation: [0.7, -0.5, 4.3],
+        mailboxRotation: [0, Math.PI / 1,0],
+        videoRotation: [0, -1 *  Math.PI / -2.4 , 0],
+        screenRotation:[Math.PI / 2, Math.PI, Math.PI / 1.1],
+        computerRotation:[0, Math.PI / 12, 0],
+        catalogRotation: [0, 1, 0],
+        chatbotRotation: [0, -Math.PI/10 , 0],
       },
     }
   };

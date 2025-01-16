@@ -2,11 +2,11 @@
 export const getStandCoordinates = (position) => {
   // Configuración de posiciones y rotaciones predefinidas
   const standMap = {
-    1: { position: [24, -16.4, 6.5], rotation: [0, -0.5, 0], areaRadius: 8 },
-    2: { position: [24.4, -16.4, 55.2], rotation: [0, -2.1, 0], areaRadius: 8 },
-    3: { position: [0, -16.4, 64.2], rotation: [0, -2.9 , 0], areaRadius: 8 },
-    4: { position: [-24.4, -16.4, 53], rotation: [0, 2.55, 0], areaRadius: 8 },
-    5: { position: [-34, -16.4, 30], rotation: [0, 1.83, 0], areaRadius: 8 },
+    1: { position: [-19.5, -16.2, 6.9], rotation: [0, -0.6, 0], areaRadius: 8 },
+    2: { position: [21.0, -16.25, 52.4], rotation: [0, -2.1, 0], areaRadius: 8 },
+    3: { position: [-0.2, -16.3, 60.5], rotation: [0, -2.9 , 0], areaRadius: 8 },
+    4: { position: [-22.7, -16.25, 51.1], rotation: [0, 2.55, 0], areaRadius: 8 },
+    5: { position: [-30, -16.25, 30], rotation: [0, 1.83, 0], areaRadius: 8 },
     6: { position: [6, -18, 15], rotation: [0, 2.81, 0], areaRadius: 2.4},
     7: { position: [14.7, -18, 24], rotation: [0, 1.86, 0], areaRadius: 2.4},
     8: { position: [15, -18, 36], rotation: [0, 1.16, 0], areaRadius: 2.4},
