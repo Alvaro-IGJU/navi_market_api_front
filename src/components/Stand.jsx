@@ -217,7 +217,7 @@ const Stand = ({
         <StandGold scale={[2.8, 2.8, 2.8]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
       )}
 
-      <mesh ref={areaRef}>
+      <mesh ref={areaRef} visible={false}>
       <sphereGeometry args={[areaRadius, 32, 32]} /> 
         <meshStandardMaterial color="green" transparent opacity={0} />
       </mesh>

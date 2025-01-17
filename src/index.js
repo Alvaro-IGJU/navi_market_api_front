@@ -5,8 +5,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fontsource/poppins'; // Carga el peso predeterminado (400)
+import { extend } from '@react-three/fiber';
+import { WaterMaterial } from './components/WaterMaterial';
+extend({ WaterMaterial });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// extend({ WaterMaterial });
+
 root.render(
   <React.StrictMode>
     <App />

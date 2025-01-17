@@ -9,6 +9,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { getStandCoordinates } from "../utils/standPositions";
 import { getBasePosition } from "../utils/basePosition";
 import { CameraManager } from "./CameraManager";
+import { Water } from "./Water";
 
 const Experience = ({ eventId }) => {
   const characterRef = useRef();
@@ -112,6 +113,7 @@ const Experience = ({ eventId }) => {
       <Physics >
         {/* Base model */}
         <Base position={baseConfig.position} scale={baseConfig.scale} />
+        <Water rotation-x={-Math.PI / 2}  position={[-50, -20, 0]} position-y={-20} />
         {/* Render stands dynamically */}
         {stands.map((stand) => (
           <Stand
