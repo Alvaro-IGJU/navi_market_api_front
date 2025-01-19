@@ -3,6 +3,8 @@ import { Html, PerspectiveCamera } from "@react-three/drei";
 import { useCameraManager } from "./CameraManager";
 import api from "../api";
 import { applyAccentRules } from '../utils/chatBotInputAccentRules';
+import { useLoader } from "@react-three/fiber";
+import { TextureLoader } from "three";
 
 const ChatBot = ({ standId, position, rotation,  canInteract, isInteracting, setIsInteracting, handleClick }) => {
   const { registerStandCamera, activateStandCamera, activatePlayerCamera } = useCameraManager();
@@ -14,6 +16,7 @@ const ChatBot = ({ standId, position, rotation,  canInteract, isInteracting, set
   const [input, setInput] = useState("");
   const [planeHeight, setPlaneHeight] = useState(100);
   const [planeWidth, setPlaneWidth] = useState(window.innerWidth * 0.8); // Inicializa con el 80% del ancho de la pantalla
+  const texture = useLoader(TextureLoader, "/multimedia/images/DEGRADADO_NAVI-15.png");
 
   const isMobile = window.innerWidth <= 768; // Verifica si es un dispositivo móvil
 
@@ -109,22 +112,32 @@ const ChatBot = ({ standId, position, rotation,  canInteract, isInteracting, set
   return (
     <group position={position} rotation={rotation}>
       <PerspectiveCamera ref={cameraRef} makeDefault={false} position={[0, 0.1, 2]} fov={50} />
-      <mesh onClick={handleChatbotClick} onPointerOver={(e) => {
+      <mesh
+      rotation={[3.5,0,-2]}
+      scale={[2, 2, 2]}
+      onClick={handleChatbotClick}
+      onPointerOver={(e) => {
         if (canInteract && !isInteracting) {
           e.stopPropagation(); // Evita que el evento se propague
           e.object.material.emissive.set("yellow"); // Añade brillo amarillo
           e.object.material.emissiveIntensity = 0.2; // Ajusta la intensidad
           document.body.style.cursor = "pointer";
         }
-    }}
-    onPointerOut={(e) => {
-      e.object.material.emissive.set("black");
-      e.object.material.emissiveIntensity = 0;
-      document.body.style.cursor = "default";
-    }}>
-        <sphereGeometry args={[0.1, 12, 12]} />
-        <meshStandardMaterial color="orange" />
-      </mesh>
+      }}
+      onPointerOut={(e) => {
+        e.object.material.emissive.set("black");
+        e.object.material.emissiveIntensity = 0;
+        document.body.style.cursor = "default";
+      }}
+    >
+      <sphereGeometry  args={[0.1, 12, 12]} />
+      <meshStandardMaterial
+        map={texture} // Aplicar la textura como el mapa del material
+        emissive="black"
+        emissiveIntensity={0}
+      />
+    </mesh>
+
 
       {showInput && (
   <>

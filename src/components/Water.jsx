@@ -10,12 +10,18 @@ import {
   RGBADepthPacking,
 } from "three";
 
-const depthMaterial = new MeshDepthMaterial();
-depthMaterial.depthPacking = RGBADepthPacking;
-depthMaterial.blending = NoBlending;
+// Configuración del material de profundidad
+const depthMaterial = new MeshDepthMaterial({
+  depthPacking: RGBADepthPacking,
+  blending: NoBlending,
+  transparent: false,
+});
 
 export const Water = ({ ...props }) => {
   const waterMaterialRef = useRef();
+  const waterRef = useRef();
+
+  // Controles interactivos
   const {
     waterColor,
     waterOpacity,
@@ -59,21 +65,19 @@ export const Water = ({ ...props }) => {
     type: FloatType,
   });
 
-  const waterRef = useRef();
-
   useFrame(({ gl, scene, camera, clock }) => {
-    // We hide the water mesh and render the scene to the render target
+    // Ocultar la malla de agua y renderizar el buffer de profundidad
     waterRef.current.visible = false;
     gl.setRenderTarget(renderTarget);
     scene.overrideMaterial = depthMaterial;
     gl.render(scene, camera);
 
-    // We reset the scene and show the water mesh
+    // Restaurar la escena y mostrar la malla de agua
     scene.overrideMaterial = null;
     waterRef.current.visible = true;
     gl.setRenderTarget(null);
 
-    // We set the uniforms
+    // Configurar los uniformes del material del agua
     if (waterMaterialRef.current) {
       waterMaterialRef.current.uniforms.uTime.value = clock.getElapsedTime();
       waterMaterialRef.current.uniforms.uDepth.value = renderTarget.texture;
@@ -93,7 +97,9 @@ export const Water = ({ ...props }) => {
       <waterMaterial
         ref={waterMaterialRef}
         uColor={new Color(waterColor)}
-        transparent
+        transparent={true} // Mantiene la transparencia habilitada
+        depthWrite={false} // Deshabilita la escritura de profundidad
+        depthTest={true} // Permite respetar el fondo
         uOpacity={waterOpacity}
         uNoiseType={noiseType}
         uSpeed={speed}

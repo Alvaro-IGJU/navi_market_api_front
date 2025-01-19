@@ -13,6 +13,7 @@ const AdminStandsPage = () => {
   const [newStand, setNewStand] = useState({
     event: "",
     company: "",
+    company_logo: "",
     name: "",
     description: "",
     position: "", // Campo de posición añadido
@@ -94,6 +95,35 @@ const AdminStandsPage = () => {
     }
   };
 
+  const handleImageChange = (e, fieldName) => {
+    const file = e.target.files[0];
+    if (file) {
+      const validTypes = ["image/png", "image/jpeg", "image/gif"];
+      if (!validTypes.includes(file.type)) {
+        alert("Por favor, selecciona un archivo de imagen válido (PNG, JPEG, GIF).");
+        return;
+      }
+  
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64Data = reader.result.split(",")[1];
+        setNewStand((prevData) => ({
+          ...prevData,
+          [fieldName]: base64Data,
+        }));
+      };
+  
+      reader.onerror = () => {
+        console.error("Error al leer el archivo:", reader.error);
+        alert("Hubo un problema al leer el archivo. Intenta de nuevo.");
+      };
+  
+      reader.readAsDataURL(file);
+    }
+  };
+  
+
+
   const handleStandSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
@@ -114,6 +144,7 @@ const AdminStandsPage = () => {
       setNewStand({
         event: "",
         company: "",
+        company_logo: "",
         name: "",
         description: "",
         position: "",
@@ -262,6 +293,14 @@ const AdminStandsPage = () => {
               value={newStand.url_web}
               onChange={handleInputChange}
               placeholder="https://example.com"
+            />
+          </div>
+          <div className="form-group">
+            <label>Logo Empresa (JPEG, PNG)</label>
+            <input
+              type="file"
+              accept="image/png, image/jpeg"
+              onChange={(e) => handleImageChange(e, "company_logo")}
             />
           </div>
           <button type="submit" className="form-button">

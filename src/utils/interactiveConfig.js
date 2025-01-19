@@ -6,8 +6,9 @@ const layoutConfig = {
         screenPosition:[3.5, -0, -0.01],
         computerPosition:[0, -0.4, -0.3],
         catalogPosition: [0, -0.29, 0.33],
-        chatbotPosition: [-1, -0.2, 0],
-        scheduleMeetingPosition: [-0.28, -0.29, 0]
+        chatbotPosition: [-1, -0.16, 0],
+        scheduleMeetingPosition: [-0.28, -0.29, 0],
+        companyLogoPosition: [0, 1.2, 0]
       },
       silver: {
         mailboxPosition: [-2, -1, 3.5],
@@ -16,7 +17,9 @@ const layoutConfig = {
         computerPosition:[0.7, -0.37, 1.6],
         catalogPosition: [0.6, -0.55, 1.93],
         chatbotPosition: [0, -0.2, -1],
-        scheduleMeetingPosition: [-1.68, -0.2, 1.15]
+        scheduleMeetingPosition: [-1.68, -0.2, 1.15],
+        companyLogoPosition: [0, 0, 0]
+
       },
       gold: {
         mailboxPosition: [3, -1, 2.5],
@@ -25,7 +28,9 @@ const layoutConfig = {
         catalogPosition: [1.6, -0.4, -1.3],
         computerPosition:[0.7, -0.4, 1.95],
         chatbotPosition: [0, -0.2, -1],
-        scheduleMeetingPosition: [3.24, -0.2, -2]
+        scheduleMeetingPosition: [3.24, -0.2, -2],
+        companyLogoPosition: [0, 0, 0]
+
       },
     },
     rotation:{
@@ -36,7 +41,9 @@ const layoutConfig = {
         computerRotation:[0, Math.PI / 2, 0],
         catalogRotation: [-0.1, 0, 0],
         chatbotRotation: [0, Math.PI , 0],
-        scheduleMeetingRotation: [Math.PI/2, 0, Math.PI/2]
+        scheduleMeetingRotation: [Math.PI/2, 0, Math.PI/2],
+        companyLogoRotation: [0, 0, 0],
+
       },
       silver: {
         mailboxRotation: [0, Math.PI / 2,0],
@@ -45,7 +52,8 @@ const layoutConfig = {
         computerRotation:[0, Math.PI / 2.45, 0],
         catalogRotation: [0, -0.3, 0],
         chatbotRotation: [0, -Math.PI/10 , 0],
-        scheduleMeetingRotation: [Math.PI/2, 0, Math.PI/-2.4]
+        scheduleMeetingRotation: [Math.PI/2, 0, Math.PI/-2.4],
+        companyLogoRotation: [0, 0, 0],
 
       },
       gold: {
@@ -55,7 +63,8 @@ const layoutConfig = {
         computerRotation:[0, Math.PI / 12, 0],
         catalogRotation: [0, 1, 0],
         chatbotRotation: [0, -Math.PI/10 , 0],
-        scheduleMeetingRotation: [Math.PI/2, 0, Math.PI/-2.5]
+        scheduleMeetingRotation: [Math.PI/2, 0, Math.PI/-2.5],
+        companyLogoRotation: [0, 0, 0],
       },
     }
   };

@@ -37,6 +37,7 @@ const Experience = ({ eventId }) => {
           catalog_pdf: stand.catalog_pdf,
           url_video: stand.url_video,
           url_web: stand.url_web,
+          company_logo: stand.company_logo,
         };
       });
 
@@ -130,6 +131,7 @@ const Experience = ({ eventId }) => {
             url_video={stand.url_video}
             url_web={stand.url_web}
             areaRadius={stand.areaRadius}
+            company_logo={stand.company_logo}
           />
         ))}
 

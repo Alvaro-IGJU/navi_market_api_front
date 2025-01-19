@@ -52,7 +52,7 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
   const container = useRef();
   const character = useRef();
   const { playerCameraRef } = useCameraManager(); // Obtener la referencia de la cámara del jugador
-  const [animation, setAnimation] = useState("rigAction");
+  const [animation, setAnimation] = useState("LOLO_Animation_Idle");
   const isDragging = useRef(false);
   const mouseDragStart = useRef(new Vector3());
   const currentMousePosition = useRef(new Vector3());
@@ -125,9 +125,7 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
       };
     }
   }, []);
-  useEffect(() => {
-    console.log("Animación actual:", animation);
-  }, [animation]);
+
   
   useFrame(({ camera, mouse }) => {
     if (isInteracting) {
@@ -160,28 +158,27 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
           if (Math.abs(movement.x) > 0.5 || Math.abs(movement.z) > 0.5) speed = RUN_SPEED;
         }
       }
-  
+      
       // Manejo del objetivo de rotación
       if (movement.x !== 0) rotationTarget.current += ROTATION_SPEED * movement.x;
   
       const isCurrentlyMoving = movement.x !== 0 || movement.z !== 0;
-  
       if (isCurrentlyMoving) {
         // Hay movimiento: ajustar velocidad y cambiar a animación de caminar
         characterRotationTarget.current = Math.atan2(movement.x, movement.z);
         vel.x = Math.sin(rotationTarget.current + characterRotationTarget.current) * speed;
         vel.z = Math.cos(rotationTarget.current + characterRotationTarget.current) * speed;
   
-        if (animation !== "rigAction") {
-          setAnimation("rigAction"); // Cambiar a animación de caminar
+        if (animation !== "LOLO_Animation_Walk") {
+          setAnimation("LOLO_Animation_Walk"); // Cambiar a animación de caminar
         }
       } else {
         // No hay movimiento: detener velocidades y cambiar a animación Idle
         vel.x = 0;
         vel.z = 0;
   
-        if (animation !== "esqueleto_corbataAction") {
-          setAnimation("esqueleto_corbataAction"); // Cambiar a Idle
+        if (animation !== "LOLO_Animation_Idle") {
+          setAnimation("LOLO_Animation_Idle"); // Cambiar a Idle
         }
       }
   
@@ -221,7 +218,7 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
     >
       <group ref={container}>
         <group ref={cameraTarget} position-z={1.5} />
-        <group ref={cameraPosition} position-y={1} position-z={-2} />
+        <group ref={cameraPosition} position-y={1.5} position-z={-4} />
         <group ref={character}>
         <Avatar
             scale={0.3}

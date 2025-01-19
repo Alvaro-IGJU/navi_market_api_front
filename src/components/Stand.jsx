@@ -15,6 +15,7 @@ import StandGold from "./StandGold";
 import Computer from "./Computer";
 import layoutConfig from "../utils/interactiveConfig";
 import  Phone  from "./Phone";
+import LogoTexture from "./LogoTexture";
 
 const Stand = ({
   id,
@@ -29,7 +30,8 @@ const Stand = ({
   setIsInteracting,
   getPlayerCamera,
   url_video,
-  url_web
+  url_web,
+  company_logo,
 }) => {
   const { posX, posY, posZ, rotX, rotY, rotZ } = useControls(`Stand ${id}`, {
     posX: { value: position[0], min: -100, max: 100, step: 0.1 },
@@ -199,10 +201,10 @@ const Stand = ({
 
 
 
-  const { mailboxPosition, videoPosition, screenPosition, computerPosition, catalogPosition, chatbotPosition, scheduleMeetingPosition } =
+  const { mailboxPosition, videoPosition, screenPosition, computerPosition, catalogPosition, chatbotPosition, scheduleMeetingPosition, companyLogoPosition } =
     layoutConfig.position[type] || layoutConfig.position["bronze"];
 
-  const { mailboxRotation, videoRotation, screenRotation, computerRotation, catalogRotation, chatbotRotation, scheduleMeetingRotation } =
+  const { mailboxRotation, videoRotation, screenRotation, computerRotation, catalogRotation, chatbotRotation, scheduleMeetingRotation, companyLogoRotation } =
     layoutConfig.rotation[type] || layoutConfig.rotation["bronze"];
   return (
     <>
@@ -291,6 +293,15 @@ const Stand = ({
         handleClick={handleClick}
         
       />
+
+
+      {company_logo && (
+        <LogoTexture
+          base64={company_logo}
+          position={[companyLogoPosition[0], companyLogoPosition[1], companyLogoPosition[2]]}
+          resolution={[1, 1]} // Cambia a la resolución que necesites
+        />
+      )}
     </group>
  
     </>
