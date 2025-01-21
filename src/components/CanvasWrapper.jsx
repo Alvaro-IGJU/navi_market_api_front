@@ -54,12 +54,12 @@ const CanvasWrapper = () => {
           style={{
             touchAction: "none",
           }}
-          shadows
+          
         >
-          <color attach="background" args={["#f5f3ee"]} />
+          <color attach="background" args={["#9bf8ff"]} />
           {/* <fog attach="fog" args={["#f5f3ee", 10, 50]} /> */}
           <Experience eventId={eventId} /> {/* Pasar eventId al componente Experience */}
-          <Stats />
+          {/* <Stats /> */}
         </Canvas>
       </KeyboardControls>
     </div>

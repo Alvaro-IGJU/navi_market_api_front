@@ -10,6 +10,7 @@ import { getStandCoordinates } from "../utils/standPositions";
 import { getBasePosition } from "../utils/basePosition";
 import { CameraManager } from "./CameraManager";
 import { Water } from "./Water";
+import BoundedArea from "./BoundedArea";
 
 const Experience = ({ eventId }) => {
   const characterRef = useRef();
@@ -114,7 +115,7 @@ const Experience = ({ eventId }) => {
       <Physics >
         {/* Base model */}
         <Base position={baseConfig.position} scale={baseConfig.scale} />
-        <Water rotation-x={-Math.PI / 2}  position={[-50, -20, 0]} position-y={-20} />
+        {/* <Water rotation-x={-Math.PI / 2}  position={[-50, -20, 0]} position-y={-20} /> */}
         {/* Render stands dynamically */}
         {stands.map((stand) => (
           <Stand
@@ -134,7 +135,7 @@ const Experience = ({ eventId }) => {
             company_logo={stand.company_logo}
           />
         ))}
-
+         <BoundedArea  width={80} depth={85}  height={10} position={baseConfig.position}  />
         {/* Character controller */}
         <CharacterController ref={characterRef} isInteracting={isInteracting} />
       </Physics>

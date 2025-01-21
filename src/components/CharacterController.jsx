@@ -31,22 +31,27 @@ const lerpAngle = (start, end, t) => {
 };
 
 export const CharacterController = forwardRef(({ eventId = 1, isInteracting = false }, ref) => {
-  const { WALK_SPEED, RUN_SPEED, ROTATION_SPEED, DRAG_ROTATION_SPEED } = useControls("Character Control", {
-    WALK_SPEED: { value: 0.8, min: 0.1, max: 4, step: 0.1 },
-    RUN_SPEED: { value: 1.6, min: 0.2, max: 12, step: 0.1 },
-    ROTATION_SPEED: {
-      value: degToRad(0.5),
-      min: degToRad(0.1),
-      max: degToRad(5),
-      step: degToRad(0.1),
-    },
-    DRAG_ROTATION_SPEED: {
-      value: degToRad(1),
-      min: degToRad(0.1),
-      max: degToRad(10),
-      step: degToRad(0.1),
-    },
-  });
+  // const { WALK_SPEED, RUN_SPEED, ROTATION_SPEED, DRAG_ROTATION_SPEED } = useControls("Character Control", {
+  //   WALK_SPEED: { value: 0.8, min: 0.1, max: 4, step: 0.1 },
+  //   RUN_SPEED: { value: 1.6, min: 0.2, max: 12, step: 0.1 },
+  //   ROTATION_SPEED: {
+  //     value: degToRad(0.5),
+  //     min: degToRad(0.1),
+  //     max: degToRad(5),
+  //     step: degToRad(0.1),
+  //   },
+  //   DRAG_ROTATION_SPEED: {
+  //     value: degToRad(1),
+  //     min: degToRad(0.1),
+  //     max: degToRad(10),
+  //     step: degToRad(0.1),
+  //   },
+  // });
+
+  const WALK_SPEED = 1.8
+  const RUN_SPEED = 2.7
+  const ROTATION_SPEED = 0.03
+  const DRAG_ROTATION_SPEED = 0.02 
 
   const rb = useRef();
   const container = useRef();
@@ -221,7 +226,7 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
         <group ref={cameraPosition} position-y={1.5} position-z={-4} />
         <group ref={character}>
         <Avatar
-            scale={0.3}
+            scale={0.4}
             position-y={-0.25}
             animation={animation}
             pause={!isMoving} // Pausar si no hay movimiento

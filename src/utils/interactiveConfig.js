@@ -12,13 +12,13 @@ const layoutConfig = {
       },
       silver: {
         mailboxPosition: [-2, -1, 3.5],
-        videoPosition: [0.29, 0.0, -2],
+        videoPosition: [0.54, 0.0, -1.92],
         screenPosition:[-25.2, 0, -0.03],
         computerPosition:[0.7, -0.37, 1.6],
         catalogPosition: [0.6, -0.55, 1.93],
         chatbotPosition: [0, -0.2, -1],
         scheduleMeetingPosition: [-1.68, -0.2, 1.15],
-        companyLogoPosition: [0, 0, 0]
+        companyLogoPosition: [-2.5, 0, 2]
 
       },
       gold: {
@@ -29,7 +29,7 @@ const layoutConfig = {
         computerPosition:[0.7, -0.4, 1.95],
         chatbotPosition: [0, -0.2, -1],
         scheduleMeetingPosition: [3.24, -0.2, -2],
-        companyLogoPosition: [0, 0, 0]
+        companyLogoPosition: [5, 0, 0]
 
       },
     },
@@ -47,7 +47,7 @@ const layoutConfig = {
       },
       silver: {
         mailboxRotation: [0, Math.PI / 2,0],
-        videoRotation: [0, -1 *  Math.PI / 10 , 0],
+        videoRotation: [0, -1 *  Math.PI / 12 , 0],
         screenRotation:[Math.PI / 2, Math.PI, Math.PI / 2.42],
         computerRotation:[0, Math.PI / 2.45, 0],
         catalogRotation: [0, -0.3, 0],

@@ -35,8 +35,7 @@ const LogoTexture = ({ base64, position = [0, 0, 0], resolution = [2, 2] }) => {
       <meshBasicMaterial
         map={texture}
         transparent={true} // Habilita la transparencia
-         // Habilita visibilidad en ambas caras
-        opacity={1.0} // Asegura opacidad total
+         
       />
     </mesh>
   );
