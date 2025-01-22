@@ -16,7 +16,7 @@ import layoutConfig from "../utils/interactiveConfig";
 import  Phone  from "./Phone";
 import LogoTexture from "./LogoTexture";
 
-const Stand = ({
+const Stand = React.memo(({
   id,
   position = [0, 0, 0],
   rotation = [0, 0, 0],
@@ -307,6 +307,6 @@ const Stand = ({
  
     </>
   );
-};
+});
 
 export default Stand;

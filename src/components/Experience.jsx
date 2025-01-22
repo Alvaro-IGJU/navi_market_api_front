@@ -1,6 +1,7 @@
-import React, { useRef, useEffect, useState, useContext } from "react";
+import React, { useRef, useEffect, useState, useContext, useMemo } from "react";
 import { Environment } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
+import { useFrame } from "@react-three/fiber";
 import { CharacterController } from "./CharacterController";
 import Stand from "./Stand";
 import Base from "./Base";
@@ -9,16 +10,20 @@ import { AuthContext } from "../contexts/AuthContext";
 import { getStandCoordinates } from "../utils/standPositions";
 import { getBasePosition } from "../utils/basePosition";
 import { CameraManager } from "./CameraManager";
-import { Water } from "./Water";
 import BoundedArea from "./BoundedArea";
+import * as THREE from "three";
 
-const Experience = ({ eventId }) => {
+const Experience = ({ eventId, onStandsLoaded }) => {
   const characterRef = useRef();
   const { user } = useContext(AuthContext);
-  const [stands, setStands] = useState([]);
-  const [isInteracting, setIsInteracting] = useState(false); // Estado para controlar interacción
+  const [stands, setStands] = useState([]); // Estado para los stands
+  const [isInteracting, setIsInteracting] = useState(false); // Control de interacción
+  const [standsLoaded, setStandsLoaded] = useState(false); // Estado de carga finalizada
+  const renderDistance = 70; // Distancia máxima para renderizar stands
+  const frustum = useMemo(() => new THREE.Frustum(), []);
+  const matrix = useMemo(() => new THREE.Matrix4(), []);
 
-  // Fetching stands from API
+  // Función para cargar los stands desde el API
   const fetchStands = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -26,30 +31,27 @@ const Experience = ({ eventId }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const standsData = response.data.map((stand) => {
+      const fetchedStands = response.data.map((stand) => {
         const { position, rotation, areaRadius } = getStandCoordinates(stand.position);
         return {
-          id: stand.id,
+          ...stand,
           position,
           rotation,
           areaRadius,
           size: [3, 3, 3],
-          type: stand.type,
-          catalog_pdf: stand.catalog_pdf,
-          url_video: stand.url_video,
-          url_web: stand.url_web,
-          company_logo: stand.company_logo,
+          visible: true, // Inicialmente visible
         };
       });
 
-      setStands(standsData);
-      console.log("Stands cargados:", standsData);
+      setStands(fetchedStands);
+      setStandsLoaded(true); // Indicar que la carga de los stands ha finalizado
+      console.log("Stands cargados:", fetchedStands);
     } catch (error) {
       console.error("Error al cargar los stands:", error.response || error);
     }
   };
 
-  // Register visit to the event
+  // Función para registrar la visita al evento
   const registerVisit = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -62,7 +64,7 @@ const Experience = ({ eventId }) => {
     }
   };
 
-  // Close visit when leaving the event
+  // Función para cerrar la visita
   const closeVisit = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -75,14 +77,13 @@ const Experience = ({ eventId }) => {
     }
   };
 
-  // Register the visit and fetch stands on mount
+  // Efecto para registrar la visita y cargar los stands
   useEffect(() => {
     if (eventId && user) {
       registerVisit();
       fetchStands();
     }
 
-    // Handle cleanup on page unload or hide
     const handleUnload = () => {
       closeVisit();
     };
@@ -96,6 +97,32 @@ const Experience = ({ eventId }) => {
     };
   }, [eventId, user]);
 
+  // Llamar a `onStandsLoaded` cuando los stands estén completamente cargados
+  useEffect(() => {
+    if (standsLoaded && stands.length > 0 && onStandsLoaded) {
+      console.log("Stands listos:", stands);
+      onStandsLoaded(); // Notificar al componente padre
+    }
+  }, [standsLoaded, stands, onStandsLoaded]);
+
+  // Actualizar la visibilidad de los stands en cada frame
+  useFrame(({ camera }) => {
+    matrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+    frustum.setFromProjectionMatrix(matrix);
+
+    setStands((currentStands) =>
+      currentStands.map((stand) => {
+        const standPosition = new THREE.Vector3(...stand.position);
+        const distance = camera.position.distanceTo(standPosition);
+
+        return {
+          ...stand,
+          visible: distance < renderDistance && frustum.containsPoint(standPosition),
+        };
+      })
+    );
+  });
+
   const baseConfig = getBasePosition();
 
   return (
@@ -105,38 +132,32 @@ const Experience = ({ eventId }) => {
         files="models/textures/autumn_field_puresky_1k.hdr"
         background={false}
       />
-      <directionalLight 
-        position={[10, 10, 5]} 
-        intensity={1} 
-        castShadow 
-      />
+      <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
 
       {/* Physics simulation */}
-      <Physics >
-        {/* Base model */}
+      <Physics>
         <Base position={baseConfig.position} scale={baseConfig.scale} />
-        {/* <Water rotation-x={-Math.PI / 2}  position={[-50, -20, 0]} position-y={-20} /> */}
-        {/* Render stands dynamically */}
-        {stands.map((stand) => (
-          <Stand
-            key={stand.id}
-            id={stand.id}
-            position={stand.position}
-            rotation={stand.rotation}
-            size={stand.size}
-            type={stand.type}
-            characterRef={characterRef} // Pass characterRef
-            catalog_pdf={stand.catalog_pdf}
-            isInteracting={isInteracting} // Pass isInteracting
-            setIsInteracting={setIsInteracting} // Pass setIsInteracting
-            url_video={stand.url_video}
-            url_web={stand.url_web}
-            areaRadius={stand.areaRadius}
-            company_logo={stand.company_logo}
-          />
-        ))}
-         <BoundedArea  width={80} depth={85}  height={10} position={baseConfig.position}  />
-        {/* Character controller */}
+        {stands.map((stand) =>
+          stand.visible ? (
+            <Stand
+              key={stand.id}
+              id={stand.id}
+              position={stand.position}
+              rotation={stand.rotation}
+              size={stand.size}
+              type={stand.type}
+              characterRef={characterRef}
+              catalog_pdf={stand.catalog_pdf}
+              isInteracting={isInteracting}
+              setIsInteracting={setIsInteracting}
+              url_video={stand.url_video}
+              url_web={stand.url_web}
+              areaRadius={stand.areaRadius}
+              company_logo={stand.company_logo}
+            />
+          ) : null
+        )}
+        <BoundedArea width={80} depth={85} height={10} position={baseConfig.position} />
         <CharacterController ref={characterRef} isInteracting={isInteracting} />
       </Physics>
     </CameraManager>
