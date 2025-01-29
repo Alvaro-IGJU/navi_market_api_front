@@ -10,8 +10,6 @@ import { degToRad, MathUtils } from "three/src/math/MathUtils.js";
 import { getAvatarInitialPosition } from "../utils/avatarPosition";
 import { useCameraManager } from "./CameraManager";
 
-const isMobile = /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
-
 const normalizeAngle = (angle) => {
   while (angle > Math.PI) angle -= 2 * Math.PI;
   while (angle < -Math.PI) angle += 2 * Math.PI;
@@ -34,16 +32,15 @@ const lerpAngle = (start, end, t) => {
 };
 
 export const CharacterController = forwardRef(({ eventId = 1, isInteracting = false }, ref) => {
-
-  const WALK_SPEED = isMobile ? 1.2 : 1.8;  // Velocidad menor en móvil
-  const RUN_SPEED = isMobile ? 2.0 : 2.7;   // Velocidad de carrera ajustada
-  const ROTATION_SPEED = isMobile ? 0.2 : 0.03; // Rotación más rápida en móvil
-  const DRAG_ROTATION_SPEED = isMobile ? 0.03 : 0.02; // Ajuste de rotación por drag
-
+  const WALK_SPEED = 1.8;
+  const RUN_SPEED = 2.7;
+  const ROTATION_SPEED = 0.03;
+  const DRAG_ROTATION_SPEED = 0.02;
 
   const rb = useRef();
   const container = useRef();
   const character = useRef();
+  const spriteRef = useRef(); // Referencia al sprite 2D
   const { playerCameraRef } = useCameraManager(); // Obtener la referencia de la cámara del jugador
   const [animation, setAnimation] = useState("LOLO_Animation_Idle");
   const isDragging = useRef(false);
@@ -119,24 +116,23 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
     }
   }, []);
 
-  
   useFrame(({ camera, mouse }) => {
     if (isInteracting) {
       return; // Detener actualizaciones si hay interacción
     }
-  
+
     if (rb.current) {
       const vel = rb.current.linvel();
       const movement = { x: 0, z: 0 };
-  
+
       // Detectar teclas de movimiento
       if (get().forward) movement.z = 1;
       if (get().backward) movement.z = -1;
       if (get().left) movement.x = 1;
       if (get().right) movement.x = -1;
-  
+
       let speed = get().run ? RUN_SPEED : WALK_SPEED;
-  
+
       // Lógica de clic y movimiento con el mouse
       if (isClicking.current) {
         if (!movementStarted.current) {
@@ -144,24 +140,24 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
             movementStarted.current = true;
           }, 200); // Delay antes de iniciar el movimiento
         }
-  
+
         if (movementStarted.current) {
           if (Math.abs(mouse.x) > 0.1) movement.x = -mouse.x;
           movement.z = mouse.y + 0.4;
           if (Math.abs(movement.x) > 0.5 || Math.abs(movement.z) > 0.5) speed = RUN_SPEED;
         }
       }
-      
+
       // Manejo del objetivo de rotación
       if (movement.x !== 0) rotationTarget.current += ROTATION_SPEED * movement.x;
-  
+
       const isCurrentlyMoving = movement.x !== 0 || movement.z !== 0;
       if (isCurrentlyMoving) {
         // Hay movimiento: ajustar velocidad y cambiar a animación de caminar
         characterRotationTarget.current = Math.atan2(movement.x, movement.z);
         vel.x = Math.sin(rotationTarget.current + characterRotationTarget.current) * speed;
         vel.z = Math.cos(rotationTarget.current + characterRotationTarget.current) * speed;
-  
+
         if (animation !== "LOLO_Animation_Walk") {
           setAnimation("LOLO_Animation_Walk"); // Cambiar a animación de caminar
         }
@@ -169,39 +165,42 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
         // No hay movimiento: detener velocidades y cambiar a animación Idle
         vel.x = 0;
         vel.z = 0;
-  
+
         if (animation !== "LOLO_Animation_Idle") {
           setAnimation("LOLO_Animation_Idle"); // Cambiar a Idle
         }
       }
-  
+
       // Aplicar la velocidad al cuerpo rígido
       rb.current.setLinvel(vel, true);
-  
+
       // Ajustar rotación del personaje
-      character.current.rotation.y = lerpAngle(character.current.rotation.y, characterRotationTarget.current, 0.1);
+      // character.current.rotation.y = lerpAngle(character.current.rotation.y, characterRotationTarget.current, 0.1);
     }
-  
+
     // Rotación del contenedor principal
     container.current.rotation.y = MathUtils.lerp(container.current.rotation.y, rotationTarget.current, 0.1);
-  
+
     // Lógica de la cámara
     if (playerCameraRef.current) {
       // Obtener posiciones para la cámara
       cameraPosition.current.getWorldPosition(cameraWorldPosition.current);
-      
-      // Incrementa la interpolación en función de la velocidad del personaje
-      const lerpFactor = isMobile ? 0.5 : 0.5; // Incrementa el factor en móvil para sincronizar mejor
-      playerCameraRef.current.position.lerp(cameraWorldPosition.current, lerpFactor);
-    
+      playerCameraRef.current.position.lerp(cameraWorldPosition.current, 0.1);
+
       if (cameraTarget.current) {
         cameraTarget.current.getWorldPosition(cameraLookAtWorldPosition.current);
-        cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, lerpFactor);
+        cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 0.1);
         playerCameraRef.current.lookAt(cameraLookAt.current);
       }
     }
+
+    // Lógica para mantener el sprite mirando hacia la cámara
+    if (spriteRef.current) {
+      spriteRef.current.lookAt(camera.position);
+      spriteRef.current.rotation.y += Math.PI; // Rotar 180 grados para corregir la orientación
+    }
   });
-  
+
   const isMoving = movementStarted.current || get().forward || get().backward || get().left || get().right;
 
   return (
@@ -216,13 +215,22 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
         <group ref={cameraTarget} position-z={1.5} />
         <group ref={cameraPosition} position-y={1.5} position-z={-4} />
         <group ref={character}>
-        <Avatar
+          {/* <Avatar
             scale={0.4}
             position-y={-0.25}
             animation={animation}
             pause={!isMoving} // Pausar si no hay movimiento
-            receiveShadow castShadow
-          />;
+          /> */}
+          <AnimatedSprite2D
+            ref={spriteRef} // Referencia al sprite para manipulación
+            textureUrl="/sprites/sprite_character_32px.png"
+            rows={4}
+            cols={4}
+            frameRate={8}
+            scale={1.5}
+            position={[0, 0.5, 0]} // Ajusta la posición según el mapa
+            
+          />
         </group>
       </group>
       <CapsuleCollider args={[0.2, 0.18]} />

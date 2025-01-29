@@ -211,13 +211,13 @@ const Stand = React.memo(({
     <>
     <group position={position} rotation={rotation}>
       {type === "bronze" && (
-        <StandBronce scale={[0.1, 0.1, 0.1]} size={size} position={[0, -1, 0]} rotation={[0, 0, 0]} castShadow />
+        <StandBronce scale={[0.1, 0.1, 0.1]} size={size} position={[0, -1, 0]} rotation={[0, 0, 0]} receiveShadow castShadow />
       )}
       {type === "silver" && (
-        <StandSilver scale={[0.5, 0.5, 0.5]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
+        <StandSilver scale={[0.5, 0.5, 0.5]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} receiveShadow castShadow />
       )}
       {type === "gold" && (
-        <StandGold scale={[2.8, 2.8, 2.8]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
+        <StandGold scale={[2.8, 2.8, 2.8]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} receiveShadow castShadow />
       )}
 
       <mesh ref={areaRef} visible={false}>

@@ -14,7 +14,7 @@ export function Base(props) {
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
   const { nodes, materials } = useGraph(clone)
   return (
-            <RigidBody type="fixed" name="ground" colliders="trimesh">
+        <RigidBody type="fixed" name="ground" colliders="trimesh">
     
     <group {...props} dispose={null}>
       <group position={[0.177, 0, 0]} scale={0.013}>
@@ -152,16 +152,8 @@ export function Base(props) {
       <mesh geometry={nodes.Copa_arbol23.geometry} material={materials.Arbol_Color2} position={[0.07, 0.975, -0.169]} rotation={[0.584, 0.305, -0.273]} scale={0.11} />
       <mesh geometry={nodes.Copa_arbol22.geometry} material={materials.Arbol_Color2} position={[0.061, 0.998, -0.2]} rotation={[0.584, 0.305, -0.273]} scale={0.076} />
       <mesh geometry={nodes.Copa_arbol2.geometry} material={materials.Arbol_Color2} position={[0.12, 0.871, -0.047]} rotation={[-0.048, 0.407, -0.035]} scale={0.148} />
-      <mesh geometry={nodes.Arbusto2.geometry} material={materials['Arbol_Color2.001']} position={[0.649, 0.127, 0.31]} rotation={[0, -0.362, 0]} scale={[0.06, 0.08, 0.081]} />
-      <mesh geometry={nodes.Arbusto2001.geometry} material={materials['Arbol_Color2.001']} position={[0.649, 0.127, -0.245]} rotation={[0, 0.544, 0]} scale={[0.06, 0.08, 0.081]} />
-      <mesh geometry={nodes.Arbusto2002.geometry} material={materials['Arbol_Color2.001']} position={[0.28, 0.127, -0.632]} rotation={[0, 1.225, 0]} scale={[0.06, 0.08, 0.081]} />
-      <mesh geometry={nodes.Arbusto2003.geometry} material={materials['Arbol_Color2.001']} position={[-0.279, 0.127, -0.632]} rotation={[-Math.PI, 1.09, -Math.PI]} scale={[0.06, 0.08, 0.081]} />
-      <mesh geometry={nodes.Arbusto2004.geometry} material={materials['Arbol_Color2.001']} position={[-0.666, 0.127, -0.274]} rotation={[-Math.PI, 0.446, -Math.PI]} scale={[0.06, 0.08, 0.081]} />
-      <mesh geometry={nodes.Arbusto2005.geometry} material={materials['Arbol_Color2.001']} position={[-0.674, 0.127, 0.289]} rotation={[Math.PI, -0.443, Math.PI]} scale={[0.06, 0.08, 0.081]} />
-      <mesh geometry={nodes.Arbusto2006.geometry} material={materials['Arbol_Color2.001']} position={[0.266, 0.127, 0.665]} rotation={[-Math.PI, 1.164, -Math.PI]} scale={[0.06, 0.08, 0.081]} />
-      <mesh geometry={nodes.Arbusto2007.geometry} material={materials['Arbol_Color2.001']} position={[-0.292, 0.127, 0.668]} rotation={[Math.PI, -1.288, Math.PI]} scale={[0.06, 0.08, 0.081]} />
     </group>
-                              </RigidBody>
+                          </RigidBody>
     
   )
 }

@@ -12,6 +12,8 @@ import { getBasePosition } from "../utils/basePosition";
 import { CameraManager } from "./CameraManager";
 import BoundedArea from "./BoundedArea";
 import * as THREE from "three";
+import Water from "./WaterShader";
+import Grass from "./GrassShader";
 
 const Experience = ({ eventId, onStandsLoaded }) => {
   const characterRef = useRef();
@@ -105,23 +107,23 @@ const Experience = ({ eventId, onStandsLoaded }) => {
     }
   }, [standsLoaded, stands, onStandsLoaded]);
 
-  // Actualizar la visibilidad de los stands en cada frame
-  useFrame(({ camera }) => {
-    matrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
-    frustum.setFromProjectionMatrix(matrix);
+  // // Actualizar la visibilidad de los stands en cada frame
+  // useFrame(({ camera }) => {
+  //   matrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+  //   frustum.setFromProjectionMatrix(matrix);
 
-    setStands((currentStands) =>
-      currentStands.map((stand) => {
-        const standPosition = new THREE.Vector3(...stand.position);
-        const distance = camera.position.distanceTo(standPosition);
+  //   setStands((currentStands) =>
+  //     currentStands.map((stand) => {
+  //       const standPosition = new THREE.Vector3(...stand.position);
+  //       const distance = camera.position.distanceTo(standPosition);
 
-        return {
-          ...stand,
-          visible: distance < renderDistance && frustum.containsPoint(standPosition),
-        };
-      })
-    );
-  });
+  //       return {
+  //         ...stand,
+  //         visible: distance < renderDistance && frustum.containsPoint(standPosition),
+  //       };
+  //     })
+  //   );
+  // });
 
   const baseConfig = getBasePosition();
 
@@ -132,11 +134,20 @@ const Experience = ({ eventId, onStandsLoaded }) => {
         files="models/textures/autumn_field_puresky_1k.hdr"
         background={false}
       />
-      <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
+            <directionalLight
+                position={[5, 5, 5]}
+                intensity={0.5}
+                castShadow
+                shadow-mapSize={[2048, 2048]}
+              />;
+      <ambientLight intensity={0.5} />
 
       {/* Physics simulation */}
+      <Water position={baseConfig.position} args={[20, 20, 128]} />
+      <Grass  position={[-19.5, -16, 6.9]} args={[20, 20, 128]} />
+
       <Physics>
-        <Base position={baseConfig.position} scale={baseConfig.scale} />
+        <Base position={baseConfig.position} scale={baseConfig.scale} castShadow receiveShadow />
         {stands.map((stand) =>
           stand.visible ? (
             <Stand
@@ -154,6 +165,7 @@ const Experience = ({ eventId, onStandsLoaded }) => {
               url_web={stand.url_web}
               areaRadius={stand.areaRadius}
               company_logo={stand.company_logo}
+              receiveShadow castShadow
             />
           ) : null
         )}

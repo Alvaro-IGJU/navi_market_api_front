@@ -12,7 +12,7 @@ export function StandBronce(props) {
   return (
     <RigidBody type="fixed" name="ground" colliders="trimesh">
     
-    <group {...props} dispose={null}>
+    <group {...props} dispose={null} castShadow receiveShadow>
       <mesh geometry={nodes.Cylinder.geometry} material={materials['Material.001']} position={[0, 0.143, 0]} scale={[1, 0.096, 1]} />
       <group position={[0, 7.778, 0]} scale={[3.056, 7.666, 3.056]}>
         <mesh geometry={nodes.Cube.geometry} material={materials.negro} />

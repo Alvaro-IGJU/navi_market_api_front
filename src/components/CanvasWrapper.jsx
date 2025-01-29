@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { KeyboardControls } from "@react-three/drei";
+import { SoftShadows, BakeShadows } from "@react-three/drei";
 import { useLocation } from "react-router-dom";
 import Experience from "./Experience";
 import LoadingScreen from "./LoadingScreen";
+import GradientBackground from "./GradientBackground";
 
 const keyboardMap = [
   { name: "forward", keys: ["ArrowUp", "KeyW"] },
@@ -31,7 +33,6 @@ const CanvasWrapper = () => {
 
   return (
     <div className="fullscreen-canvas">
-      {/* Pasar el estado `loading` a LoadingScreen */}
       <LoadingScreen isLoading={loading} />
 
       <KeyboardControls map={keyboardMap}>
@@ -40,8 +41,10 @@ const CanvasWrapper = () => {
           style={{
             touchAction: "none",
           }}
+          shadows
         >
-          <color attach="background" args={["#9bf8ff"]} />
+          {/* Fondo degradado */}
+          <GradientBackground />
           <Experience
             eventId={eventId}
             onStandsLoaded={() => setLoading(false)} // Ocultar LoadingScreen cuando los stands estén cargados
@@ -53,3 +56,4 @@ const CanvasWrapper = () => {
 };
 
 export default CanvasWrapper;
+
