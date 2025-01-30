@@ -1,12 +1,12 @@
 const layoutConfig = {
     position:{
       bronze: {
-        mailboxPosition: [0.6, -1, -1.3],
+        mailboxPosition: [0.75, -1, 1.5],
         videoPosition: [0.3, 0.0, -0],
-        screenPosition:[3.5, -0, -0.01],
-        computerPosition:[0, -0.4, -0.3],
-        catalogPosition: [0, -0.29, 0.33],
-        chatbotPosition: [-1, -0.16, 0],
+        screenPosition:[-13.7, -0, -0.01],
+        computerPosition:[0, -0.6, 0.74],
+        catalogPosition: [0.37, -0.29, -1.43],
+        chatbotPosition: [1, -0.16, -0.5],
         scheduleMeetingPosition: [-0.28, -0.29, 0],
         companyLogoPosition: [0, 1.2, 0]
       },
@@ -35,11 +35,11 @@ const layoutConfig = {
     },
     rotation:{
       bronze: {
-        mailboxRotation: [0,- Math.PI / 2,0],
+        mailboxRotation: [0,- Math.PI ,0],
         videoRotation: [0, Math.PI / 2, 0],
         screenRotation:[Math.PI / 2, Math.PI, Math.PI],
-        computerRotation:[0, Math.PI / 2, 0],
-        catalogRotation: [-0.1, 0, 0],
+        computerRotation:[0, Math.PI/100, 0],
+        catalogRotation: [0, Math.PI / 2, 0],
         chatbotRotation: [0, Math.PI , 0],
         scheduleMeetingRotation: [Math.PI/2, 0, Math.PI/2],
         companyLogoRotation: [0, 0, 0],

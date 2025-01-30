@@ -13,7 +13,7 @@ import { CameraManager } from "./CameraManager";
 import BoundedArea from "./BoundedArea";
 import * as THREE from "three";
 import Water from "./WaterShader";
-import Grass from "./GrassShader";
+import {Grass} from "./GrassShader";
 
 const Experience = ({ eventId, onStandsLoaded }) => {
   const characterRef = useRef();
@@ -144,7 +144,7 @@ const Experience = ({ eventId, onStandsLoaded }) => {
 
       {/* Physics simulation */}
       <Water position={baseConfig.position} args={[20, 20, 128]} />
-      <Grass  position={[-19.5, -16, 6.9]} args={[20, 20, 128]} />
+      <Grass  position={[-10, -18.5, 20]}  size={3} density={1000}/>
 
       <Physics>
         <Base position={baseConfig.position} scale={baseConfig.scale} castShadow receiveShadow />

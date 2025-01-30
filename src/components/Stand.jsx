@@ -33,15 +33,6 @@ const Stand = React.memo(({
   company_logo,
 }) => {
   
-
-  // const { posX, posY, posZ, rotX, rotY, rotZ } = useControls(`Stand ${id}`, {
-  //   posX: { value: position[0], min: -100, max: 100, step: 0.1 },
-  //   posY: { value: position[1], min: -100, max: 10, step: 0.1 },
-  //   posZ: { value: position[2], min: -100, max: 100, step: 0.1 },
-  //   rotX: { value: rotation[0], min: -Math.PI, max: Math.PI, step: 0.01 },
-  //   rotY: { value: rotation[1], min: -Math.PI, max: Math.PI, step: 0.01 },
-  //   rotZ: { value: rotation[2], min: -Math.PI, max: Math.PI, step: 0.01 },
-  // });
   const isCharacterInside = useRef(false);
   const areaRef = useRef();
   const [canInteract, setCanInteract] = useState(false);
@@ -211,7 +202,7 @@ const Stand = React.memo(({
     <>
     <group position={position} rotation={rotation}>
       {type === "bronze" && (
-        <StandBronce scale={[0.1, 0.1, 0.1]} size={size} position={[0, -1, 0]} rotation={[0, 0, 0]} receiveShadow castShadow />
+        <StandBronce scale={[1.3, 1.3, 1.3]} size={size} position={[0, -1, 0]} rotation={[0, 0, 0]} receiveShadow castShadow />
       )}
       {type === "silver" && (
         <StandSilver scale={[0.5, 0.5, 0.5]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} receiveShadow castShadow />

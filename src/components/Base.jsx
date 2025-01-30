@@ -7,14 +7,14 @@ import React from 'react'
 import { useGraph } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
-import { RigidBody } from '@react-three/rapier'
+import { RigidBody } from '@react-three/rapier';
 
 export function Base(props) {
   const { scene } = useGLTF('/models/base.glb')
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
   const { nodes, materials } = useGraph(clone)
   return (
-            <RigidBody type="fixed" name="ground" colliders="trimesh">
+                <RigidBody type="fixed" name="ground" colliders="trimesh">
     
     <group {...props} dispose={null}>
       <group position={[0.177, 0, 0]} scale={0.013}>
@@ -148,20 +148,23 @@ export function Base(props) {
       <mesh geometry={nodes.Arbusto1006.geometry} material={materials.Arbol_Color1} position={[0.524, 0.156, 0.557]} rotation={[-Math.PI, 0.812, -Math.PI]} scale={[0.028, 0.028, 0.294]} />
       <mesh geometry={nodes.Arbusto1007.geometry} material={materials.Arbol_Color1} position={[0.537, 0.156, -0.511]} rotation={[Math.PI, -0.772, Math.PI]} scale={[0.028, 0.028, 0.294]} />
       <mesh geometry={nodes.Torus003.geometry} material={materials['Material.007']} position={[0.028, -0.186, 0.023]} rotation={[0, -0.037, 0]} scale={1.336} />
-      <mesh geometry={nodes.Tronco2.geometry} material={materials.Madera_color_2} position={[0.056, 0.876, -0.196]} rotation={[-0.048, 0.407, -0.035]} scale={0.013} />
-      <mesh geometry={nodes.Copa_arbol23.geometry} material={materials.Arbol_Color2} position={[0.07, 0.975, -0.169]} rotation={[0.584, 0.305, -0.273]} scale={0.11} />
-      <mesh geometry={nodes.Copa_arbol22.geometry} material={materials.Arbol_Color2} position={[0.061, 0.998, -0.2]} rotation={[0.584, 0.305, -0.273]} scale={0.076} />
-      <mesh geometry={nodes.Copa_arbol2.geometry} material={materials.Arbol_Color2} position={[0.12, 0.871, -0.047]} rotation={[-0.048, 0.407, -0.035]} scale={0.148} />
-      <mesh geometry={nodes.Arbusto2.geometry} material={materials['Arbol_Color2.001']} position={[0.649, 0.127, 0.31]} rotation={[0, -0.362, 0]} scale={[0.06, 0.08, 0.081]} />
-      <mesh geometry={nodes.Arbusto2001.geometry} material={materials['Arbol_Color2.001']} position={[0.649, 0.127, -0.245]} rotation={[0, 0.544, 0]} scale={[0.06, 0.08, 0.081]} />
-      <mesh geometry={nodes.Arbusto2002.geometry} material={materials['Arbol_Color2.001']} position={[0.28, 0.127, -0.632]} rotation={[0, 1.225, 0]} scale={[0.06, 0.08, 0.081]} />
-      <mesh geometry={nodes.Arbusto2003.geometry} material={materials['Arbol_Color2.001']} position={[-0.279, 0.127, -0.632]} rotation={[-Math.PI, 1.09, -Math.PI]} scale={[0.06, 0.08, 0.081]} />
-      <mesh geometry={nodes.Arbusto2004.geometry} material={materials['Arbol_Color2.001']} position={[-0.666, 0.127, -0.274]} rotation={[-Math.PI, 0.446, -Math.PI]} scale={[0.06, 0.08, 0.081]} />
-      <mesh geometry={nodes.Arbusto2005.geometry} material={materials['Arbol_Color2.001']} position={[-0.674, 0.127, 0.289]} rotation={[Math.PI, -0.443, Math.PI]} scale={[0.06, 0.08, 0.081]} />
-      <mesh geometry={nodes.Arbusto2006.geometry} material={materials['Arbol_Color2.001']} position={[0.266, 0.127, 0.665]} rotation={[-Math.PI, 1.164, -Math.PI]} scale={[0.06, 0.08, 0.081]} />
-      <mesh geometry={nodes.Arbusto2007.geometry} material={materials['Arbol_Color2.001']} position={[-0.292, 0.127, 0.668]} rotation={[Math.PI, -1.288, Math.PI]} scale={[0.06, 0.08, 0.081]} />
+      <mesh geometry={nodes.Tronco2.geometry} material={materials.Madera_color_2} position={[0.056, 0.883, -0.196]} rotation={[-0.048, 0.407, -0.035]} scale={0.013} />
+      <mesh geometry={nodes.Tronco2001.geometry} material={materials.Madera_color_2} position={[0.026, 0.751, 0.2]} rotation={[-0.199, 1.346, 0.14]} scale={0.013} />
+      <mesh geometry={nodes.Copa_arbol23.geometry} material={materials.Arbol_Color2} position={[0.073, 0.98, -0.164]} rotation={[0.584, 0.305, -0.273]} scale={0.11} />
+      <mesh geometry={nodes.Copa_arbol2001.geometry} material={materials.Arbol_Color2} position={[0.062, 0.848, 0.206]} rotation={[1.167, 0.962, -1.168]} scale={0.11} />
+      <mesh geometry={nodes.Copa_arbol22.geometry} material={materials.Arbol_Color2} position={[0.064, 1.004, -0.195]} rotation={[0.584, 0.305, -0.273]} scale={0.076} />
+      <mesh geometry={nodes.Copa_arbol2004.geometry} material={materials.Arbol_Color2} position={[0.032, 0.871, 0.195]} rotation={[1.167, 0.962, -1.168]} scale={0.076} />
+      <mesh geometry={nodes.Copa_arbol2.geometry} material={materials.Arbol_Color2} position={[0.12, 0.878, -0.047]} rotation={[-0.048, 0.407, -0.035]} scale={0.148} />
+      <mesh geometry={nodes.Copa_arbol2005.geometry} material={materials.Arbol_Color2} position={[0.184, 0.745, 0.236]} rotation={[-0.199, 1.346, 0.14]} scale={0.148} />
+      <mesh geometry={nodes.stone003.geometry} material={materials.Mat_tree} position={[0.057, 0.82, -0.243]} scale={0.088} />
+      <mesh geometry={nodes.stone001.geometry} material={materials.Mat_tree} position={[0.089, 0.837, -0.185]} rotation={[0, -1.29, 0]} scale={0.059} />
+      <mesh geometry={nodes.stone002.geometry} material={materials.Mat_tree} position={[0.047, 0.851, -0.168]} rotation={[0.497, -1.29, 0]} scale={0.059} />
+      <mesh geometry={nodes.stone004.geometry} material={materials.Mat_tree} position={[-0.012, 0.687, 0.172]} rotation={[0, 0.943, 0]} scale={0.088} />
+      <mesh geometry={nodes.stone005.geometry} material={materials.Mat_tree} position={[0.055, 0.704, 0.181]} rotation={[0, -0.347, 0]} scale={0.059} />
+      <mesh geometry={nodes.stone006.geometry} material={materials.Mat_tree} position={[0.044, 0.719, 0.225]} rotation={[0.143, -0.376, -0.428]} scale={0.059} />
+      <mesh geometry={nodes.Plane002.geometry} material={materials['Material.004']} position={[-0.003, 0.129, 0]} scale={0.806} />
     </group>
-                              </RigidBody>
+                </RigidBody>
     
   )
 }
