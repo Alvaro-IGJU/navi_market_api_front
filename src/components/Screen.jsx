@@ -9,7 +9,7 @@ import { useGLTF } from '@react-three/drei'
 export function Screen(props) {
   const { nodes, materials } = useGLTF('/models/screen.glb')
   return (
-    <group {...props} dispose={null}>
+    <group {...props} dispose={null} >
       <group scale={[0.118, 3.645, 2.093]}>
         <mesh geometry={nodes.Cube003.geometry} material={materials['Material.001']} />
         <mesh geometry={nodes.Cube003_1.geometry} material={materials['Material.002']} />

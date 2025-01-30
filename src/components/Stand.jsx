@@ -211,9 +211,9 @@ const Stand = React.memo(({
         <StandGold scale={[2.8, 2.8, 2.8]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} receiveShadow castShadow />
       )}
 
-      <mesh ref={areaRef} visible={false}>
+      <mesh ref={areaRef} visible={true}>
       <sphereGeometry args={[areaRadius, 32, 32]} /> 
-        <meshStandardMaterial color="green" transparent opacity={0} />
+        <meshStandardMaterial color="green" transparent opacity={0.1} />
       </mesh>
 
     

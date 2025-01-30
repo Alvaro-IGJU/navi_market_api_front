@@ -68,7 +68,7 @@ const Video = ({
       <group
         screenPosition={screenPosition}
         rotation={screenRotation}
-        scale={[0.08, 0.08, 0.08]}
+        scale={[0.15, 0.15, 0.15]}
         onClick={handleVideoClick}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
