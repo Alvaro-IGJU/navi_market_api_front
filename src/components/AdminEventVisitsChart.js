@@ -38,7 +38,6 @@ const AdminEventVisitsChart = ({ eventsData }) => {
   if (error) return <p className="text-red-500 text-center">{error}</p>;
 
   // Verificar los datos
-  console.log("Datos formateados para el calendario:", formattedData);
 
   const fromDate = "2024-12-11"; // Cambié las fechas de inicio y fin para que cubran todo el rango de datos
   const toDate = "2024-12-20";

@@ -98,7 +98,7 @@ const Video = ({
         <Html
           rotation={videoRotation}
           position={[videoPosition[0], videoPosition[1], videoPosition[2]]}
-          scale={[0.41, 0.41, 0.41]}
+          scale={[0.7, 0.7, 0.7]}
           transform
           distanceFactor={1.5}
           occlude

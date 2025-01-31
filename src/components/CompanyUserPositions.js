@@ -15,16 +15,13 @@ const CompanyUserPositions = ({ companyId }) => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        console.log("Datos de posiciones de usuarios (raw):", response.data);
 
         const positionsData = response.data || [];
-        console.log(positionsData);
         const mappedData = positionsData.map((item) => ({
           position: item.position_title || "Desconocido",
           users: item.user_count,
         }));
 
-        console.log("Datos mapeados para el gráfico de barras:", mappedData);
 
         setBarData(mappedData);
         setLoading(false);

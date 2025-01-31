@@ -11,7 +11,6 @@ export function Computer({ handleClick, canInteract, isInteracting, position, we
   const handleComputerClick = () => {
     if (clickCooldown) return;
 
-    console.log(webUrl);
     handleClick("info_pc");
 
     // Abre la URL en una nueva ventana o pestaña

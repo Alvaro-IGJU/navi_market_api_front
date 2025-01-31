@@ -2,12 +2,12 @@ const layoutConfig = {
     position:{
       bronze: {
         mailboxPosition: [0.75, -1, 1.5],
-        videoPosition: [0.3, 0.0, -0],
+        videoPosition: [-1.08, 0.0, -0],
         screenPosition:[-7.3, -0, -0.01],
         computerPosition:[0, -0.6, 0.74],
         catalogPosition: [0.37, -0.29, -1.43],
         chatbotPosition: [1, -0.16, -0.5],
-        scheduleMeetingPosition: [-0.28, -0.29, 0],
+        scheduleMeetingPosition: [-1.1, 0, -1],
         companyLogoPosition: [0, 1.2, 0]
       },
       silver: {
@@ -41,8 +41,8 @@ const layoutConfig = {
         computerRotation:[0, Math.PI/100, 0],
         catalogRotation: [0, Math.PI / 2, 0],
         chatbotRotation: [0, Math.PI , 0],
-        scheduleMeetingRotation: [Math.PI/2, 0, Math.PI/2],
-        companyLogoRotation: [0, 0, 0],
+        scheduleMeetingRotation: [0, 0,0],
+        companyLogoRotation: [0, 5, 0],
 
       },
       silver: {

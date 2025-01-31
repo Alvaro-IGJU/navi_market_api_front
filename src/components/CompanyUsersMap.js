@@ -16,7 +16,6 @@ const CompanyUsersMap = ({ companyId }) => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        console.log("Datos de ubicación de usuarios (raw):", response.data);
 
         // Mapea los datos recibidos para el formato requerido por Choropleth
         const locationData = response.data || [];
@@ -25,7 +24,6 @@ const CompanyUsersMap = ({ companyId }) => {
           value: item.value || 0, // Asegura que `value` siempre tenga un valor numérico
         }));
 
-        console.log("Datos mapeados:", mappedData);
 
         setMapData(mappedData);
         setLoading(false);

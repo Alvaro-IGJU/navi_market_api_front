@@ -23,15 +23,12 @@ export function Avatar({ animation = "LOLO_Animation_Idle", pause = false, ...pr
         Object.values(actions).forEach((action) => action.stop());
       }
     }, [actions]);
-    useEffect(() => {
-      console.log(actions)
-    }, [actions]);
+    
   
 
     useEffect(() => {
       if (actions && actions[animation]) {
-        console.log("Acción encontrada:", actions[animation]);
-        console.log("Intentando reproducir la animación...");
+       
     
         // Detenemos todas las acciones activas con un fade out suave
         Object.values(actions).forEach((action) => {
@@ -44,9 +41,7 @@ export function Avatar({ animation = "LOLO_Animation_Idle", pause = false, ...pr
         const newAction = actions[animation];
         newAction.reset().fadeIn(0.1).play(); // Duración de la transición
     
-        console.log("Estado de la animación después de play:", newAction.isRunning());
-      } else {
-        console.warn(`No se encontró la animación: ${animation}`);
+      
       }
     }, [animation, actions]);
 

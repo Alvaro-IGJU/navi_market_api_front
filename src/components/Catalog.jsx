@@ -19,8 +19,6 @@ export function Catalog({
   ...props
 }) {
   const { nodes, materials } = useGLTF('/models/catalog.glb')
-  console.log("GLTF Nodes:", nodes);
-console.log("GLTF Materials:", materials);
   const [hoverMessage, setHoverMessage] = useState(null);
     const [downloadCooldown, setDownloadCooldown] = useState(false);
     const [countdown, setCountdown] = useState(0);

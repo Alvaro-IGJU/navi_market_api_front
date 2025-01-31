@@ -165,6 +165,7 @@ const Experience = ({ eventId, onStandsLoaded }) => {
               url_web={stand.url_web}
               areaRadius={stand.areaRadius}
               company_logo={stand.company_logo}
+              company_name = {stand.name}
               receiveShadow castShadow
             />
           ) : null

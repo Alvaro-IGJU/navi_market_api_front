@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { RigidBody } from "@react-three/rapier";
 import { useFrame } from "@react-three/fiber";
-import { Html, useVideoTexture } from "@react-three/drei";
+import { Html, Text, useVideoTexture } from "@react-three/drei";
 import api from "../api";
 import { useControls } from "leva";
 import ChatBot from "./ChatBot";
@@ -15,6 +15,7 @@ import Computer from "./Computer";
 import layoutConfig from "../utils/interactiveConfig";
 import  Phone  from "./Phone";
 import LogoTexture from "./LogoTexture";
+import GoogleCalendar from "./GoogleCalendar";
 
 const Stand = React.memo(({
   id,
@@ -31,6 +32,7 @@ const Stand = React.memo(({
   url_video,
   url_web,
   company_logo,
+  company_name
 }) => {
   
   const isCharacterInside = useRef(false);
@@ -205,19 +207,27 @@ const Stand = React.memo(({
         <StandBronce scale={[1.3, 1.3, 1.3]} size={size} position={[0, -1, 0]} rotation={[0, 0, 0]} receiveShadow castShadow />
       )}
       {type === "silver" && (
-        <StandSilver scale={[0.5, 0.5, 0.5]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} receiveShadow castShadow />
+        <StandSilver scale={[1, 1, 1]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} receiveShadow castShadow />
       )}
       {type === "gold" && (
         <StandGold scale={[2.8, 2.8, 2.8]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} receiveShadow castShadow />
       )}
 
-      <mesh ref={areaRef} visible={true}>
+      <mesh ref={areaRef} visible={false}>
       <sphereGeometry args={[areaRadius, 32, 32]} /> 
         <meshStandardMaterial color="green" transparent opacity={0.1} />
       </mesh>
 
     
 
+      <Text
+        color="black"
+        position={[-1.1, 0.5, 0]}
+        rotation={[0, 1.57, 0]}
+        scale={[0.15, 0.15, 0.15]}
+      >
+        {company_name}
+      </Text>
 <Mailbox scale={[0.1, 0.1, 0.1]}
          rotation={mailboxRotation} 
          position={mailboxPosition} 
@@ -263,10 +273,10 @@ const Stand = React.memo(({
   catalogBase64={catalog_pdf}
 />
 
-<Phone 
+<GoogleCalendar 
   position={scheduleMeetingPosition}
   rotation={scheduleMeetingRotation}
-  scale={[0.1, 0.1, 0.1]} // Ajusta la escala según sea necesario
+  scale={[0.2, 0.2, 0.2]} // Ajusta la escala según sea necesario
   handleClick={handleClick} // Pasa la función de clic
   canInteract={canInteract} // Pasa la capacidad de interacción
   isInteracting={isInteracting}
@@ -292,6 +302,7 @@ const Stand = React.memo(({
           base64={company_logo}
           position={[companyLogoPosition[0], companyLogoPosition[1], companyLogoPosition[2]]}
           resolution={[1, 1]} // Cambia a la resolución que necesites
+          rotation={[0,1.57,0]}
         />
       )}
     </group>

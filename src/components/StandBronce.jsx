@@ -10,28 +10,26 @@ import { RigidBody } from '@react-three/rapier';
 export function StandBronce(props) {
   const { nodes, materials } = useGLTF('/models/stand_bronce.glb')
   return (
-        <RigidBody type="fixed" name="ground" colliders="trimesh">
-    
+            <RigidBody type="fixed" name="ground" colliders="trimesh">
     <group {...props} dispose={null}>
       <mesh geometry={nodes.Cube.geometry} material={materials.Material} position={[0.064, 0, 0]} scale={[1.051, 0.018, 1.299]} />
-      <mesh geometry={nodes.Cube001.geometry} material={materials['Material.001']} position={[-0.879, 0.721, 0]} rotation={[-Math.PI, 0, 0]} scale={[-0.021, -0.727, -1.15]} />
-      <mesh geometry={nodes.Cube002.geometry} material={materials.negro_soporte} position={[0.25, 0.044, 1.111]} scale={0.031} />
-      <mesh geometry={nodes.Cube003.geometry} material={materials.negro_soporte} position={[0.25, 0.044, -1.1]} scale={0.031} />
-      <mesh geometry={nodes.Cube004.geometry} material={materials.negro_soporte} position={[0.251, 0.951, -1.088]} rotation={[Math.PI / 2, -0.824, 0]} scale={[0.03, 0.077, 0.03]} />
-      <mesh geometry={nodes.Cube008.geometry} material={materials.negro_soporte} position={[-0.008, 1.201, -1.083]} rotation={[Math.PI / 2, -0.731, 0]} scale={[0.03, 0.076, 0.03]} />
-      <mesh geometry={nodes.Cube005.geometry} material={materials.negro_soporte} position={[0.236, 0.967, 0]} rotation={[0, 0, 0.797]} scale={-0.029} />
-      <mesh geometry={nodes.Cube006.geometry} material={materials.negro_soporte} position={[0.236, 0.967, -1.108]} rotation={[0, 0, 0.797]} scale={-0.029} />
-      <mesh geometry={nodes.Cube007.geometry} material={materials.negro_soporte} position={[0.236, 0.967, 1.114]} rotation={[0, 0, 0.797]} scale={-0.029} />
+      <mesh geometry={nodes.Cube001.geometry} material={materials['Material.001']} position={[-0.879, 1.025, 0]} rotation={[-Math.PI, 0, 0]} scale={[-0.021, -0.727, -1.15]} />
+      <mesh geometry={nodes.Cube002.geometry} material={materials.negro_soporte} position={[0.246, 0.044, 1.114]} scale={0.031} />
+      <mesh geometry={nodes.Cube003.geometry} material={materials.negro_soporte} position={[0.246, 0.044, -1.107]} scale={0.031} />
+      <mesh geometry={nodes.Cube006.geometry} material={materials.negro_soporte} position={[0.236, 1.27, -1.108]} rotation={[0, 0, 0.797]} scale={-0.029} />
+      <mesh geometry={nodes.Cube007.geometry} material={materials.negro_soporte} position={[0.236, 1.271, 1.114]} rotation={[0, 0, 0.797]} scale={-0.029} />
       <group position={[0, 0.295, 0.576]} scale={[0.209, 0.01, 0.315]}>
         <mesh geometry={nodes.Cube004_1.geometry} material={materials['Material.002']} />
         <mesh geometry={nodes.Cube004_2.geometry} material={materials['Material.001']} />
       </group>
       <mesh geometry={nodes.Cube010.geometry} material={materials.negro_soporte} position={[-0.932, 0.013, -1.215]} scale={0.023} />
       <mesh geometry={nodes.Plane.geometry} material={materials['Material.001']} position={[-0.931, 1.451, -1.411]} rotation={[0, 0, -Math.PI / 2]} scale={[0.28, 0.28, 0.181]} />
+      <mesh geometry={nodes.Cube004.geometry} material={materials.negro_soporte} position={[0, 1.504, 0]} rotation={[0, 0, 0.785]} scale={[-0.027, -0.027, -1.088]} />
     </group>
-        </RigidBody>
+            </RigidBody>
     
   )
 }
+
 export default StandBronce;
 useGLTF.preload('/models/stand_bronce.glb')

@@ -22,14 +22,12 @@ export function Avatar({ animation = "rigAction", pause = false, ...props }) {
   // Manejo de animaciones
   useEffect(() => {
     if (actions && actions[animation]) {
-      console.log(`Reproduciendo animación: ${animation}`);
+     
       Object.values(actions).forEach((action) => action.stop()); // Detener todas las animaciones
       if (!pause) {
         actions[animation].reset().fadeIn(0.5).play(); // Reproducir la animación actual
       }
-    } else {
-      console.warn(`No se encontró la animación: ${animation}`);
-    }
+    } 
   }, [animation, pause, actions]);
 
   return (
