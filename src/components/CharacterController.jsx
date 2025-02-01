@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, forwardRef } from "react";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
-import { Avatar } from "./Avatar";
+import  Avatar  from "./Avatar";
 import { AnimatedSprite2D } from "./AnimatedSprite2D";
 import { Vector3 } from "three";
 import { useControls } from "leva";
@@ -52,8 +52,8 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
   const isClicking = useRef(false);
   const movementStarted = useRef(false);
 
-  const characterRotationTarget = useRef(0);
-  const rotationTarget = useRef(0);
+  const characterRotationTarget = useRef(-0.5);
+  const rotationTarget = useRef(-0.81);
   const cameraTarget = useRef();
   const cameraPosition = useRef();
   const cameraWorldPosition = useRef(new Vector3());
@@ -218,7 +218,7 @@ export const CharacterController = forwardRef(({ eventId = 1, isInteracting = fa
         <group ref={character}>
         <Avatar
             scale={0.4}
-            position-y={-0.25}
+            position-y={-0.38}
             animation={animation}
             pause={!isMoving} // Pausar si no hay movimiento
             receiveShadow castShadow

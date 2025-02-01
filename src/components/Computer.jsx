@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useGLTF, Html } from "@react-three/drei";
 
-export function Computer({ handleClick, canInteract, isInteracting, position, webUrl, ...props }) {
+export const Computer = React.memo(({ handleClick, canInteract, isInteracting, position, webUrl, ...props }) => {
   const { nodes, materials } = useGLTF("/models/computer.glb");
   const [hoverMessage, setHoverMessage] = useState(null);
   const [clickCooldown, setClickCooldown] = useState(false);
@@ -116,7 +116,7 @@ export function Computer({ handleClick, canInteract, isInteracting, position, we
       )}
     </>
   );
-}
+});
 
 export default Computer;
 

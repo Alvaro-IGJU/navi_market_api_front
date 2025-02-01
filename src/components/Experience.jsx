@@ -107,23 +107,6 @@ const Experience = ({ eventId, onStandsLoaded }) => {
     }
   }, [standsLoaded, stands, onStandsLoaded]);
 
-  // // Actualizar la visibilidad de los stands en cada frame
-  // useFrame(({ camera }) => {
-  //   matrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
-  //   frustum.setFromProjectionMatrix(matrix);
-
-  //   setStands((currentStands) =>
-  //     currentStands.map((stand) => {
-  //       const standPosition = new THREE.Vector3(...stand.position);
-  //       const distance = camera.position.distanceTo(standPosition);
-
-  //       return {
-  //         ...stand,
-  //         visible: distance < renderDistance && frustum.containsPoint(standPosition),
-  //       };
-  //     })
-  //   );
-  // });
 
   const baseConfig = getBasePosition();
 
@@ -164,6 +147,7 @@ const Experience = ({ eventId, onStandsLoaded }) => {
               url_video={stand.url_video}
               url_web={stand.url_web}
               areaRadius={stand.areaRadius}
+              videoRadius={stand.areaRadius + 6}
               company_logo={stand.company_logo}
               company_name = {stand.name}
               receiveShadow castShadow

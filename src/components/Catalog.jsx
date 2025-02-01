@@ -9,7 +9,7 @@ import { RigidBody } from "@react-three/rapier";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 
-export function Catalog({
+export const Catalog = React.memo(({
   handleClick,
   canInteract,
   isInteracting,
@@ -17,205 +17,226 @@ export function Catalog({
   catalogBase64, // Base64 del PDF
   setIsInteracting, // Controlar la interacción global
   ...props
-}) {
-  const { nodes, materials } = useGLTF('/models/catalog.glb')
+}) => {
+  const { nodes, materials } = useGLTF("/models/catalog.glb");
   const [hoverMessage, setHoverMessage] = useState(null);
-    const [downloadCooldown, setDownloadCooldown] = useState(false);
-    const [countdown, setCountdown] = useState(0);
-    const [showPDF, setShowPDF] = useState(false); // Controla si el PDF se muestra
-    const [dimensions, setDimensions] = useState({ width: 300, height: 300 }); // Dimensiones iniciales
-    const cameraRef = useRef(); // Referencia para la cámara
-    const isHovering = useRef(false);
-  
-    useEffect(() => {
-      // Función para calcular dimensiones dinámicas según el dispositivo
-      const calculateDimensions = () => {
-        const widthMultiplier = window.innerWidth <= 768 ? 0.4 : window.innerWidth <= 1024 ? 0.7 : 0.6;
-        const heightMultiplier = window.innerWidth <= 768 ? 0.3 : window.innerWidth <= 1024 ? 0.6 : 0.35;
-        const maxWidth = window.innerWidth * widthMultiplier;
-        const maxHeight = window.innerHeight * heightMultiplier;
-        const width = Math.min(maxWidth, 400); // Máximo de 400px de ancho
-        const height = Math.min(maxHeight, 500); // Máximo de 500px de alto
-        setDimensions({ width, height });
-      };
-  
-      // Configurar dimensiones iniciales y escuchar cambios de tamaño
-      calculateDimensions();
-      window.addEventListener("resize", calculateDimensions);
-  
-      return () => window.removeEventListener("resize", calculateDimensions);
-    }, []);
-  
-    const handleCatalogClick = () => {
-      setShowPDF(true); // Mostrar el PDF
-      setIsInteracting(true); // Indicar que se está interactuando
+  const [downloadCooldown, setDownloadCooldown] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+  const [showPDF, setShowPDF] = useState(false); // Controla si el PDF se muestra
+  const [dimensions, setDimensions] = useState({ width: 300, height: 300 }); // Dimensiones iniciales
+  const cameraRef = useRef(); // Referencia para la cámara
+  const isHovering = useRef(false);
+
+  // Calcular dimensiones dinámicas según el dispositivo
+  useEffect(() => {
+    const calculateDimensions = () => {
+      const widthMultiplier =
+        window.innerWidth <= 768 ? 0.4 : window.innerWidth <= 1024 ? 0.7 : 0.6;
+      const heightMultiplier =
+        window.innerWidth <= 768 ? 0.3 : window.innerWidth <= 1024 ? 0.6 : 0.35;
+      const maxWidth = window.innerWidth * widthMultiplier;
+      const maxHeight = window.innerHeight * heightMultiplier;
+      const width = Math.min(maxWidth, 400); // Máximo de 400px de ancho
+      const height = Math.min(maxHeight, 500); // Máximo de 500px de alto
+      setDimensions({ width, height });
     };
-  
-    const handlePointerOver = (e) => {
-      if (canInteract && !isInteracting && e.object?.material?.emissive) {
-        isHovering.current = true;
-        e.object.material.emissive.set("yellow");
-        e.object.material.emissiveIntensity = 0.2;
-        document.body.style.cursor = "pointer";
-        setHoverMessage("Ver Catálogo");
-      }
-    };
-    
-    const handlePointerOut = (e) => {
-      if (e.object?.material?.emissive) {
-        e.object.material.emissive.set("black");
-        e.object.material.emissiveIntensity = 0;
-      }
-      isHovering.current = false;
-      document.body.style.cursor = "default";
-      setHoverMessage(null);
-    };
-  
-    const handleClosePDF = () => {
-      setShowPDF(false); // Cerrar el PDF
-      setIsInteracting(false); // Dejar de interactuar
-    };
-  
-    const handleDownloadPDF = () => {
-      if (downloadCooldown) return;
-  
-      // Inicia el cooldown
-      setDownloadCooldown(true);
-      const cooldownTime = 60; // Cooldown en segundos
-      setCountdown(cooldownTime);
-  
-      const interval = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev <= 1) {
-            clearInterval(interval);
-            setDownloadCooldown(false);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-  
-      // Descargar el PDF
-      const link = document.createElement("a");
-      const byteCharacters = atob(catalogBase64);
-      const byteNumbers = new Uint8Array(byteCharacters.length).map((_, i) =>
-        byteCharacters.charCodeAt(i)
-      );
-      const blob = new Blob([byteNumbers], { type: "application/pdf" });
-      const url = URL.createObjectURL(blob);
-      link.href = url;
-      link.download = "catalog.pdf";
-      link.click();
-      URL.revokeObjectURL(url); // Liberar memoria
-      handleClick("download_catalog"); // Notificar la acción
-  
-    };
+
+    calculateDimensions();
+    window.addEventListener("resize", calculateDimensions);
+    return () => window.removeEventListener("resize", calculateDimensions);
+  }, []);
+
+  const handleCatalogClick = () => {
+    setShowPDF(true); // Mostrar el PDF
+    setIsInteracting(true); // Indicar que se está interactuando
+  };
+
+  const handlePointerOver = (e) => {
+    if (canInteract && !isInteracting && e.object?.material?.emissive) {
+      isHovering.current = true;
+      e.object.material.emissive.set("yellow");
+      e.object.material.emissiveIntensity = 0.2;
+      document.body.style.cursor = "pointer";
+      setHoverMessage("Ver Catálogo");
+    }
+  };
+
+  const handlePointerOut = (e) => {
+    if (e.object?.material?.emissive) {
+      e.object.material.emissive.set("black");
+      e.object.material.emissiveIntensity = 0;
+    }
+    isHovering.current = false;
+    document.body.style.cursor = "default";
+    setHoverMessage(null);
+  };
+
+  const handleClosePDF = () => {
+    setShowPDF(false); // Cerrar el PDF
+    setIsInteracting(false); // Dejar de interactuar
+  };
+
+  const handleDownloadPDF = () => {
+    if (downloadCooldown) return;
+
+    // Inicia el cooldown
+    setDownloadCooldown(true);
+    const cooldownTime = 60; // Cooldown en segundos
+    setCountdown(cooldownTime);
+
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setDownloadCooldown(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    // Descargar el PDF
+    const link = document.createElement("a");
+    const byteCharacters = atob(catalogBase64);
+    const byteNumbers = new Uint8Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const blob = new Blob([byteNumbers], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
+    link.href = url;
+    link.download = "catalog.pdf";
+    link.click();
+    URL.revokeObjectURL(url); // Liberar memoria
+    handleClick("download_catalog"); // Notificar la acción
+  };
 
   return (
     <>
-          <RigidBody type="fixed">
-    <group {...props} position={position}
+      <RigidBody type="fixed">
+        <group
+          {...props}
+          position={position}
           onClick={handleCatalogClick}
           onPointerOver={handlePointerOver}
-          onPointerOut={handlePointerOut} dispose={null}>
-      <group scale={[1.747, 2.296, 0.069]}>
-        <mesh geometry={nodes.Cube_1.geometry} material={materials['Material.001']} />
-        <mesh geometry={nodes.Cube_2.geometry} material={materials['Material.002']} />
-      </group>
-      <mesh geometry={nodes.Plane.geometry} material={nodes.Plane.material} position={[0, -0.239, 0.238]} rotation={[Math.PI / 2, 0, 0]} scale={[1.373, 1, 1.641]} />
-      <mesh geometry={nodes.Text.geometry} material={materials.gradiente} position={[-1.507, 1.54, 0.089]} rotation={[1.533, 0, 0]} scale={0.644} />
-      <mesh geometry={nodes.Text001.geometry} material={materials.Material} position={[0.043, 0.086, 0.245]} rotation={[1.602, 0, 0]} scale={0.267} />
-      {hoverMessage && isHovering.current && canInteract && !isInteracting && (
-                  <Html position={[position[0], position[1] + 2, position[2]]} distanceFactor={2}>
-                    <div
-                      style={{
-                        background: "rgba(0, 0, 0, 0.75)",
-                        color: "white",
-                        padding: "5px 10px",
-                        borderRadius: "5px",
-                        fontSize: "12px",
-                        textAlign: "center",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {hoverMessage}
-                    </div>
-                  </Html>
-                )}
-
-    </group>
-    </RigidBody>
-
-    {showPDF && (
-            <>
-              {/* Cámara para el catálogo */}
-              <PerspectiveCamera
-                ref={cameraRef}
-                makeDefault
-                position={[0, 0.5, 10]} // Ajusta la posición de la cámara
-                fov={50}
-              />
-              <Html position={[0, 0.4, 0]} transform>
-                <div
-                  style={{
-                    width: `${dimensions.width}px`,
-                    height: `${dimensions.height}px`,
-                    background: "white",
-                    borderRadius: "10px",
-                    overflow: "hidden",
-                    boxShadow: "0px 4px 20px rgba(0,0,0,0.3)",
-                  }}
-                >
-                  <button
-                    onClick={handleClosePDF}
-                    style={{
-                      position: "absolute",
-                      top: "10px",
-                      right: "10px",
-                      backgroundColor: "red",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "50%",
-                      width: "30px",
-                      height: "30px",
-                      cursor: "pointer",
-                      zIndex: 1,
-                    }}
-                  >
-                    X
-                  </button>
-                  <button
-                    onClick={handleDownloadPDF}
-                    style={{
-                      position: "absolute",
-                      bottom: "10px",
-                      left: "10px",
-                      backgroundColor: downloadCooldown
-                        ? "rgba(199, 170, 104, 0.5)" // Opacidad para cooldown
-                        : "rgb(199, 170, 104)",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "5px",
-                      padding: "5px 10px",
-                      cursor: downloadCooldown ? "not-allowed" : "pointer",
-                      zIndex: 1,
-                    }}
-                  >
-                    {downloadCooldown ? `Espera ${countdown}s` : "Descargar"}
-                  </button>
-                  <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
-                    <Viewer
-                      fileUrl={`data:application/pdf;base64,${catalogBase64}`}
-                      style={{ height: "100%", width: "100%" }}
-                    />
-                  </Worker>
-                </div>
-              </Html>
-            </>
+          onPointerOut={handlePointerOut}
+          dispose={null}
+        >
+          <group scale={[1.747, 2.296, 0.069]}>
+            <mesh geometry={nodes.Cube_1.geometry} material={materials["Material.001"]} />
+            <mesh geometry={nodes.Cube_2.geometry} material={materials["Material.002"]} />
+          </group>
+          <mesh
+            geometry={nodes.Plane.geometry}
+            material={nodes.Plane.material}
+            position={[0, -0.239, 0.238]}
+            rotation={[Math.PI / 2, 0, 0]}
+            scale={[1.373, 1, 1.641]}
+          />
+          <mesh
+            geometry={nodes.Text.geometry}
+            material={materials.gradiente}
+            position={[-1.507, 1.54, 0.089]}
+            rotation={[1.533, 0, 0]}
+            scale={0.644}
+          />
+          <mesh
+            geometry={nodes.Text001.geometry}
+            material={materials.Material}
+            position={[0.043, 0.086, 0.245]}
+            rotation={[1.602, 0, 0]}
+            scale={0.267}
+          />
+          {hoverMessage && isHovering.current && canInteract && !isInteracting && (
+            <Html position={[position[0], position[1] + 3.5, position[2]]} distanceFactor={2}>
+              <div
+                style={{
+                  background: "rgba(0, 0, 0, 0.75)",
+                  color: "white",
+                  padding: "5px 10px",
+                  borderRadius: "5px",
+                  fontSize: "20px",
+                  textAlign: "center",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {hoverMessage}
+              </div>
+            </Html>
           )}
+        </group>
+      </RigidBody>
+
+      {showPDF && (
+        <>
+          {/* Cámara para el catálogo */}
+          <PerspectiveCamera
+            ref={cameraRef}
+            makeDefault
+            position={[0, 0.5, 10]} // Ajusta la posición de la cámara
+            fov={50}
+          />
+          <Html position={[0, 0.4, 0]} transform>
+            <div
+              style={{
+                width: `${dimensions.width}px`,
+                height: `${dimensions.height}px`,
+                background: "white",
+                borderRadius: "10px",
+                overflow: "hidden",
+                boxShadow: "0px 4px 20px rgba(0,0,0,0.3)",
+              }}
+            >
+              <button
+                onClick={handleClosePDF}
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "10px",
+                  backgroundColor: "red",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "50%",
+                  width: "30px",
+                  height: "30px",
+                  cursor: "pointer",
+                  zIndex: 1,
+                }}
+              >
+                X
+              </button>
+              <button
+                onClick={handleDownloadPDF}
+                style={{
+                  position: "absolute",
+                  bottom: "10px",
+                  left: "10px",
+                  backgroundColor: downloadCooldown
+                    ? "rgba(199, 170, 104, 0.5)"
+                    : "rgb(199, 170, 104)",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "5px",
+                  padding: "5px 10px",
+                  cursor: downloadCooldown ? "not-allowed" : "pointer",
+                  zIndex: 1,
+                }}
+              >
+                {downloadCooldown ? `Espera ${countdown}s` : "Descargar"}
+              </button>
+              <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
+                <Viewer
+                  fileUrl={`data:application/pdf;base64,${catalogBase64}`}
+                  style={{ height: "100%", width: "100%" }}
+                />
+              </Worker>
+            </div>
+          </Html>
+        </>
+      )}
     </>
-  )
-}
+  );
+});
 
 export default Catalog;
-useGLTF.preload('/models/catalog.glb')
+useGLTF.preload("/models/catalog.glb");

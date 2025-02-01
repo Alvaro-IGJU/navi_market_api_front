@@ -32,11 +32,13 @@ const Stand = React.memo(({
   url_video,
   url_web,
   company_logo,
-  company_name
+  company_name,
+  videoRadius
 }) => {
   
   const isCharacterInside = useRef(false);
   const areaRef = useRef();
+  const videoAreaRef = useRef();
   const [canInteract, setCanInteract] = useState(false);
   const [showVideo, setShowVideo] = useState(false); // Estado para mostrar el video
   const timeInside = useRef(0);
@@ -166,6 +168,12 @@ const Stand = React.memo(({
 
       const insideArea = distance <= areaRadius;
 
+      
+      
+    //  setShowVideo(distance <= videoRadius);
+
+ 
+
       if (insideArea && !isCharacterInside.current) {
         isCharacterInside.current = true;
         setCanInteract(true);
@@ -174,7 +182,6 @@ const Stand = React.memo(({
       } else if (!insideArea && isCharacterInside.current) {
         isCharacterInside.current = false;
         setCanInteract(false);
-        setShowVideo(false); 
         console.log("Character left the area.");
         endInteraction();
       }
@@ -218,16 +225,21 @@ const Stand = React.memo(({
         <meshStandardMaterial color="green" transparent opacity={0.1} />
       </mesh>
 
+      <mesh ref={videoAreaRef} visible={false}>
+      <sphereGeometry args={[videoRadius, 32, 32]} /> 
+        <meshStandardMaterial color="green"  opacity={0} />
+      </mesh>
     
-
-      <Text
+      {/* <Text
+        font="/fonts/Raleway-Regular.ttf"
         color="black"
         position={[-1.1, 0.5, 0]}
         rotation={[0, 1.57, 0]}
         scale={[0.15, 0.15, 0.15]}
       >
         {company_name}
-      </Text>
+      </Text> */}
+
 <Mailbox scale={[0.1, 0.1, 0.1]}
          rotation={mailboxRotation} 
          position={mailboxPosition} 
