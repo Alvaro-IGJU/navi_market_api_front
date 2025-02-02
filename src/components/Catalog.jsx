@@ -23,7 +23,7 @@ export const Catalog = React.memo(({
   const [downloadCooldown, setDownloadCooldown] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [showPDF, setShowPDF] = useState(false); // Controla si el PDF se muestra
-  const [dimensions, setDimensions] = useState({ width: 300, height: 300 }); // Dimensiones iniciales
+  const [dimensions, setDimensions] = useState({ width: 300, height: 280 }); // Dimensiones iniciales
   const cameraRef = useRef(); // Referencia para la cámara
   const isHovering = useRef(false);
 
@@ -33,7 +33,7 @@ export const Catalog = React.memo(({
       const widthMultiplier =
         window.innerWidth <= 768 ? 0.4 : window.innerWidth <= 1024 ? 0.7 : 0.6;
       const heightMultiplier =
-        window.innerWidth <= 768 ? 0.3 : window.innerWidth <= 1024 ? 0.6 : 0.35;
+        window.innerWidth <= 768 ? 0.3 : window.innerWidth <= 1024 ? 0.6 : 0.3;
       const maxWidth = window.innerWidth * widthMultiplier;
       const maxHeight = window.innerHeight * heightMultiplier;
       const width = Math.min(maxWidth, 400); // Máximo de 400px de ancho

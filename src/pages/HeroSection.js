@@ -53,7 +53,7 @@ const HeroSection = () => (
                 hover:shadow-[#FFC28F]/40 
                 transition-shadow duration-500 ease-in-out 
                 backdrop-blur-sm overflow-hidden
-                flex items-center gap-2"     
+                flex items-center gap-2"
             >
                 <span className="relative z-10 text-black">
                     Explorar eventos

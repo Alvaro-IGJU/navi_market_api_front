@@ -1,87 +1,74 @@
 import React, { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLaptop, faEnvelope, faPlay, faPersonWalking, faBookOpen, faRobot } from "@fortawesome/free-solid-svg-icons";
+import ReactECharts from "echarts-for-react";
 
 const CompanyStandInteractionsChart = ({ interactionsData }) => {
-  const [interactionDetails, setInteractionDetails] = useState([]);
+  const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const interactionTypeLabels = {
-    stand_entry: { label: "Entradas a Stand", icon: faPersonWalking },
-    info_pc: { label: "Clicks ordenador", icon: faLaptop },
-    mailbox: { label: "Clicks MailBox", icon: faEnvelope },
-    play_video: { label: "Clicks en Vídeo", icon: faPlay },
-    download_catalog: { label: "Catálogos descargados", icon: faBookOpen },
-    talk_chatbot: { label: "Interacciones Chatbot", icon: faRobot },
-  };
 
   useEffect(() => {
-    try {
-      if (!interactionsData || !interactionsData.interaction_details) {
-        throw new Error("Datos de interacción no disponibles.");
-      }
-
-      const details = interactionsData.interaction_details || [];
-      setInteractionDetails(details);
+    if (!interactionsData || !interactionsData.interaction_details) {
+      setChartData([]);
       setLoading(false);
-    } catch (err) {
-      console.error("Error al procesar las interacciones:", err);
-      setError("No se pudieron cargar las interacciones.");
-      setLoading(false);
+      return;
     }
+
+    // Definir tonalidades de naranja para cada tipo de interacción
+    const interactionColors = {
+      stand_entry: "#FFA500", // Naranja estándar
+      info_pc: "#FF8C00", // Naranja oscuro
+      mailbox: "#FF7F50", // Coral
+      play_video: "#FF6347", // Tomate
+      download_catalog: "#FF4500", // Naranja rojizo
+      talk_chatbot: "#FFD700", // Oro
+    };
+
+    // Filtrar y mapear los datos
+    const filteredData = interactionsData.interaction_details
+      .filter((item) => item.interaction_type !== "schedule_meeting")
+      .map((item) => ({
+        name: item.interaction_type.replace(/_/g, " ").toUpperCase(),
+        value: item.total_interactions,
+        color: interactionColors[item.interaction_type] || "#FFA500", // Usar naranja por defecto si no hay color definido
+      }));
+
+    setChartData(filteredData);
+    setLoading(false);
   }, [interactionsData]);
 
   if (loading) return <p className="text-gray-300">Cargando interacciones...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
+  if (!chartData.length)
+    return <p className="text-gray-500 text-center">No hay datos disponibles.</p>;
 
   return (
-    <div
-      className="p-6 rounded-lg h-full flex flex-col"
-      style={{
-        minWidth: "200px", // Tamaño mínimo del componente
-        overflow: "hidden", // Asegura que el contenido no desborde
-        resize: "both", // Permite redimensionar manualmente
-      }}
-    >
-      <h2 className="text-lg font-bold text-[#C7AA68] mb-4 text-center">Interacciones Stand</h2>
-      {interactionDetails.length === 0 ? (
-        <p className="text-gray-500 text-center">No hay interacciones disponibles para mostrar.</p>
-      ) : (
-        <div
-          className="grid gap-4 flex-grow"
-          style={{
-            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", // Columnas flexibles
-          }}
-        >
-          {interactionDetails
-            .filter((interaction) => interaction.interaction_type !== "schedule_meeting") // Filtrar schedule_meeting
-            .map((interaction, index) => {
-              const { label, icon } = interactionTypeLabels[interaction.interaction_type] || {
-                label: interaction.interaction_type,
-                icon: null,
-              };
-
-              return (
-                <div
-                  key={index}
-                  className="bg-gray-50 rounded-lg flex flex-col items-center justify-center"
-                  style={{
-                    minWidth: "50px", // Tamaño mínimo de cada tarjeta
-                    minHeight: "50px", // Altura mínima de cada tarjeta
-                    flex: "1 1 auto", // Crecimiento y reducción flexible
-                  }}
-                >
-                  <div className="text-3xl mt-2 text-[#C7AA68]">
-                    {icon && <FontAwesomeIcon icon={icon} />}
-                  </div>
-                  <p className="text-base text-black font-bold">{label}</p>
-                  <p className="text-xl font-bold text-[#C7AA68]">{interaction.total_interactions}</p>
-                </div>
-              );
-            })}
-        </div>
-      )}
+    <div className="rounded-lg">
+      <h2 className="text-lg font-bold text-[#1B1B1B] mb-4 text-center">
+        Interacciones Stand
+      </h2>
+      <ReactECharts
+        option={{
+          tooltip: { trigger: "item" },
+          radar: {
+            indicator: chartData.map((item) => ({
+              name: item.name,
+              max: Math.max(...chartData.map((d) => d.value)),
+            })),
+          },
+          series: [
+            {
+              type: "radar",
+              data: [
+                {
+                  value: chartData.map((item) => item.value),
+                  itemStyle: { color: "#FFA500" }, // Color principal del área (naranja estándar)
+                  areaStyle: { color: "#FFA500", opacity: 0.3 }, // Relleno con opacidad
+                },
+              ],
+            },
+          ],
+          color: chartData.map((item) => item.color), // Colores dinámicos para cada interacción
+        }}
+        style={{ height: "200px", width: "100%" }}
+      />
     </div>
   );
 };

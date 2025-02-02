@@ -1,88 +1,69 @@
 import React, { useEffect, useState } from "react";
-import { ResponsiveChoropleth } from "@nivo/geo";
-import worldCountries from "../data/world_countries.json";
+import ReactECharts from "echarts-for-react";
 import api from "../api";
+import * as echarts from "echarts";
+import worldCountries from "../data/world_countries.json";
+import isoCountries from "i18n-iso-countries";
+import enLocale from "i18n-iso-countries/langs/en.json";
+
+// Registrar idioma y mapa
+isoCountries.registerLocale(enLocale);
+echarts.registerMap("world", worldCountries);
 
 const CompanyUsersMap = ({ companyId }) => {
   const [mapData, setMapData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchUserLocationData = async () => {
-      try {
-        const token = localStorage.getItem("accessToken");
-        const response = await api.get(`/interactions/companies/${companyId}/users-location/`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-
-        // Mapea los datos recibidos para el formato requerido por Choropleth
-        const locationData = response.data || [];
-        const mappedData = locationData.map((item) => ({
-          id: item.id, // Código ISO del país
-          value: item.value || 0, // Asegura que `value` siempre tenga un valor numérico
-        }));
-
-
-        setMapData(mappedData);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error al obtener datos de ubicación de usuarios:", err);
-        setError("No se pudieron cargar los datos de ubicación de usuarios.");
-        setLoading(false);
-      }
-    };
-
-    fetchUserLocationData();
+    api
+      .get(`/interactions/companies/${companyId}/users-location/`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
+      })
+      .then(({ data }) =>
+        setMapData(
+          data.map((item) => ({
+            name: isoCountries.getName(item.id, "en") || item.id,
+            value: item.value || 0,
+          }))
+        )
+      )
+      .catch(() => setMapData([]))
+      .finally(() => setLoading(false));
   }, [companyId]);
 
-  if (loading) return <p className="text-gray-300">Cargando mapa de usuarios...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
+  if (loading) return <p className="text-gray-300">Cargando mapa...</p>;
 
   return (
     <>
-      <h2 className="text-lg font-bold text-[#C7AA68] mt-4 text-center">Mapa de Usuarios por País</h2>
-      <ResponsiveChoropleth
-        data={mapData.filter((d) => d.value !== undefined)} // Asegura que todos los datos tengan un `value`
-        features={worldCountries.features}
-        margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-        colors="nivo"
-        domain={[0, Math.max(...mapData.map((d) => d.value), 100)]} // Ajusta dinámicamente el dominio
-        unknownColor="#666666"
-        label="properties.name"
-        valueFormat=".0f"
-        projectionTranslation={[0.5, 0.5]}
-        projectionRotation={[0, 0, 0]}
-        // enableGraticule={true}
-        graticuleLineColor="#dddddd"
-        borderWidth={0.5}
-        borderColor="#152538"
-        legends={[
-          {
-            anchor: "bottom-left",
-            direction: "column",
-            justify: true,
-            translateX: 90,
-            translateY: -200,
-            itemsSpacing: 0,
-            itemWidth: 94,
-            itemHeight: 18,
-            itemDirection: "left-to-right",
-            itemTextColor: "#000000",
-            itemOpacity: 0.85,
-            symbolSize: 18,
-            effects: [
-              {
-                on: "hover",
-                style: {
-                  itemTextColor: "#000000",
-                  itemOpacity: 1,
-                },
-              },
-            ],
+      <h2 className="text-lg font-bold text-[#1B1B1B] text-center mb-2">Mapa de Usuarios</h2>
+      <ReactECharts
+        option={{
+          tooltip: {
+            trigger: "item",
+            formatter: ({ name, value }) => `${name}: ${value ?? 0} usuarios`,
           },
-        ]}
+          visualMap: {
+            min: 0,
+            max: Math.max(...mapData.map((d) => d.value), 100),
+            left: "right",
+            top: "bottom",
+            inRange: {
+              color: ["#FFECB3", "#FF6F00"], // Gradiente de naranja claro a oscuro
+            },
+          },
+          series: [
+            {
+              type: "map",
+              map: "world",
+              roam: true,
+              emphasis: {
+                label: { show: false },
+              },
+              data: mapData,
+            },
+          ],
+        }}
+        style={{ height: "250px", width: "100%", margin: "0" }} // Remover márgenes
       />
     </>
   );

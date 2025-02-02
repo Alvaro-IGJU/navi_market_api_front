@@ -52,29 +52,19 @@ const CanvasWrapper = () => {
             onStandsLoaded={() => setLoading(false)} // Ocultar LoadingScreen cuando los stands estén cargados
           />
           <ambientLight intensity={0.3} />
-      <directionalLight
-        castShadow
-        position={[5, 1, 7.5]}
-        intensity={1}
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
-        shadow-camera-left={-10}
-        shadow-camera-right={10}
-        shadow-camera-top={10}
-        shadow-camera-bottom={-10}
-      />
+          <directionalLight
+            castShadow
+            position={[5, 1, 7.5]}
+            intensity={1}
+            shadow-mapSize-width={1024}
+            shadow-mapSize-height={1024}
+            shadow-camera-left={-10}
+            shadow-camera-right={10}
+            shadow-camera-top={10}
+            shadow-camera-bottom={-10}
+          />
 
-      {/* Objeto simple */}
-      <mesh castShadow receiveShadow position={[6.66, -18+1, 14.66]}>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="orange" />
-      </mesh>
-
-      {/* Suelo */}
-      <mesh receiveShadow rotation-x={-Math.PI / 2} position={[6.66, -19+1, 14.66]}>
-        <planeGeometry args={[100, 100]} />
-        <meshStandardMaterial color="gray" />
-      </mesh>
+   
         </Canvas>
       </KeyboardControls>
     </div>

@@ -172,7 +172,7 @@ const ChatBot = ({
       <PerspectiveCamera
         ref={cameraRef}
         makeDefault={false}
-        position={[0, 0.1, 2]}
+        position={[0, 0.7, 2]}
         fov={50}
       />
     
@@ -194,7 +194,7 @@ const ChatBot = ({
 
       {showInput && (
         <>
-          <Html position={[0, 0.5, 1]} style={mainHtmlStyle}>
+          <Html position={[0, 1.1, 1]} style={mainHtmlStyle}>
             <div
               ref={textRef}
               className="text-content"
@@ -211,7 +211,7 @@ const ChatBot = ({
       )}
 
       {showInput && (
-        <Html center position={[0, isMobile ? -0.3 : -0.5, 0]}>
+        <Html center position={[0, isMobile ? 0. : -0, 0]}>
           <div style={inputContainerStyle}>
             <input
               type="text"
