@@ -54,7 +54,7 @@ const Avatar = React.memo(({ animation = "LOLO_Animation_Idle", pause = false, .
   }, [animation, actions]);
 
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group ref={group} {...props} dispose={null} name='chatbot-body'>
       <group name="Scene">
         <group name="Boca_select">
           <primitive object={nodes.Bone} />

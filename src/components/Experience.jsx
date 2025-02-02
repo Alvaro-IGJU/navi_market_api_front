@@ -115,19 +115,20 @@ const Experience = ({ eventId, onStandsLoaded }) => {
     <CameraManager>
       {/* Environment */}
       <Environment
-  files="models/textures/autumn_field_puresky_1k.hdr"
-  background={false}
-/>
-<directionalLight
+        files="models/textures/autumn_field_puresky_1k.hdr"
+        background={false}
+      />
+    <ambientLight intensity={0.1} />
+    <directionalLight
   castShadow
   position={[10, 10, 10]}
   intensity={1}
-  color="#FFD1A4" // Tono cálido/dorado
   shadow-mapSize-width={1024}
   shadow-mapSize-height={1024}
   shadow-camera-near={0.5}
   shadow-camera-far={50}
 />
+
 
 
 

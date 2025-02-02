@@ -175,25 +175,22 @@ const ChatBot = ({
         position={[0, 0.1, 2]}
         fov={50}
       />
-      <mesh
-        scale={[0.45, 0.45, 0.45]}
-        onClick={handleChatbotClick}
-        onPointerOver={(e) => {
-          if (canInteract && !isInteracting) {
-            e.stopPropagation();
-            e.object.material.emissive.set("yellow");
-            e.object.material.emissiveIntensity = 0.2;
-            document.body.style.cursor = "pointer";
-          }
-        }}
-        onPointerOut={(e) => {
-          e.object.material.emissive.set("black");
-          e.object.material.emissiveIntensity = 0;
-          document.body.style.cursor = "default";
-        }}
-      >
-        <Avatar />
-      </mesh>
+    
+        <Avatar 
+          scale={[0.45, 0.45, 0.45]}
+          onClick={handleChatbotClick}
+          onPointerOver={(e) => {
+            if (canInteract && !isInteracting) {
+
+              document.body.style.cursor = "pointer";
+            }
+          }}
+          onPointerOut={(e) => {
+
+            document.body.style.cursor = "default";
+          }}
+        />
+     
 
       {showInput && (
         <>

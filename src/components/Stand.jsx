@@ -202,10 +202,10 @@ const Stand = React.memo(({
 
 
 
-  const { mailboxPosition, videoPosition, screenPosition, computerPosition, catalogPosition, chatbotPosition, scheduleMeetingPosition, companyLogoPosition } =
+  const { mailboxPosition, videoPosition, screenPosition, planeVideoPosition, computerPosition, catalogPosition, chatbotPosition, scheduleMeetingPosition, companyLogoPosition, companyLogoPosition2 } =
     layoutConfig.position[type] || layoutConfig.position["bronze"];
 
-  const { mailboxRotation, videoRotation, screenRotation, computerRotation, catalogRotation, chatbotRotation, scheduleMeetingRotation, companyLogoRotation } =
+  const { mailboxRotation, videoRotation, screenRotation, planeVideoRotation, computerRotation, catalogRotation, chatbotRotation, scheduleMeetingRotation, companyLogoRotation, companyLogoRotation2 } =
     layoutConfig.rotation[type] || layoutConfig.rotation["bronze"];
   return (
     <>
@@ -258,6 +258,8 @@ const Stand = React.memo(({
   screenRotation={screenRotation}
   videoPosition={videoPosition}
   videoRotation={videoRotation}
+  planeVideoPosition={planeVideoPosition}
+  planeVideoRotation={planeVideoRotation}
   handleClick={handleClick}
   canInteract={canInteract} // Pasa la capacidad de interacción
   isInteracting={isInteracting}
@@ -314,7 +316,16 @@ const Stand = React.memo(({
           base64={company_logo}
           position={[companyLogoPosition[0], companyLogoPosition[1], companyLogoPosition[2]]}
           resolution={[1, 1]} // Cambia a la resolución que necesites
-          rotation={[0,1.57,0]}
+          rotation={companyLogoRotation}
+        />
+      )}
+
+      {company_logo && (type === "silver" || type === "gold") && (
+        <LogoTexture
+          base64={company_logo}
+          position={[companyLogoPosition2[0], companyLogoPosition2[1], companyLogoPosition2[2]]}
+          resolution={[1, 1]} // Cambia a la resolución que necesites
+          rotation={companyLogoRotation2}
         />
       )}
     </group>

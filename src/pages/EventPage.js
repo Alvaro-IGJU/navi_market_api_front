@@ -7,6 +7,7 @@ import Base from "../components/Base";
 import api from "../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import Avatar from "../components/Avatar";
 
 const supportsWebGL = () => {
   const canvas = document.createElement("canvas");
@@ -108,18 +109,15 @@ const EventPage = () => {
         {!isMobile && (
           <>
             <SpotLight
-              position={[-1, 3.5, 1]}
-              angle={1}
+              position={[0.5, 1, 4]}
+              angle={1.7}
               penumbra={0.5}
               intensity={0.5}
-              distance={10}
+              distance={15}
               castShadow
-              target-position={[3, -0.5, 0]}
+              target-position={[0.5, -0.3, 4]} 
             />
-            <Environment preset="city" background={false} />
-            <Physics>
-              <Base shouldRotate={true} scale={0.4} position={[0, -0.3, 3]} rotation={[0, 0, 0]} />
-            </Physics>
+              <Avatar scale={0.4} position={[0.5, -0.3, 4]} rotation={[0, -0.7, 0]} />
           </>
         )}
         

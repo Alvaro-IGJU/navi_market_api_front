@@ -10,6 +10,8 @@ const Video = ({
   screenRotation,
   videoPosition,
   videoRotation,
+  planeVideoPosition,
+  planeVideoRotation,
   handleClick,
   canInteract,
   isInteracting,
@@ -70,12 +72,12 @@ const Video = ({
       {/* Plano occluder: se renderiza pero es invisible */}
       <mesh
         ref={videoAreaRef}
-        visible={true}
-        rotation={[0, -1.6, 0]}
-        position={[-1.3, 0, 0]}
+        visible={false}
+        rotation={planeVideoRotation}
+        position={planeVideoPosition}
       >
         <planeGeometry args={[3, 3]} />
-        <meshStandardMaterial color="green" opacity={0}  transparent/>
+        <meshStandardMaterial color="green" opacity={0}  />
       </mesh>
       
       {/* Modelo interactivo */}
@@ -112,7 +114,7 @@ const Video = ({
       )}
 
       {/* Video HTML anclado al modelo */}
-      {showVideo && !isInteracting && (
+      {showVideo && !isInteracting && canInteract && (
         <Html
           rotation={videoRotation}
           position={[videoPosition[0], videoPosition[1], videoPosition[2]]}
