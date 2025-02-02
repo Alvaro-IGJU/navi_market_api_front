@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ResponsiveBar } from "@nivo/bar";
+import ReactECharts from 'echarts-for-react';
 import api from "../api";
 
 const CompanyUserPositions = ({ companyId }) => {
@@ -15,16 +15,11 @@ const CompanyUserPositions = ({ companyId }) => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        console.log("Datos de posiciones de usuarios (raw):", response.data);
-
         const positionsData = response.data || [];
-        console.log(positionsData);
         const mappedData = positionsData.map((item) => ({
           position: item.position_title || "Desconocido",
           users: item.user_count,
         }));
-
-        console.log("Datos mapeados para el gráfico de barras:", mappedData);
 
         setBarData(mappedData);
         setLoading(false);
@@ -41,70 +36,89 @@ const CompanyUserPositions = ({ companyId }) => {
   if (loading) return <p className="text-gray-300">Cargando gráfico de posiciones...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
+  const orangeColors = [
+    '#FFA500', // Naranja estándar
+    '#FF8C00', // Naranja oscuro
+    '#FF7F50', // Coral
+    '#FF6347', // Tomate
+    '#FF4500', // Naranja rojizo
+    '#FFD700', // Oro
+    '#FFA07A', // Salmón claro
+    '#FF8C42', // Naranja intermedio
+    '#FF6F61', // Naranja coral
+  ];
+
+  const getOption = () => {
+    const sortedData = [...barData].sort((a, b) => b.users - a.users);
+    const positions = sortedData.map(item => item.position);
+    const users = sortedData.map(item => item.users);
+
+    return {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      xAxis: {
+        type: 'value',
+        max: Math.max(...users) + 10,
+        axisLabel: {
+          color: 'black'
+        }
+      },
+      yAxis: {
+        type: 'category',
+        data: positions,
+        axisLabel: {
+          color: 'black'
+        },
+        inverse: true,
+        animationDuration: 300,
+        animationDurationUpdate: 300
+      },
+      series: [
+        {
+          name: 'Usuarios',
+          type: 'bar',
+          data: users.map((value, index) => ({
+            value,
+            itemStyle: {
+              color: orangeColors[index % orangeColors.length]
+            }
+          })),
+          label: {
+            show: true,
+            position: 'right',
+            color: 'black'
+          },
+          animationDuration: 300,
+          animationDurationUpdate: 300
+        }
+      ],
+      grid: {
+        left: '10%',
+        right: '10%',
+        bottom: '10%',
+        containLabel: true
+      },
+      animation: true,
+      animationDuration: 1000,
+      animationEasing: 'linear',
+      animationDurationUpdate: 1000,
+      animationEasingUpdate: 'linear'
+    };
+  };
+
   return (
     <div className="p-6 pb-10 rounded-lg" style={{ height: "100%" }}>
-      <h2 className="text-xl font-bold text-[#C7AA68] mb-4 text-center">Posiciones de Usuarios</h2>
+      <h2 className="text-xl font-bold text-black mb-4 text-center">Posiciones de Usuarios</h2>
       {barData.length === 0 ? (
         <p className="text-gray-500 text-center">No hay datos disponibles para mostrar en el gráfico.</p>
       ) : (
-        <ResponsiveBar
-          data={barData}
-          keys={["users"]}
-          indexBy="position"
-          margin={{ right: 50, bottom: 100, left: 60 }}
-          padding={0.3}
-          colors={{ scheme: "nivo" }}
-          axisTop={null}
-          axisRight={null}
-          axisBottom={{
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: -45,
-            legend: "Posición",
-            legendPosition: "middle",
-            legendOffset: 70,
-          }}
-          axisLeft={{
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: "Cantidad de Usuarios",
-            legendPosition: "middle",
-            legendOffset: -50,
-          }}
-          labelSkipWidth={12}
-          labelSkipHeight={12}
-          labelTextColor={{
-            from: "color",
-            modifiers: [["darker", 1.6]],
-          }}
-          tooltip={({ id, value, color }) => (
-            <div
-              style={{
-                padding: "5px",
-                color: "black",
-                background: "white",
-                borderRadius: "3px",
-              }}
-            >
-              <span>{id}</span>: <strong>{value}</strong>
-            </div>
-          )}
-          theme={{
-            axis: {
-              ticks: {
-                text: {
-                  fill: "black",
-                },
-              },
-            },
-            grid: {
-              line: {
-                stroke: "#444444",
-                strokeWidth: 1,
-              },
-            },
-          }}
+        <ReactECharts
+          option={getOption()}
+          style={{ height: '200px', width: '100%' }}
         />
       )}
     </div>

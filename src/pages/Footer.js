@@ -31,7 +31,9 @@ const Footer = () => {
             <div className="flex space-x-4">
               <Facebook className="w-6 h-6 text-[#FBFDF0]/80 hover:text-[#FFC28F] cursor-pointer transition-colors" />
               <Twitter className="w-6 h-6 text-[#FBFDF0]/80 hover:text-[#FFC28F] cursor-pointer transition-colors" />
-              <Linkedin className="w-6 h-6 text-[#FBFDF0]/80 hover:text-[#FFC28F] cursor-pointer transition-colors" />
+              <a href="https://www.linkedin.com/company/navifairs/" target="_blank" rel="noopener noreferrer">
+                <Linkedin className="w-6 h-6 text-[#FBFDF0]/80 hover:text-[#FFC28F] cursor-pointer transition-colors" />
+              </a>
               <Instagram className="w-6 h-6 text-[#FBFDF0]/80 hover:text-[#FFC28F] cursor-pointer transition-colors" />
             </div>
           </div>

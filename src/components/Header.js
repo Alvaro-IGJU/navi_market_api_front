@@ -22,7 +22,7 @@ const Header = () => {
 
   return (
     <header className="backdrop-blur-md text-[#FFC28F] shadow-lg fixed top-0 w-full z-50 font-['Poppins']">
-      <nav className="backdrop-blur-md px-4 lg:px-6 py-2.5">
+      <nav className="backdrop-blur-md px-4 lg:px-6 py-1.5">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <NavLink
             to="/"
@@ -31,7 +31,7 @@ const Header = () => {
             <img
               src='/multimedia/images/FINAL LOGO.png'
               alt="Logo"
-              className="self-center h-12 transition-transform duration-300 hover:scale-105"
+              className="self-center h-10 transition-transform duration-300 hover:scale-105"
             />
           </NavLink>
 
@@ -40,14 +40,14 @@ const Header = () => {
               <div className="relative">
                 <button
                   onClick={toggleDropdown}
-                  className="flex items-center space-x-3 focus:outline-none transform transition-all duration-300 hover:scale-105"
+                  className="flex items-center space-x-2 focus:outline-none transform transition-all duration-300 hover:scale-105"
                 >
                   <img
                     src={user?.profile_picture || '/multimedia/images/default-avatar.jpg'}
                     alt="Perfil"
-                    className="w-11 h-11 rounded-full border-2 border-[#FFC28F] transition-all duration-300 hover:border-yellow-300 hover:shadow-lg"
+                    className="w-9 h-9 rounded-full border-2 border-[#FFC28F] transition-all duration-300 hover:border-yellow-300 hover:shadow-lg"
                   />
-                  <span className="hidden lg:block text-sm truncate max-w-[150px] font-medium">
+                  <span className="hidden lg:block text-sm truncate max-w-[120px] font-medium">
                     <b>{user?.username ? `${user.username}` : 'Usuario'}</b>
                   </span>
                 </button>
@@ -85,7 +85,7 @@ const Header = () => {
                         }
                         onClick={closeDropdown}
                       >
-                        <Settings size={16} />
+                        <Settings size={16} strokeWidth={2.5}/>
                         Administración
                       </NavLink>
                     </li>
@@ -126,26 +126,26 @@ const Header = () => {
               <NavLink
                 to="/auth"
                 className={({ isActive }) =>
-                  `flex items-center gap-2 py-2 px-4 no-underline transition-all duration-300 transform hover:scale-105 relative ${
+                  `flex items-center gap-2 py-1 px-3 no-underline transition-all duration-300 transform hover:scale-105 relative ${
                     isActive
                       ? 'text-yellow-300 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300'
                       : 'text-[#FFC28F] hover:text-yellow-300 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'
                   }`
                 }
               >
-                <LogIn size={20} />
+                <LogIn size={18} />
                 Iniciar Sesión
               </NavLink>
             )}
             <button
               data-collapse-toggle="mobile-menu-2"
               type="button"
-              className="inline-flex items-center p-2 ml-1 text-sm text-[#FFC28F] rounded-lg lg:hidden hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors duration-200"
+              className="inline-flex items-center p-1.5 ml-1 text-sm text-[#FFC28F] rounded-lg lg:hidden hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors duration-200"
               onClick={toggleMenu}
             >
               <span className="sr-only">Open main menu</span>
               <svg
-                className={`w-6 h-6 transition-opacity duration-300 ${menuOpen ? 'opacity-0' : 'opacity-100'}`}
+                className={`w-5 h-5 transition-opacity duration-300 ${menuOpen ? 'opacity-0' : 'opacity-100'}`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -157,7 +157,7 @@ const Header = () => {
                 ></path>
               </svg>
               <svg
-                className={`w-6 h-6 absolute transition-opacity duration-300 ${menuOpen ? 'opacity-100' : 'opacity-0'}`}
+                className={`w-5 h-5 absolute transition-opacity duration-300 ${menuOpen ? 'opacity-100' : 'opacity-0'}`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -177,19 +177,19 @@ const Header = () => {
             } justify-between items-center w-full lg:flex lg:w-auto lg:order-1 transition-all duration-300`}
             id="mobile-menu-2"
           >
-            <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+            <ul className="flex flex-col mt-2 font-medium lg:flex-row lg:space-x-6 lg:mt-0">
               <li>
                 <NavLink
                   to="/"
                   className={({ isActive }) =>
-                    `flex items-center gap-2 py-2 pr-4 pl-3 no-underline transition-all duration-300 transform hover:scale-105 relative ${
+                    `flex items-center gap-2 py-1 pr-3 pl-2 no-underline transition-all duration-300 transform hover:scale-105 relative ${
                       isActive
                         ? 'text-yellow-300 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300'
                         : 'text-[#FFC28F] hover:text-[#FFC28F] after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#FFC28F] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'
                     }`
                   }
                 >
-                  <Home size={20} />
+                  <Home size={18} />
                   Home
                 </NavLink>
               </li>
@@ -198,14 +198,14 @@ const Header = () => {
                   <NavLink
                     to="/events"
                     className={({ isActive }) =>
-                      `flex items-center gap-2 py-2 pr-4 pl-3 no-underline transition-all duration-300 transform hover:scale-105 relative ${
+                      `flex items-center gap-2 py-1 pr-3 pl-2 no-underline transition-all duration-300 transform hover:scale-105 relative ${
                         isActive
                           ? 'text-yellow-300 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300'
                           : 'text-[#FFC28F] hover:text-[#FFC28F] after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#FFC28F] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'
                       }`
                     }
                   >
-                    <Calendar size={20} />
+                    <Calendar size={18} />
                     Eventos
                   </NavLink>
                 </li>
@@ -215,14 +215,14 @@ const Header = () => {
                   <NavLink
                     to="/dashboard"
                     className={({ isActive }) =>
-                      `flex items-center gap-2 py-2 pr-4 pl-3 no-underline transition-all duration-300 transform hover:scale-105 relative ${
+                      `flex items-center gap-2 py-1 pr-3 pl-2 no-underline transition-all duration-300 transform hover:scale-105 relative ${
                         isActive
                           ? 'text-yellow-300 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-yellow-300'
                           : 'text-[#FFC28F] hover:text-[#FFC28F] after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#FFC28F] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300'
                       }`
                     }
                   >
-                    <LayoutDashboard size={20} />
+                    <LayoutDashboard size={18} />
                     Dashboard
                   </NavLink>
                 </li>
