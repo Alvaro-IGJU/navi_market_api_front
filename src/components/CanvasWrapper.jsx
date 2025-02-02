@@ -49,6 +49,7 @@ const CanvasWrapper = () => {
             eventId={eventId}
             onStandsLoaded={() => setLoading(false)} // Ocultar LoadingScreen cuando los stands estén cargados
           />
+          
         </Canvas>
       </KeyboardControls>
     </div>

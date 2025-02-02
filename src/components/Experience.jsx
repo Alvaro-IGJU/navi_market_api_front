@@ -108,26 +108,31 @@ const Experience = ({ eventId, onStandsLoaded }) => {
   }, [standsLoaded, stands, onStandsLoaded]);
 
 
+
   const baseConfig = getBasePosition();
 
   return (
     <CameraManager>
       {/* Environment */}
       <Environment
-        files="models/textures/autumn_field_puresky_1k.hdr"
-        background={false}
-      />
-            <directionalLight
-                position={[5, 5, 5]}
-                intensity={0.5}
-                castShadow
-                shadow-mapSize={[2048, 2048]}
-              />;
-      <ambientLight intensity={0.5} />
+  files="models/textures/autumn_field_puresky_1k.hdr"
+  background={false}
+/>
+<directionalLight
+  castShadow
+  position={[10, 10, 10]}
+  intensity={1}
+  color="#FFD1A4" // Tono cálido/dorado
+  shadow-mapSize-width={1024}
+  shadow-mapSize-height={1024}
+  shadow-camera-near={0.5}
+  shadow-camera-far={50}
+/>
+
+
 
       {/* Physics simulation */}
       <Water position={baseConfig.position} args={[20, 20, 128]} />
-      <Grass  position={[-10, -18.5, 20]}  size={3} density={1000}/>
 
       <Physics>
         <Base position={baseConfig.position} scale={baseConfig.scale} castShadow receiveShadow />

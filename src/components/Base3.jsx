@@ -14,7 +14,7 @@ export function Base(props) {
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
   const { nodes, materials } = useGraph(clone)
   return (
-          <RigidBody type="fixed" name="ground" colliders="trimesh">
+      <RigidBody type="fixed" name="ground" colliders="trimesh">
     
     <group {...props} dispose={null}>
       <group position={[0.177, 0, 0]} scale={0.013}>
@@ -636,7 +636,7 @@ export function Base(props) {
       <mesh geometry={nodes.Environment_PalmTree_1012.geometry} material={materials.Atlas} position={[-1.575, 0.066, 1.107]} rotation={[Math.PI / 2, 0, -2.381]} scale={0.078} />
       <mesh geometry={nodes.Environment_PalmTree_1013.geometry} material={materials.Atlas} position={[-1.595, 0.052, -1.092]} rotation={[Math.PI / 2, 0, -1.868]} scale={0.078} />
     </group>
-      </RigidBody>
+  </RigidBody>
      
    )
  }
@@ -644,3 +644,4 @@ export function Base(props) {
  export default Base;
  
  useGLTF.preload('/models/base.glb')
+ 

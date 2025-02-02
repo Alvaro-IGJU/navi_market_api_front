@@ -210,7 +210,7 @@ const Stand = React.memo(({
   return (
     <>
     <group position={position} rotation={rotation}>
-      {type === "bronze" && (
+      {/* {type === "bronze" && (
         <StandBronce scale={[1.3, 1.3, 1.3]} size={size} position={[0, -1, 0]} rotation={[0, 0, 0]} receiveShadow castShadow />
       )}
       {type === "silver" && (
@@ -218,7 +218,7 @@ const Stand = React.memo(({
       )}
       {type === "gold" && (
         <StandGold scale={[2.8, 2.8, 2.8]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} receiveShadow castShadow />
-      )}
+      )} */}
 
       <mesh ref={areaRef} visible={false}>
       <sphereGeometry args={[areaRadius, 32, 32]} /> 
