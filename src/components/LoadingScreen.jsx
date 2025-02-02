@@ -12,13 +12,12 @@ const LoadingScreen = ({ isLoading }) => {
   return (
     <div className={`loading-screen ${isVisible ? "" : "loading-screen--hidden"}`}>
       <div className="loading-screen__container">
-        <h1 className="loading-screen__title">NAVI FAIRS</h1>
-        <div className="progress__container">
+        {/* <div className="progress__container">
           <div
             className="progress__bar"
             style={{ width: `${visibleProgress}%` }}
           ></div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

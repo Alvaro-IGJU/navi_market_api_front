@@ -1,14 +1,14 @@
 const layoutConfig = {
     position:{
       bronze: {
-        mailboxPosition: [0.6, -1, -1.3],
-        videoPosition: [0.3, 0.0, -0],
-        screenPosition:[3.5, -0, -0.01],
-        computerPosition:[0, -0.4, -0.3],
-        catalogPosition: [0, -0.29, 0.33],
-        chatbotPosition: [-1, -0.16, 0],
-        scheduleMeetingPosition: [-0.28, -0.29, 0],
-        companyLogoPosition: [0, 1.2, 0]
+        mailboxPosition: [0.75, -1, 1.5],
+        videoPosition: [-1.06, 0.0, -0],
+        screenPosition:[-7.3, -0, -0.01],
+        computerPosition:[0, -0.6, 0.74],
+        catalogPosition: [-1.1, 0, 1],
+        chatbotPosition: [1, -1, -0.8],
+        scheduleMeetingPosition: [-1.1, 0, -1],
+        companyLogoPosition: [0.05, 1.2, 0]
       },
       silver: {
         mailboxPosition: [-2, -1, 3.5],
@@ -35,14 +35,14 @@ const layoutConfig = {
     },
     rotation:{
       bronze: {
-        mailboxRotation: [0,- Math.PI / 2,0],
+        mailboxRotation: [0,- Math.PI ,0],
         videoRotation: [0, Math.PI / 2, 0],
         screenRotation:[Math.PI / 2, Math.PI, Math.PI],
-        computerRotation:[0, Math.PI / 2, 0],
-        catalogRotation: [-0.1, 0, 0],
-        chatbotRotation: [0, Math.PI , 0],
-        scheduleMeetingRotation: [Math.PI/2, 0, Math.PI/2],
-        companyLogoRotation: [0, 0, 0],
+        computerRotation:[0, Math.PI/100, 0],
+        catalogRotation: [0, Math.PI / 2, 0],
+        chatbotRotation: [0, Math.PI/2 , 0],
+        scheduleMeetingRotation: [0, 0,0],
+        companyLogoRotation: [0, 5, 0],
 
       },
       silver: {

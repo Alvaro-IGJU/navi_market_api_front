@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useGLTF, Html } from "@react-three/drei";
 
-export function Mailbox({ handleClick, canInteract, isInteracting, position, ...props }) {
+export const Mailbox = React.memo(({ handleClick, canInteract, isInteracting, position, ...props }) => {
   const { nodes, materials } = useGLTF("/models/mailbox.glb"); // Usamos el modelo cargado
   const [hoverMessage, setHoverMessage] = useState(null); // Estado para el mensaje interactivo
   const [clickCooldown, setClickCooldown] = useState(false); // Estado para el cooldown
@@ -109,7 +109,7 @@ export function Mailbox({ handleClick, canInteract, isInteracting, position, ...
       )}
     </>
   );
-}
+});
 
 export default Mailbox;
 

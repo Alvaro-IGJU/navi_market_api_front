@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { RigidBody } from "@react-three/rapier";
 import { useFrame } from "@react-three/fiber";
-import { Html, useVideoTexture } from "@react-three/drei";
+import { Html, Text, useVideoTexture } from "@react-three/drei";
 import api from "../api";
 import { useControls } from "leva";
 import ChatBot from "./ChatBot";
@@ -15,6 +15,7 @@ import Computer from "./Computer";
 import layoutConfig from "../utils/interactiveConfig";
 import  Phone  from "./Phone";
 import LogoTexture from "./LogoTexture";
+import GoogleCalendar from "./GoogleCalendar";
 
 const Stand = React.memo(({
   id,
@@ -31,19 +32,13 @@ const Stand = React.memo(({
   url_video,
   url_web,
   company_logo,
+  company_name,
+  videoRadius
 }) => {
   
-
-  // const { posX, posY, posZ, rotX, rotY, rotZ } = useControls(`Stand ${id}`, {
-  //   posX: { value: position[0], min: -100, max: 100, step: 0.1 },
-  //   posY: { value: position[1], min: -100, max: 10, step: 0.1 },
-  //   posZ: { value: position[2], min: -100, max: 100, step: 0.1 },
-  //   rotX: { value: rotation[0], min: -Math.PI, max: Math.PI, step: 0.01 },
-  //   rotY: { value: rotation[1], min: -Math.PI, max: Math.PI, step: 0.01 },
-  //   rotZ: { value: rotation[2], min: -Math.PI, max: Math.PI, step: 0.01 },
-  // });
   const isCharacterInside = useRef(false);
   const areaRef = useRef();
+  const videoAreaRef = useRef();
   const [canInteract, setCanInteract] = useState(false);
   const [showVideo, setShowVideo] = useState(false); // Estado para mostrar el video
   const timeInside = useRef(0);
@@ -173,6 +168,12 @@ const Stand = React.memo(({
 
       const insideArea = distance <= areaRadius;
 
+      
+      
+    //  setShowVideo(distance <= videoRadius);
+
+ 
+
       if (insideArea && !isCharacterInside.current) {
         isCharacterInside.current = true;
         setCanInteract(true);
@@ -181,7 +182,6 @@ const Stand = React.memo(({
       } else if (!insideArea && isCharacterInside.current) {
         isCharacterInside.current = false;
         setCanInteract(false);
-        setShowVideo(false); 
         console.log("Character left the area.");
         endInteraction();
       }
@@ -210,22 +210,35 @@ const Stand = React.memo(({
   return (
     <>
     <group position={position} rotation={rotation}>
-      {type === "bronze" && (
-        <StandBronce scale={[0.1, 0.1, 0.1]} size={size} position={[0, -1, 0]} rotation={[0, 0, 0]} castShadow />
+      {/* {type === "bronze" && (
+        <StandBronce scale={[1.3, 1.3, 1.3]} size={size} position={[0, -1, 0]} rotation={[0, 0, 0]} receiveShadow castShadow />
       )}
       {type === "silver" && (
-        <StandSilver scale={[0.5, 0.5, 0.5]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
+        <StandSilver scale={[1, 1, 1]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} receiveShadow castShadow />
       )}
       {type === "gold" && (
-        <StandGold scale={[2.8, 2.8, 2.8]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} />
-      )}
+        <StandGold scale={[2.8, 2.8, 2.8]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} receiveShadow castShadow />
+      )} */}
 
       <mesh ref={areaRef} visible={false}>
       <sphereGeometry args={[areaRadius, 32, 32]} /> 
-        <meshStandardMaterial color="green" transparent opacity={0} />
+        <meshStandardMaterial color="green" transparent opacity={0.1} />
       </mesh>
 
+      <mesh ref={videoAreaRef} visible={false}>
+      <sphereGeometry args={[videoRadius, 32, 32]} /> 
+        <meshStandardMaterial color="green"  opacity={0} />
+      </mesh>
     
+      {/* <Text
+        font="/fonts/Raleway-Regular.ttf"
+        color="black"
+        position={[-1.1, 0.5, 0]}
+        rotation={[0, 1.57, 0]}
+        scale={[0.15, 0.15, 0.15]}
+      >
+        {company_name}
+      </Text> */}
 
 <Mailbox scale={[0.1, 0.1, 0.1]}
          rotation={mailboxRotation} 
@@ -272,10 +285,10 @@ const Stand = React.memo(({
   catalogBase64={catalog_pdf}
 />
 
-<Phone 
+<GoogleCalendar 
   position={scheduleMeetingPosition}
   rotation={scheduleMeetingRotation}
-  scale={[0.1, 0.1, 0.1]} // Ajusta la escala según sea necesario
+  scale={[0.2, 0.2, 0.2]} // Ajusta la escala según sea necesario
   handleClick={handleClick} // Pasa la función de clic
   canInteract={canInteract} // Pasa la capacidad de interacción
   isInteracting={isInteracting}
@@ -301,6 +314,7 @@ const Stand = React.memo(({
           base64={company_logo}
           position={[companyLogoPosition[0], companyLogoPosition[1], companyLogoPosition[2]]}
           resolution={[1, 1]} // Cambia a la resolución que necesites
+          rotation={[0,1.57,0]}
         />
       )}
     </group>

@@ -15,7 +15,6 @@ const ChatWindow = ({ chat, onClose }) => {
         });
         const data = await response.json();
         setMessages(data.messages || []);
-        console.log("AAAA")
       } catch (err) {
         console.error("Error fetching messages:", err);
       }
@@ -26,18 +25,13 @@ const ChatWindow = ({ chat, onClose }) => {
     // Establecer conexión WebSocket al abrir el chat
     const ws = new WebSocket(`ws://localhost:8000/ws/companies/chats/${chat.id}/`);
 
-    ws.onopen = () => {
-      console.log("WebSocket conectado");
-    };
+   
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       setMessages((prevMessages) => [...prevMessages, data.message]);
     };
 
-    ws.onclose = () => {
-      console.log("WebSocket desconectado");
-    };
 
     ws.onerror = (error) => {
       console.error("WebSocket error:", error);

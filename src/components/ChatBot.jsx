@@ -1,24 +1,37 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useEffect, useState, useMemo } from "react";
 import { Html, PerspectiveCamera } from "@react-three/drei";
 import { useCameraManager } from "./CameraManager";
 import api from "../api";
-import { applyAccentRules } from '../utils/chatBotInputAccentRules';
+import { applyAccentRules } from "../utils/chatBotInputAccentRules";
 import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
+import Avatar from "./Avatar";
 
-const ChatBot = ({ standId, position, rotation,  canInteract, isInteracting, setIsInteracting, handleClick }) => {
-  const { registerStandCamera, activateStandCamera, activatePlayerCamera } = useCameraManager();
+const ChatBot = ({
+  standId,
+  position,
+  rotation,
+  canInteract,
+  isInteracting,
+  setIsInteracting,
+  handleClick,
+}) => {
+  const { registerStandCamera, activateStandCamera, activatePlayerCamera } =
+    useCameraManager();
   const cameraRef = useRef();
   const textRef = useRef();
   const [showInput, setShowInput] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
-  const [displayedMessage, setDisplayedMessage] = useState("¡Hola! Hazme una pregunta.");
+  const [displayedMessage, setDisplayedMessage] = useState(
+    "¡Hola! Hazme una pregunta."
+  );
   const [input, setInput] = useState("");
   const [planeHeight, setPlaneHeight] = useState(100);
-  const [planeWidth, setPlaneWidth] = useState(window.innerWidth * 0.8); // Inicializa con el 80% del ancho de la pantalla
+  const [planeWidth, setPlaneWidth] = useState(window.innerWidth * 0.8);
   const texture = useLoader(TextureLoader, "/multimedia/images/DEGRADADO_NAVI-15.png");
 
-  const isMobile = window.innerWidth <= 768; // Verifica si es un dispositivo móvil
+  // Usamos useMemo para determinar si es un dispositivo móvil (se calcula una sola vez)
+  const isMobile = useMemo(() => window.innerWidth <= 768, []);
 
   useEffect(() => {
     if (cameraRef.current) {
@@ -35,7 +48,7 @@ const ChatBot = ({ standId, position, rotation,  canInteract, isInteracting, set
   };
 
   const updatePlaneWidth = () => {
-    setPlaneWidth(window.innerWidth * 0.8); // Ajusta el ancho al 80% del ancho de la pantalla
+    setPlaneWidth(window.innerWidth * 0.8);
   };
 
   useEffect(() => {
@@ -43,7 +56,6 @@ const ChatBot = ({ standId, position, rotation,  canInteract, isInteracting, set
   }, [displayedMessage]);
 
   useEffect(() => {
-    // Escucha los cambios en el tamaño de la ventana
     window.addEventListener("resize", updatePlaneWidth);
     return () => {
       window.removeEventListener("resize", updatePlaneWidth);
@@ -97,11 +109,14 @@ const ChatBot = ({ standId, position, rotation,  canInteract, isInteracting, set
       if (handleClick) {
         handleClick("talk_chatbot");
       }
-      const responseMessage = response.data.response || "No tengo respuesta ahora.";
+      const responseMessage =
+        response.data.response || "No tengo respuesta ahora.";
       await revealMessage(responseMessage);
     } catch (error) {
       console.error("Error al obtener respuesta del chatbot:", error);
-      await revealMessage("Ha surgido un error y ahora mismo no puedo contestarte.");
+      await revealMessage(
+        "Ha surgido un error y ahora mismo no puedo contestarte."
+      );
     } finally {
       setIsThinking(false);
     }
@@ -109,94 +124,98 @@ const ChatBot = ({ standId, position, rotation,  canInteract, isInteracting, set
     setInput("");
   };
 
+  // Memoizamos el estilo del cuadro principal para el mensaje
+  const mainHtmlStyle = useMemo(
+    () => ({
+      width: `${planeWidth}px`, // Ancho dinámico basado en estado
+      maxWidth: "800px", // Ancho máximo
+      height: `${planeHeight}px`,
+      backgroundColor: "rgba(255, 255, 255, 0.9)",
+      borderRadius: "8px",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      textAlign: "center",
+      padding: "8px",
+      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+      overflow: "hidden",
+      position: "absolute", // Posición fija en 3D
+      left: "50%", // Centrado horizontal
+      transform: "translateX(-50%)", // Ajuste fino del centrado
+    }),
+    [planeWidth, planeHeight]
+  );
+
+  // Memoizamos el estilo del contenedor del input
+  const inputContainerStyle = useMemo(
+    () => ({
+      backgroundColor: "rgba(255, 255, 255, 0.9)",
+      padding: "1rem",
+      borderRadius: "8px",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+      width:
+        window.innerWidth > 1200
+          ? "500px" // Pantallas grandes
+          : window.innerWidth > 768
+          ? "400px" // Pantallas medianas
+          : "300px", // Pantallas pequeñas
+      maxWidth: "500px",
+    }),
+    []
+  );
+
   return (
     <group position={position} rotation={rotation}>
-      <PerspectiveCamera ref={cameraRef} makeDefault={false} position={[0, 0.1, 2]} fov={50} />
-      <mesh
-      rotation={[3.5,0,-2]}
-      scale={[2, 2, 2]}
-      onClick={handleChatbotClick}
-      onPointerOver={(e) => {
-        if (canInteract && !isInteracting) {
-          e.stopPropagation(); // Evita que el evento se propague
-          e.object.material.emissive.set("yellow"); // Añade brillo amarillo
-          e.object.material.emissiveIntensity = 0.2; // Ajusta la intensidad
-          document.body.style.cursor = "pointer";
-        }
-      }}
-      onPointerOut={(e) => {
-        e.object.material.emissive.set("black");
-        e.object.material.emissiveIntensity = 0;
-        document.body.style.cursor = "default";
-      }}
-    >
-      <sphereGeometry  args={[0.1, 12, 12]} />
-      <meshStandardMaterial
-        map={texture} // Aplicar la textura como el mapa del material
-        emissive="black"
-        emissiveIntensity={0}
+      <PerspectiveCamera
+        ref={cameraRef}
+        makeDefault={false}
+        position={[0, 0.1, 2]}
+        fov={50}
       />
-    </mesh>
-
-
-      {showInput && (
-  <>
-    {/* Cuadro principal */}
-    <Html position={[0, 0.5, 1]} style={{ transform: 'translate(-50%, 0)' }}>
-      <div
-        style={{
-          width: `${planeWidth}px`, // Ancho dinámico basado en porcentaje
-          maxWidth: "800px", // Ancho máximo
-          height: `${planeHeight}px`,
-          backgroundColor: "rgba(255, 255, 255, 0.9)",
-          borderRadius: "8px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          textAlign: "center",
-          padding: "8px",
-          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-          overflow: "hidden",
-          position: "absolute", // Posición fija en 3D
-          left: "50%", // Centrar en la pantalla
-          transform: "translateX(-50%)", // Ajustar para un centrado perfecto
+      <mesh
+        scale={[0.45, 0.45, 0.45]}
+        onClick={handleChatbotClick}
+        onPointerOver={(e) => {
+          if (canInteract && !isInteracting) {
+            e.stopPropagation();
+            e.object.material.emissive.set("yellow");
+            e.object.material.emissiveIntensity = 0.2;
+            document.body.style.cursor = "pointer";
+          }
+        }}
+        onPointerOut={(e) => {
+          e.object.material.emissive.set("black");
+          e.object.material.emissiveIntensity = 0;
+          document.body.style.cursor = "default";
         }}
       >
-        <div
-          ref={textRef}
-          className="text-content"
-          style={{
-            whiteSpace: "normal",
-            fontSize: "20px",
-            lineHeight: "1.5",
-          }}
-        >
-          {displayedMessage}
-        </div>
-      </div>
-    </Html>
-  </>
-)}
+        <Avatar />
+      </mesh>
 
-{showInput && (
+      {showInput && (
+        <>
+          <Html position={[0, 0.5, 1]} style={mainHtmlStyle}>
+            <div
+              ref={textRef}
+              className="text-content"
+              style={{
+                whiteSpace: "normal",
+                fontSize: "20px",
+                lineHeight: "1.5",
+              }}
+            >
+              {displayedMessage}
+            </div>
+          </Html>
+        </>
+      )}
+
+      {showInput && (
         <Html center position={[0, isMobile ? -0.3 : -0.5, 0]}>
-          <div
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.9)",
-              padding: "1rem",
-              borderRadius: "8px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-              width: window.innerWidth > 1200 
-                ? "500px" // Pantallas grandes
-                : window.innerWidth > 768 
-                ? "400px" // Pantallas medianas
-                : "300px", // Pantallas pequeñas
-              maxWidth: "500px", // Ancho máximo
-            }}
-          >
+          <div style={inputContainerStyle}>
             <input
               type="text"
               value={input}

@@ -12,6 +12,8 @@ import { getBasePosition } from "../utils/basePosition";
 import { CameraManager } from "./CameraManager";
 import BoundedArea from "./BoundedArea";
 import * as THREE from "three";
+import Water from "./WaterShader";
+import {Grass} from "./GrassShader";
 
 const Experience = ({ eventId, onStandsLoaded }) => {
   const characterRef = useRef();
@@ -105,23 +107,7 @@ const Experience = ({ eventId, onStandsLoaded }) => {
     }
   }, [standsLoaded, stands, onStandsLoaded]);
 
-  // Actualizar la visibilidad de los stands en cada frame
-  useFrame(({ camera }) => {
-    matrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
-    frustum.setFromProjectionMatrix(matrix);
 
-    setStands((currentStands) =>
-      currentStands.map((stand) => {
-        const standPosition = new THREE.Vector3(...stand.position);
-        const distance = camera.position.distanceTo(standPosition);
-
-        return {
-          ...stand,
-          visible: distance < renderDistance && frustum.containsPoint(standPosition),
-        };
-      })
-    );
-  });
 
   const baseConfig = getBasePosition();
 
@@ -129,14 +115,27 @@ const Experience = ({ eventId, onStandsLoaded }) => {
     <CameraManager>
       {/* Environment */}
       <Environment
-        files="models/textures/autumn_field_puresky_1k.hdr"
-        background={false}
-      />
-      <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
+  files="models/textures/autumn_field_puresky_1k.hdr"
+  background={false}
+/>
+<directionalLight
+  castShadow
+  position={[10, 10, 10]}
+  intensity={1}
+  color="#FFD1A4" // Tono cálido/dorado
+  shadow-mapSize-width={1024}
+  shadow-mapSize-height={1024}
+  shadow-camera-near={0.5}
+  shadow-camera-far={50}
+/>
+
+
 
       {/* Physics simulation */}
+      <Water position={baseConfig.position} args={[20, 20, 128]} />
+
       <Physics>
-        <Base position={baseConfig.position} scale={baseConfig.scale} />
+        <Base position={baseConfig.position} scale={baseConfig.scale} castShadow receiveShadow />
         {stands.map((stand) =>
           stand.visible ? (
             <Stand
@@ -153,7 +152,10 @@ const Experience = ({ eventId, onStandsLoaded }) => {
               url_video={stand.url_video}
               url_web={stand.url_web}
               areaRadius={stand.areaRadius}
+              videoRadius={stand.areaRadius + 6}
               company_logo={stand.company_logo}
+              company_name = {stand.name}
+              receiveShadow castShadow
             />
           ) : null
         )}

@@ -18,6 +18,9 @@ const Video = ({
   const [isHovering, setIsHovering] = useState(false);
   const materialsRef = useRef([]); // Almacena referencias a los materiales del modelo
 
+  // Agregamos un ref para el plano occluder
+  const videoAreaRef = useRef();
+
   const setMaterialsEmissive = (color, intensity) => {
     materialsRef.current.forEach((material) => {
       material.emissive.set(color);
@@ -64,11 +67,22 @@ const Video = ({
 
   return (
     <group>
+      {/* Plano occluder: se renderiza pero es invisible */}
+      <mesh
+        ref={videoAreaRef}
+        visible={true}
+        rotation={[0, -1.6, 0]}
+        position={[-1.3, 0, 0]}
+      >
+        <planeGeometry args={[3, 3]} />
+        <meshStandardMaterial color="green" opacity={0}  transparent/>
+      </mesh>
+      
       {/* Modelo interactivo */}
       <group
         screenPosition={screenPosition}
         rotation={screenRotation}
-        scale={[0.08, 0.08, 0.08]}
+        scale={[0.15, 0.15, 0.15]}
         onClick={handleVideoClick}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
@@ -79,14 +93,18 @@ const Video = ({
       {/* Mensaje interactivo */}
       {hoverMessage && isHovering && canInteract && !isInteracting && (
         <Html
-          position={[videoPosition[0], videoPosition[1] + 0.2, videoPosition[2] + 0.2]}
+          position={[
+            videoPosition[0],
+            videoPosition[1] + 0.5,
+            videoPosition[2] + 0.2,
+          ]}
           style={{
             background: "rgba(0, 0, 0, 0.8)",
             color: "white",
             padding: "5px 20px",
             borderRadius: "5px",
-            fontSize: "12px",
-            width: "91px",
+            fontSize: "15px",
+            width: "105px",
           }}
         >
           {hoverMessage}
@@ -94,14 +112,14 @@ const Video = ({
       )}
 
       {/* Video HTML anclado al modelo */}
-      {showVideo && (
+      {showVideo && !isInteracting && (
         <Html
           rotation={videoRotation}
           position={[videoPosition[0], videoPosition[1], videoPosition[2]]}
-          scale={[0.41, 0.41, 0.41]}
+          scale={[0.7, 0.7, 0.7]}
           transform
           distanceFactor={1.5}
-          occlude
+          occlude={[videoAreaRef]}
           zIndexRange={[1, 10]}
         >
           <div
