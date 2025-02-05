@@ -1,77 +1,71 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useGLTF, Html } from "@react-three/drei";
 
 export const Mailbox = React.memo(({ handleClick, canInteract, isInteracting, position, ...props }) => {
-  const { nodes, materials } = useGLTF("/models/mailbox.glb"); // Usamos el modelo cargado
-  const [hoverMessage, setHoverMessage] = useState(null); // Estado para el mensaje interactivo
-  const [clickCooldown, setClickCooldown] = useState(false); // Estado para el cooldown
-  const [countdown, setCountdown] = useState(0); // Tiempo restante del cooldown
-  const isHovering = useRef(false); // Rastrea si el cursor está sobre el buzón
+  const { nodes, materials } = useGLTF("/models/mailbox.glb"); // Cargar el modelo
+  const [hoverMessage, setHoverMessage] = useState(null); // Mensaje interactivo
+  const clickCooldown = useRef(false); // Usar `useRef` para evitar re-renderizados
+  const countdown = useRef(0); // Usar `useRef` para evitar re-renderizados
+  const isHovering = useRef(false); // Usar `useRef` para el estado del cursor
 
-  const handleMailboxClick = () => {
-    if (clickCooldown) return; // Evitar clics si está en cooldown
+  // Memorizar los materiales y geometrías del modelo GLTF para evitar recargas innecesarias
+  const gltfModel = useMemo(() => ({ nodes, materials }), [nodes, materials]);
 
-    handleClick("mailbox"); // Llama a la función pasada como prop
+  // Función optimizada para manejar el clic en el buzón
+  const handleMailboxClick = useCallback(() => {
+    if (clickCooldown.current) return;
 
-    // Inicia el cooldown
-    const cooldownTime = 2 * 60; // Tiempo de enfriamiento en segundos
-    setClickCooldown(true);
-    setCountdown(cooldownTime);
+    handleClick("mailbox");
+
+    // Iniciar el cooldown
+    const cooldownTime = 2 * 60; // Cooldown de 2 minutos
+    clickCooldown.current = true;
+    countdown.current = cooldownTime;
 
     const interval = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          setClickCooldown(false);
-          return 0;
-        }
-        return prev - 1;
-      });
+      countdown.current -= 1;
+      if (countdown.current <= 1) {
+        clearInterval(interval);
+        clickCooldown.current = false;
+      }
     }, 1000);
-  };
+  }, [handleClick]);
 
+  // Cambiar los materiales emisivos del buzón
   const setMaterialsEmissive = (color, intensity) => {
-    Object.values(materials).forEach((material) => {
+    Object.values(gltfModel.materials).forEach((material) => {
       material.emissive.set(color);
       material.emissiveIntensity = intensity;
     });
   };
 
-  const handlePointerOver = () => {
+  // Manejo del puntero sobre el objeto
+  const handlePointerOver = useCallback(() => {
     if (canInteract && !isInteracting) {
-      isHovering.current = true; // Marca que el cursor está sobre el modelo
-      setMaterialsEmissive("yellow", 0.1); // Cambia todos los materiales a amarillo
+      isHovering.current = true;
+      setMaterialsEmissive("yellow", 0.1);
       document.body.style.cursor = "pointer";
-
-      // Establece el mensaje interactivo basado en el estado del cooldown
-      if (clickCooldown) {
-        setHoverMessage(`Espera ${countdown}s`);
-      } else {
-        setHoverMessage("Solicitar email informativo");
-      }
+      setHoverMessage(clickCooldown.current ? `Espera ${countdown.current}s` : "Solicitar email informativo");
     }
-  };
+  }, [canInteract, isInteracting]);
 
-  const handlePointerOut = () => {
-    isHovering.current = false; // Marca que el cursor ya no está sobre el modelo
-    setMaterialsEmissive("black", 0); // Resetea todos los materiales
+  // Manejo del puntero fuera del objeto
+  const handlePointerOut = useCallback(() => {
+    isHovering.current = false;
+    setMaterialsEmissive("black", 0);
     document.body.style.cursor = "default";
-    setHoverMessage(null); // Limpia el mensaje interactivo
-  };
+    setHoverMessage(null);
+  }, []);
 
+  // Efecto para actualizar el mensaje interactivo y el cooldown
   useEffect(() => {
-    // Limpieza del mensaje si `isHovering` cambia a falso
-    if (!isHovering.current) {
-      setHoverMessage(null);
-    }
-
-    // Actualiza el mensaje durante el cooldown
-    if (clickCooldown) {
-      setHoverMessage(`Espera ${countdown}s`);
+    if (!isHovering.current) setHoverMessage(null);
+    if (clickCooldown.current) {
+      setHoverMessage(`Espera ${countdown.current}s`);
     } else if (isHovering.current && canInteract && !isInteracting) {
       setHoverMessage("Solicitar email informativo");
     }
-  }, [clickCooldown, countdown, canInteract, isInteracting]);
+  }, [clickCooldown.current, countdown.current, canInteract, isInteracting]);
 
   return (
     <>
@@ -83,13 +77,13 @@ export const Mailbox = React.memo(({ handleClick, canInteract, isInteracting, po
         onPointerOut={handlePointerOut}
       >
         <group position={[0, 5.649, 0]} rotation={[1.567, 0, 0]} scale={[0.156, 0.089, 0.156]}>
-          <mesh geometry={nodes.Torus.geometry} material={materials["Material.001"]} />
-          <mesh geometry={nodes.Torus_1.geometry} material={nodes.Torus_1.material} />
-          <mesh geometry={nodes.Torus_2.geometry} material={materials["Material.002"]} />
+          <mesh geometry={gltfModel.nodes.Torus.geometry} material={gltfModel.materials["Material.001"]} />
+          <mesh geometry={gltfModel.nodes.Torus_1.geometry} material={gltfModel.nodes.Torus_1.material} />
+          <mesh geometry={gltfModel.nodes.Torus_2.geometry} material={gltfModel.materials["Material.002"]} />
         </group>
       </group>
 
-      {/* Mostrar el mensaje interactivo si existe */}
+      {/* Mostrar el mensaje interactivo si es necesario */}
       {hoverMessage && isHovering.current && canInteract && !isInteracting && (
         <Html position={[position[0], position[1] + 0.75, position[2]]} distanceFactor={3}>
           <div

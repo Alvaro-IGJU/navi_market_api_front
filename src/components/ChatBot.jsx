@@ -211,7 +211,7 @@ const ChatBot = ({
       )}
 
       {showInput && (
-        <Html center position={[0, isMobile ? 0. : -0, 0]}>
+        <Html center position={[0, isMobile ? 0.28 : -0, 0]}>
           <div style={inputContainerStyle}>
             <input
               type="text"

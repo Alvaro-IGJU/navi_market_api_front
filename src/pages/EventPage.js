@@ -47,7 +47,6 @@ const EventPage = () => {
   useEffect(() => {
     const fetchEventDetails = async () => {
       try {
-        console.log("Fetching event with ID:", eventId);
         const response = await api.get(`/events/${eventId}/`);
         setEventDetails(response.data);
       } catch (err) {

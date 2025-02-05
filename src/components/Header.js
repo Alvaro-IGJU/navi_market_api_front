@@ -148,7 +148,7 @@ const Header = () => {
                 className={`w-5 h-5 transition-opacity duration-300 ${menuOpen ? 'opacity-0' : 'opacity-100'}`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
+                xmlns="https://www.w3.org/2000/svg"
               >
                 <path
                   fillRule="evenodd"
@@ -160,7 +160,7 @@ const Header = () => {
                 className={`w-5 h-5 absolute transition-opacity duration-300 ${menuOpen ? 'opacity-100' : 'opacity-0'}`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
+                xmlns="https://www.w3.org/2000/svg"
               >
                 <path
                   fillRule="evenodd"

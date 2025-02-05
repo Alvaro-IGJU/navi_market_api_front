@@ -47,7 +47,6 @@ const Experience = ({ eventId, onStandsLoaded }) => {
 
       setStands(fetchedStands);
       setStandsLoaded(true); // Indicar que la carga de los stands ha finalizado
-      console.log("Stands cargados:", fetchedStands);
     } catch (error) {
       console.error("Error al cargar los stands:", error.response || error);
     }
@@ -60,7 +59,6 @@ const Experience = ({ eventId, onStandsLoaded }) => {
       await api.post(`/interactions/visits/register/${eventId}/`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log("Visita registrada.");
     } catch (error) {
       console.error("Error al registrar la entrada:", error.response || error);
     }
@@ -73,7 +71,6 @@ const Experience = ({ eventId, onStandsLoaded }) => {
       const response = await api.post(`/interactions/visits/close/${eventId}/`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(`Visita cerrada. Tiempo total: ${response.data.total_time} segundos`);
     } catch (error) {
       console.error("Error al registrar la salida:", error.response || error);
     }
@@ -102,7 +99,6 @@ const Experience = ({ eventId, onStandsLoaded }) => {
   // Llamar a `onStandsLoaded` cuando los stands estén completamente cargados
   useEffect(() => {
     if (standsLoaded && stands.length > 0 && onStandsLoaded) {
-      console.log("Stands listos:", stands);
       onStandsLoaded(); // Notificar al componente padre
     }
   }, [standsLoaded, stands, onStandsLoaded]);

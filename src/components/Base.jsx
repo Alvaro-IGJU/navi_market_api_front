@@ -15,7 +15,6 @@ export function Base(props) {
   
   useEffect(() => {
     if (!scene) return
-    console.log("AAAAAA")
     scene.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = true
@@ -26,6 +25,7 @@ export function Base(props) {
 
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
   const { nodes, materials } = useGraph(clone)
+
   return (
     
     <group {...props} dispose={null}>
@@ -149,8 +149,17 @@ export function Base(props) {
       <mesh geometry={nodes.mini_rock_5018.geometry} castShadow receiveShadow material={materials['color_Palette.004']} position={[-1, 0.048, 1.68]} rotation={[0, -1.377, 0]} scale={0.099} />
       <mesh geometry={nodes.mini_rock_5019.geometry} castShadow receiveShadow material={materials['color_Palette.004']} position={[-1.614, 0.074, 1.132]} rotation={[Math.PI, -0.406, Math.PI]} scale={0.099} />
       <mesh geometry={nodes.mini_rock_5020.geometry} castShadow receiveShadow material={materials['color_Palette.004']} position={[-1.642, 0.06, -1.089]} rotation={[-Math.PI, 0.106, -Math.PI]} scale={0.099} />
-      <mesh geometry={nodes.Text.geometry} castShadow receiveShadow material={materials['Material.006']} position={[0.318, 0.629, -0.316]} rotation={[1.563, 0.001, -2.363]} scale={0.125} />
-      <group position={[-0.051, 0.223, -0.958]} rotation={[0, -1.566, 0]} scale={0.004}>
+          <mesh
+      geometry={nodes.Text.geometry}
+      castShadow
+      receiveShadow
+      position={[0.318, 0.629, -0.316]}
+      rotation={[1.563, 0.001, -2.363]}
+      scale={0.125}
+    >
+          <meshStandardMaterial attach="material" color="#ff9300" />
+        </mesh>      
+        <group position={[-0.051, 0.223, -0.958]} rotation={[0, -1.566, 0]} scale={0.004}>
         <mesh geometry={nodes.Cube010.geometry} castShadow receiveShadow material={materials['negro_soporte.001']} />
         <mesh geometry={nodes.Cube010_1.geometry} castShadow receiveShadow material={materials['Material.008']} />
         <mesh geometry={nodes.Cube010_2.geometry} castShadow receiveShadow material={materials.negro_soporte} />

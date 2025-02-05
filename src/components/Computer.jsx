@@ -1,39 +1,42 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { useGLTF, Html } from "@react-three/drei";
 
-export const Computer = React.memo(({ handleClick, canInteract, isInteracting, position, webUrl, ...props }) => {
+const Computer = React.memo(({ handleClick, canInteract, isInteracting, position, webUrl, ...props }) => {
   const { nodes, materials } = useGLTF("/models/computer.glb");
   const [hoverMessage, setHoverMessage] = useState(null);
-  const [clickCooldown, setClickCooldown] = useState(false);
-  const [countdown, setCountdown] = useState(0);
+  const clickCooldown = useRef(false); // Usamos useRef para evitar renders innecesarios
+  const countdown = useRef(0); // Usamos useRef para evitar renders innecesarios
   const isHovering = useRef(false);
 
+  // Memorizamos el modelo GLTF para no cargarlo de nuevo en cada renderizado
+  const gltfModel = useMemo(() => {
+    return { nodes, materials };
+  }, [nodes, materials]);
+
   const handleComputerClick = () => {
-    if (clickCooldown) return;
+    if (clickCooldown.current) return;
 
     handleClick("info_pc");
-
-    // Abre la URL en una nueva ventana o pestaña
     window.open(webUrl, "_blank", "noopener,noreferrer");
 
-    const cooldownTime = 2 * 60; // Cooldown en segundos
-    setClickCooldown(true);
-    setCountdown(cooldownTime);
+    // Configuración de cooldown con useRef
+    const cooldownTime = 2 * 60;
+    clickCooldown.current = true;
+    countdown.current = cooldownTime;
 
     const interval = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          setClickCooldown(false);
-          return 0;
-        }
-        return prev - 1;
-      });
+      if (countdown.current <= 1) {
+        clearInterval(interval);
+        clickCooldown.current = false;
+      } else {
+        countdown.current -= 1;
+      }
+      setHoverMessage(`Espera ${countdown.current}s`);
     }, 1000);
   };
 
   const setMaterialsEmissive = (color, intensity) => {
-    Object.values(materials).forEach((material) => {
+    Object.values(gltfModel.materials).forEach((material) => {
       material.emissive.set(color);
       material.emissiveIntensity = intensity;
     });
@@ -44,8 +47,7 @@ export const Computer = React.memo(({ handleClick, canInteract, isInteracting, p
       isHovering.current = true;
       setMaterialsEmissive("yellow", 0.1);
       document.body.style.cursor = "pointer";
-
-      setHoverMessage(clickCooldown ? `Espera ${countdown}s` : "Abrir web en nueva ventana");
+      setHoverMessage(clickCooldown.current ? `Espera ${countdown.current}s` : "Abrir web en nueva ventana");
     }
   };
 
@@ -55,16 +57,6 @@ export const Computer = React.memo(({ handleClick, canInteract, isInteracting, p
     document.body.style.cursor = "default";
     setHoverMessage(null);
   };
-
-  useEffect(() => {
-    if (!isHovering.current) setHoverMessage(null);
-
-    if (clickCooldown) {
-      setHoverMessage(`Espera ${countdown}s`);
-    } else if (isHovering.current && canInteract && !isInteracting) {
-      setHoverMessage("Abrir web en nueva ventana");
-    }
-  }, [clickCooldown, countdown, canInteract, isInteracting]);
 
   return (
     <>
@@ -76,27 +68,22 @@ export const Computer = React.memo(({ handleClick, canInteract, isInteracting, p
         onPointerOut={handlePointerOut}
       >
         <group scale={[0.046, 0.001, 0.094]}>
-          <mesh geometry={nodes.Cube_1.geometry} material={materials.Material} />
-          <mesh geometry={nodes.Cube_2.geometry} material={materials["Material.002"]} />
+          <mesh geometry={gltfModel.nodes.Cube_1.geometry} material={gltfModel.materials.Material} />
+          <mesh geometry={gltfModel.nodes.Cube_2.geometry} material={gltfModel.materials["Material.002"]} />
         </group>
-        <group
-          position={[-0.073, 0.043, 0]}
-          rotation={[0, 0, -1.013]}
-          scale={[0.046, 0.001, 0.094]}
-        >
-          <mesh geometry={nodes.Cube001_1.geometry} material={materials.Material} />
-          <mesh geometry={nodes.Cube001_2.geometry} material={materials["Material.001"]} />
+        <group position={[-0.073, 0.043, 0]} rotation={[0, 0, -1.013]} scale={[0.046, 0.001, 0.094]}>
+          <mesh geometry={gltfModel.nodes.Cube001_1.geometry} material={gltfModel.materials.Material} />
+          <mesh geometry={gltfModel.nodes.Cube001_2.geometry} material={gltfModel.materials["Material.001"]} />
         </group>
         <mesh
-          geometry={nodes.Cylinder.geometry}
-          material={materials["Material.003"]}
+          geometry={gltfModel.nodes.Cylinder.geometry}
+          material={gltfModel.materials["Material.003"]}
           position={[-0.049, 0, 0.003]}
           rotation={[-1.566, 0, 0]}
           scale={[0.003, 0.082, 0.003]}
         />
       </group>
 
-      {/* Mensaje interactivo */}
       {hoverMessage && isHovering.current && canInteract && !isInteracting && (
         <Html position={[position[0], position[1] + 0.35, position[2]]} distanceFactor={3}>
           <div

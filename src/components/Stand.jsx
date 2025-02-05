@@ -7,7 +7,7 @@ import { useControls } from "leva";
 import ChatBot from "./ChatBot";
 import StandBronce from "./StandBronce";
 import Video from "./Video";
-import Mailbox from "./Mailbox";
+import { Mailbox } from "./Mailbox";
 import Catalog from "./Catalog";
 import StandSilver from "./StandSilver";
 import StandGold from "./StandGold";
@@ -55,7 +55,6 @@ const Stand = React.memo(({
         }
       );
       interactionId.current = response.data.interaction_id;
-      console.log("Interaction started:", response.data);
     } catch (error) {
       console.error("Error starting interaction:", error.response || error);
     }
@@ -73,9 +72,7 @@ const Stand = React.memo(({
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log(
-        `Duration updated for interaction ${interactionId.current}: ${timeInside.current} seconds`
-      );
+     
       timeInside.current = 0;
     } catch (error) {
       console.error("Error updating interaction duration:", error.response || error);
@@ -87,7 +84,6 @@ const Stand = React.memo(({
 
     await updateInteractionDuration();
     interactionId.current = null;
-    console.log("Interaction ended.");
   };
 
   const sendInteraction = async (interactionType) => {
@@ -100,7 +96,6 @@ const Stand = React.memo(({
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log(`Interaction recorded: ${interactionType}`);
     } catch (error) {
       console.error(`Error recording interaction (${interactionType}):`, error.response || error);
     }
@@ -111,7 +106,6 @@ const Stand = React.memo(({
       console.error("No PDF data available.");
       return;
     }
-    console.log(catalog_pdf)
     try {
       const binary = atob(catalog_pdf);
       const array = new Uint8Array(binary.length);
@@ -128,7 +122,6 @@ const Stand = React.memo(({
       link.click();
       link.remove();
 
-      console.log("PDF descargado exitosamente.");
     } catch (error) {
       console.error("Error descargando el PDF:", error);
     }
@@ -136,7 +129,6 @@ const Stand = React.memo(({
 
   const handleClick = (interactionType) => {
     if (isCharacterInside.current) {
-      console.log(`Interaction triggered: ${interactionType}`);
       if (interactionType === "download_catalog") {
         try {
           // Registra la interacción antes de intentar descargar
@@ -148,9 +140,7 @@ const Stand = React.memo(({
       } else {
         sendInteraction(interactionType);
       }
-    } else {
-      console.log("Character is not inside the area. Cannot interact.");
-    }
+    } 
   };
 
 
@@ -177,12 +167,10 @@ const Stand = React.memo(({
       if (insideArea && !isCharacterInside.current) {
         isCharacterInside.current = true;
         setCanInteract(true);
-        console.log("Character entered the area.");
         startInteraction();
       } else if (!insideArea && isCharacterInside.current) {
         isCharacterInside.current = false;
         setCanInteract(false);
-        console.log("Character left the area.");
         endInteraction();
       }
 
@@ -210,16 +198,7 @@ const Stand = React.memo(({
   return (
     <>
     <group position={position} rotation={rotation}>
-      {/* {type === "bronze" && (
-        <StandBronce scale={[1.3, 1.3, 1.3]} size={size} position={[0, -1, 0]} rotation={[0, 0, 0]} receiveShadow castShadow />
-      )}
-      {type === "silver" && (
-        <StandSilver scale={[1, 1, 1]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} receiveShadow castShadow />
-      )}
-      {type === "gold" && (
-        <StandGold scale={[2.8, 2.8, 2.8]} size={size} position={[0, -1, 0]} rotation={[0, 6, 0]} receiveShadow castShadow />
-      )} */}
-
+    
       <mesh ref={areaRef} visible={false}>
       <sphereGeometry args={[areaRadius, 32, 32]} /> 
         <meshStandardMaterial color="green" transparent opacity={0.1} />
@@ -229,16 +208,6 @@ const Stand = React.memo(({
       <sphereGeometry args={[videoRadius, 32, 32]} /> 
         <meshStandardMaterial color="green"  opacity={0} />
       </mesh>
-    
-      {/* <Text
-        font="/fonts/Raleway-Regular.ttf"
-        color="black"
-        position={[-1.1, 0.5, 0]}
-        rotation={[0, 1.57, 0]}
-        scale={[0.15, 0.15, 0.15]}
-      >
-        {company_name}
-      </Text> */}
 
 <Mailbox scale={[0.1, 0.1, 0.1]}
          rotation={mailboxRotation} 
@@ -247,6 +216,8 @@ const Stand = React.memo(({
          canInteract={canInteract}   
          isInteracting={isInteracting}
  />
+
+    
 
 
 <Video
