@@ -9,7 +9,8 @@ import {
   Users, 
   Building2,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  ArrowRight
 } from 'lucide-react';
 
 const AuroraBackground = () => (
@@ -90,12 +91,25 @@ const AdminMenu = () => {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center space-x-2 mb-2"
+          className="flex items-center justify-between mb-2"
         >
-          <Sparkles className="w-6 h-6 text-[#C7AA68]" />
-          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#C7AA68] to-[#D4BC87]">
-            Panel de Administración
-          </h1>
+          <div className="flex items-center space-x-2">
+            <Sparkles className="w-6 h-6 text-[#C7AA68]" />
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#C7AA68] to-[#D4BC87]">
+              Panel de Administración
+            </h1>
+          </div>
+
+          {/* Botón para redirigir a /admin/dashboard */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate('/admin/dashboard')}
+            className="flex items-center space-x-2 bg-[#C7AA68]/10 hover:bg-[#C7AA68]/20 text-[#C7AA68] px-4 py-2 rounded-lg transition-all duration-300"
+          >
+            <span>Ir al Dashboard</span>
+            <ArrowRight className="w-4 h-4" />
+          </motion.button>
         </motion.div>
         
         <motion.p 
