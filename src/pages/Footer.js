@@ -16,7 +16,7 @@ const Footer = () => {
             <h3 className="text-xl font-bold text-[#FBFDF0] mb-4">Contacto</h3>
             <ul className="space-y-2 text-[#FBFDF0]/80">
               <li className="flex items-center gap-2">
-                <Mail className="w-4 h-4" /> info@navi-market.com
+                <Mail className="w-4 h-4" /> info@navifairs.com
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4" /> +34 654 22 98 11

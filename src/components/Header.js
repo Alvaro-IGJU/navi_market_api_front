@@ -1,7 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
-import { Home, Calendar, LayoutDashboard, LogIn, User, Building2, Settings } from 'lucide-react';
+import { Home, Calendar, LayoutDashboard, LogIn, User, Building2, Shield } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Header = () => {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
@@ -18,6 +19,13 @@ const Header = () => {
 
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
+  };
+
+  // Animaciones para el dropdown
+  const dropdownVariants = {
+    hidden: { opacity: 0, y: -10, scale: 0.95 },
+    visible: { opacity: 1, y: 0, scale: 1 },
+    exit: { opacity: 0, y: -10, scale: 0.95 },
   };
 
   return (
@@ -51,76 +59,96 @@ const Header = () => {
                     <b>{user?.username ? `${user.username}` : 'Usuario'}</b>
                   </span>
                 </button>
-                <ul
-                  className={`absolute right-0 p-2 mt-2 w-48 bg-gray-900 rounded-lg shadow-xl transition-all duration-300 transform ${
-                    dropdownOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'
-                  }`}
-                >
-                  <li className="flex justify-center items-center w-full">
-                    <NavLink
-                      to="/profile"
-                      className={({ isActive }) =>
-                        `flex items-center gap-2 w-full px-4 py-2 no-underline rounded-md transition-all duration-200 ease-in-out ${
-                          isActive
-                            ? 'bg-gray-700 text-yellow-300'
-                            : 'text-[#FFC28F] hover:bg-gray-700 hover:text-yellow-300'
-                        }`
-                      }
-                      onClick={closeDropdown}
+
+                {/* Dropdown con Framer Motion */}
+                <AnimatePresence>
+                  {dropdownOpen && (
+                    <motion.div
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      variants={dropdownVariants}
+                      transition={{ duration: 0.2, ease: "easeInOut" }}
+                      className="absolute right-0 mt-2 w-56 bg-gray-900 rounded-lg shadow-xl border border-gray-800"
                     >
-                      <User size={16} />
-                      Perfil
-                    </NavLink>
-                  </li>
-                  {user?.is_superuser && (
-                    <li className="flex justify-center items-center w-full">
-                      <NavLink
-                        to="/admin"
-                        className={({ isActive }) =>
-                          `flex items-center gap-2 w-full px-4 py-2 no-underline rounded-md transition-all duration-200 ease-in-out ${
-                            isActive
-                              ? 'bg-gray-700 text-yellow-300'
-                              : 'text-[#FFC28F] hover:bg-gray-700 hover:text-yellow-300'
-                          }`
-                        }
-                        onClick={closeDropdown}
-                      >
-                        <Settings size={16} strokeWidth={2.5}/>
-                        Administración
-                      </NavLink>
-                    </li>
+                      <div className="p-2">
+                        <div className="flex items-center gap-3 p-2 rounded-md bg-gray-800">
+                          <img
+                            src={user?.profile_picture || '/multimedia/images/default-avatar.jpg'}
+                            alt="Perfil"
+                            className="w-8 h-8 rounded-full border-2 border-[#FFC28F]"
+                          />
+                          <div>
+                            <p className="text-sm font-medium text-[#FFC28F]">{user?.username}</p>
+                            <p className="text-xs text-gray-400">{user?.email}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="p-2">
+                        <NavLink
+                          to="/profile"
+                          className={({ isActive }) =>
+                            `flex items-center gap-2 w-full px-3 py-2 no-underline rounded-md transition-all duration-200 ease-in-out ${
+                              isActive
+                                ? 'bg-gray-700 text-yellow-300'
+                                : 'text-[#FFC28F] hover:bg-gray-700 hover:text-yellow-300'
+                            }`
+                          }
+                          onClick={closeDropdown}
+                        >
+                          <User size={16} />
+                          Perfil
+                        </NavLink>
+                        {user?.is_superuser && (
+                          <NavLink
+                            to="/admin"
+                            className={({ isActive }) =>
+                              `flex items-center gap-2 w-full px-3 py-2 no-underline rounded-md transition-all duration-200 ease-in-out ${
+                                isActive
+                                  ? 'bg-gray-700 text-yellow-300'
+                                  : 'text-[#FFC28F] hover:bg-gray-700 hover:text-yellow-300'
+                              }`
+                            }
+                            onClick={closeDropdown}
+                          >
+                            <Shield size={16} />
+                            Administración
+                          </NavLink>
+                        )}
+                        {user?.role === 'Company' && (
+                          <NavLink
+                            to="/company"
+                            className={({ isActive }) =>
+                              `flex items-center gap-2 w-full px-3 py-2 no-underline rounded-md transition-all duration-200 ease-in-out ${
+                                isActive
+                                  ? 'bg-gray-700 text-yellow-300'
+                                  : 'text-[#FFC28F] hover:bg-gray-700 hover:text-yellow-300'
+                              }`
+                            }
+                            onClick={closeDropdown}
+                          >
+                            <Building2 size={16} />
+                            Mi empresa
+                          </NavLink>
+                        )}
+                      </div>
+
+                      <div className="p-2 border-t border-gray-800">
+                        <button
+                          onClick={() => {
+                            closeDropdown();
+                            logout();
+                          }}
+                          className="flex items-center gap-2 w-full text-center px-3 py-2 text-[#FFC28F] hover:bg-gray-700 rounded-md transition-all duration-200 ease-in-out hover:text-yellow-300"
+                        >
+                          <LogIn size={16} className="rotate-180" />
+                          Cerrar Sesión
+                        </button>
+                      </div>
+                    </motion.div>
                   )}
-                  {user?.role === 'Company' && (
-                    <li className="flex justify-center items-center w-full">
-                      <NavLink
-                        to="/company"
-                        className={({ isActive }) =>
-                          `flex items-center gap-2 w-full px-4 py-2 no-underline rounded-md transition-all duration-200 ease-in-out ${
-                            isActive
-                              ? 'bg-gray-700 text-yellow-300'
-                              : 'text-[#FFC28F] hover:bg-gray-700 hover:text-yellow-300'
-                          }`
-                        }
-                        onClick={closeDropdown}
-                      >
-                        <Building2 size={16} />
-                        Mi empresa
-                      </NavLink>
-                    </li>
-                  )}
-                  <li className="flex justify-center items-center w-full">
-                    <button
-                      onClick={() => {
-                        closeDropdown();
-                        logout();
-                      }}
-                      className="flex items-center gap-2 w-full text-center px-4 py-2 text-[#FFC28F] hover:bg-gray-700 rounded-md transition-all duration-200 ease-in-out hover:text-yellow-300"
-                    >
-                      <LogIn size={16} className="rotate-180" />
-                      Cerrar Sesión
-                    </button>
-                  </li>
-                </ul>
+                </AnimatePresence>
               </div>
             ) : (
               <NavLink
