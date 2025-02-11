@@ -1,56 +1,26 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom"; // Para redirección
-import Header from "../components/Header";
-import AdminEventVisitsChart from "../components/AdminEventVisitsChart"; // Nuevo componente
-import api from "../api";
+import { useNavigate } from "react-router-dom";
+import AdminUsersTable from "../components/AdminUsersTable"; // Componente hijo
 import { AuthContext } from "../contexts/AuthContext"; // Contexto de autenticación
 
 const AdminDashboard = () => {
-  const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const [eventsData, setEventsData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { user } = useContext(AuthContext); // Contexto para el usuario autenticado
+  const navigate = useNavigate(); // Para redirigir si no es superusuario
 
-  // Verificar si el usuario tiene permisos de administrador
+
+  // Verificación de permisos del usuario
   useEffect(() => {
     if (!user?.is_superuser) {
       navigate("/"); // Redirigir si no es superusuario
     }
   }, [user, navigate]);
 
-  useEffect(() => {
-    const fetchEventsData = async () => {
-      try {
-        const token = localStorage.getItem("accessToken");
-        
-        // Asegúrate de que la URL sea correcta, puedes revisar la documentación de la API
-        const response = await api.get("/interactions/admin/events-visits-summary/", { // Verifica que este endpoint sea correcto
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        // Suponiendo que los datos del backend vienen en el formato { events: [ ... ] }
-        setEventsData(response.data); // Almacenar los datos de los eventos
-        setLoading(false);
-      } catch (err) {
-        console.error("Error al obtener los datos de eventos:", err);
-        setError("No se pudieron cargar los eventos.");
-        setLoading(false);
-      }
-    };
-
-    fetchEventsData();
-  }, []);
-
-  if (loading) return <p className="text-gray-300">Cargando datos...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
-
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Dashboard de Admin</h1>
+      <h1 className="text-2xl font-bold mt-20">Dashboard de Admin</h1>
 
-      {/* Gráfico de visitas a eventos */}
-      <AdminEventVisitsChart eventsData={eventsData} />
+      <AdminUsersTable
+      />
     </div>
   );
 };
