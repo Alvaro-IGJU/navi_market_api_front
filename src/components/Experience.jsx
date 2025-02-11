@@ -110,10 +110,12 @@ const Experience = ({ eventId, onStandsLoaded }) => {
   return (
     <CameraManager>
       {/* Environment */}
-      <Environment
+      {/* <Environment
         files="models/textures/autumn_field_puresky_1k.hdr"
         background={false}
-      />
+      /> */}
+                  <Environment preset="apartment" intensity={1} />
+
     <ambientLight intensity={0.1} />
     <directionalLight
   castShadow
@@ -157,7 +159,7 @@ const Experience = ({ eventId, onStandsLoaded }) => {
           ) : null
         )}
         <BoundedArea width={80} depth={85} height={10} position={baseConfig.position} />
-        <CharacterController ref={characterRef} isInteracting={isInteracting} />
+        <CharacterController ref={characterRef} isInteracting={isInteracting} eventId={eventId}/>
       </Physics>
     </CameraManager>
   );

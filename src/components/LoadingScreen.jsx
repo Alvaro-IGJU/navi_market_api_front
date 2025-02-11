@@ -1,13 +1,10 @@
 import { useProgress } from "@react-three/drei";
 
-const LoadingScreen = ({ isLoading }) => {
+const LoadingScreen = ({ isLoading}) => {
   const { progress, active } = useProgress();
 
   // Mostrar el LoadingScreen si `active` de useProgress o `isLoading` están activos
   const isVisible = active || isLoading;
-
-  // Calcular el progreso visible: limitar al 90% si isLoading es true
-  const visibleProgress = isLoading ? Math.min(progress, 90) : progress;
 
   return (
     <div className={`loading-screen ${isVisible ? "" : "loading-screen--hidden"}`}>

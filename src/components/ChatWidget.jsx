@@ -42,7 +42,7 @@ const ChatWidget = () => {
 
   return (
     <div className="fixed bottom-4 right-[3rem] z-50 flex flex-col items-end space-y-4">
-      {activeChat && (
+      {/* {activeChat && (
         <div className="mb-4 transform transition-all duration-300 ease-in-out hover:scale-[1.02]">
           <ChatWindow chat={activeChat} onClose={() => setActiveChat(null)} />
         </div>
@@ -103,7 +103,7 @@ const ChatWidget = () => {
             </span>
           )}
         </div>
-      </button>
+      </button> */}
     </div>
   );
 };

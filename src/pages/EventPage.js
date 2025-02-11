@@ -62,7 +62,7 @@ const EventPage = () => {
   }, [eventId]);
 
   const handleSelectEvent = () => {
-    navigate("/canvas", { state: { eventId } });
+    navigate("/canvas/event", { state: { eventId } });
   };
 
   const handleBack = () => {

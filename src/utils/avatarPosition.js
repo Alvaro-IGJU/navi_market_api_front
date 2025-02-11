@@ -4,7 +4,13 @@
 export const getAvatarInitialPosition = (eventId) => {
   // Mapa para posiciones según el evento, puedes personalizar según tus necesidades
   const positionMap = {
-    1: [22, -1, 8.5], // Evento 1
+    0: {"position":[23, 1, 3],
+        "rotation": -Math.PI / 2
+    }, // Lobby
+    1: {"position":[22, -1, 8.5],
+      "rotation": -Math.PI / 4
+  }, // Lobby
+ 
   };
 
   // Devuelve la posición según el evento, o una posición por defecto

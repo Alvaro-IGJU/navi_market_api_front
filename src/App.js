@@ -27,6 +27,7 @@ import ContactPage from './pages/ContactPage';
 import ResetPasswordPage from './components/ResetPassword';
 import InterestedUsersTablePage from './pages/CompanyInterestedUsersTablePage';
 import ChatWidget from './components/ChatWidget';
+import CanvasEvent from './components/CanvasEvent';
 const App = () => {
   return (
     <Router>
@@ -35,7 +36,8 @@ const App = () => {
         <ChatWidget />
 
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          {/* <Route path="/" element={<HomePage />} /> */}
+          <Route path="/" element={<CanvasWrapper />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route
             path="/dashboard"
@@ -77,8 +79,14 @@ const App = () => {
           <Route
             path="/canvas"
             element={
-              <PrivateRoute>
                 <CanvasWrapper />
+            }
+          />
+          <Route
+            path="/canvas/event"
+            element={
+              <PrivateRoute>
+                <CanvasEvent />
               </PrivateRoute>
             }
           />
