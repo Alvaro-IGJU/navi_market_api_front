@@ -7,9 +7,12 @@ export const getAvatarInitialPosition = (eventId) => {
     0: {"position":[23, 1, 3],
         "rotation": -Math.PI / 2
     }, // Lobby
-    1: {"position":[22, -1, 8.5],
+  //   0: {"position":[0.198, 1, -22.674],
+  //     "rotation": -Math.PI / 2
+  // }, // Lobby
+    2: {"position":[22, -1, 8.5],
       "rotation": -Math.PI / 4
-  }, // Lobby
+  }, // Evento
  
   };
 
