@@ -28,6 +28,7 @@ import ResetPasswordPage from './components/ResetPassword';
 import InterestedUsersTablePage from './pages/CompanyInterestedUsersTablePage';
 import ChatWidget from './components/ChatWidget';
 import CanvasEvent from './components/CanvasEvent';
+import { SocketProvider } from './contexts/SocketContext';
 const App = () => {
   return (
     <Router>
@@ -36,8 +37,10 @@ const App = () => {
         <ChatWidget />
 
         <Routes>
-          {/* <Route path="/" element={<HomePage />} /> */}
-          <Route path="/" element={<CanvasWrapper />} />
+          <Route path="/" element={<SocketProvider>
+                                    <CanvasWrapper />
+                                  </SocketProvider>} />
+          <Route path="/landing" element={<HomePage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route
             path="/dashboard"

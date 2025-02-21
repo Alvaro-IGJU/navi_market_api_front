@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useMemo, useState } from 'react'
+import React, { useEffect, useRef, useMemo, useState, forwardRef, useImperativeHandle } from 'react'
 import { useGraph } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
 
-const Avatar = React.memo(({ animation = "LOLO_Animation_Idle", pause = false, ...props }) => {
+// Usamos forwardRef para recibir la ref y luego memoizamos el componente.
+const Avatar = forwardRef(({ animation = "LOLO_Animation_Idle", pause = false, ...props }, ref) => {
   const group = useRef();
   const [isVisible, setIsVisible] = useState(false); // Para gestionar si el avatar está visible
 
@@ -18,6 +19,9 @@ const Avatar = React.memo(({ animation = "LOLO_Animation_Idle", pause = false, .
 
   // Configura las animaciones usando el grupo como referencia
   const { actions } = useAnimations(animations, group);
+
+  // Exponer el grupo a través de la ref forzada
+  useImperativeHandle(ref, () => group.current, []);
 
   useEffect(() => {
     if (actions) {
@@ -37,18 +41,18 @@ const Avatar = React.memo(({ animation = "LOLO_Animation_Idle", pause = false, .
 
       // Reproducimos la nueva animación con un fade in suave
       const newAction = actions[animation];
-      let tieAction = []
-      if(animation === "LOLO_Animation_Idle"){
-         tieAction = actions["Corbata_Animation_Idle"]
-      }else if(animation === "LOLO_Animation_Walk"){
-         tieAction = actions["Corbata_Animation_walk"]
+      let tieAction;
+      if (animation === "LOLO_Animation_Idle") {
+         tieAction = actions["Corbata_Animation_Idle"];
+      } else if (animation === "LOLO_Animation_Walk") {
+         tieAction = actions["Corbata_Animation_walk"];
       }
       newAction.reset().fadeIn(0.1).play(); // Duración de la transición
-      tieAction.reset().fadeIn(0.1).play(); // Duración de la transición
+      if (tieAction) tieAction.reset().fadeIn(0.1).play();
     }
   }, [animation, actions]);
 
-  // Agregar un control de visibilidad basado en la distancia con la cámara
+  // Control de visibilidad basado en la distancia con la cámara (ejemplo)
   useEffect(() => {
     const checkVisibility = () => {
       if (!group.current) return;
@@ -59,15 +63,11 @@ const Avatar = React.memo(({ animation = "LOLO_Animation_Idle", pause = false, .
         Math.pow(avatarPosition.x, 2) + Math.pow(avatarPosition.y, 2) + Math.pow(avatarPosition.z - 5, 2)
       );
 
-      if (distance < 10) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      setIsVisible(distance < 10);
     };
 
     checkVisibility();
-    window.addEventListener('resize', checkVisibility); // Recalcular si hay un cambio de tamaño de ventana
+    window.addEventListener('resize', checkVisibility);
     return () => window.removeEventListener('resize', checkVisibility);
   }, []);
 
@@ -175,5 +175,5 @@ const Avatar = React.memo(({ animation = "LOLO_Animation_Idle", pause = false, .
   );
 });
 
-export default Avatar;
+export default React.memo(Avatar);
 useGLTF.preload('/models/character.glb');

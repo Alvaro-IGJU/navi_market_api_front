@@ -63,7 +63,7 @@ const PortalShaderMaterial = shaderMaterial(
 // Extendemos el material para poder usarlo como <portalShaderMaterial />
 extend({ PortalShaderMaterial });
 
-const Portal = ({ characterRef, redirectTo, eventId, ...props }) => {
+const Portal = ({ characterRef, redirectTo, eventId, size, route,  ...props }) => {
   const materialRef = useRef();
   const portalRef = useRef();
   const navigate = useNavigate();
@@ -89,13 +89,13 @@ const Portal = ({ characterRef, redirectTo, eventId, ...props }) => {
       if (distance < threshold) {
         hasNavigated.current = true; // Evita navegar múltiples veces
         console.log(eventId)
-        navigate("/canvas/event", { state: { eventId } });      }
+        navigate(route, { state: { eventId } });      }
     }
   });
 
   return (
     <mesh {...props} ref={portalRef}>
-      <planeGeometry args={[3, 3]} />
+      <planeGeometry args={size} />
       <portalShaderMaterial ref={materialRef} transparent />
     </mesh>
   );
