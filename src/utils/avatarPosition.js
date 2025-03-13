@@ -13,7 +13,15 @@ export const getAvatarInitialPosition = (eventId) => {
     2: {"position":[22, -1, 8.5],
       "rotation": -Math.PI / 4
   }, // Evento
- 
+
+    1000:{"position":[0, 1, 0],
+      "rotation": -Math.PI / 4
+  },
+  
+  "navioffice":{
+      "position":[0, 1, 3],
+      "rotation": -Math.PI
+  }
   };
 
   // Devuelve la posición según el evento, o una posición por defecto

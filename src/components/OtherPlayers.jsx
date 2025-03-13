@@ -55,7 +55,7 @@ const OtherPlayers = () => {
         console.log("Ignoring own update:", data);
         return;
       }
-      console.log("playerUpdate received:", data);
+      // console.log("playerUpdate received:", data);
       setPlayers(prev => ({
         ...prev,
         [data.id]: {

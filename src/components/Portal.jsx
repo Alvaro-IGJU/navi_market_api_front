@@ -67,7 +67,7 @@ const Portal = ({ characterRef, redirectTo, eventId, size, route,  ...props }) =
   const materialRef = useRef();
   const portalRef = useRef();
   const navigate = useNavigate();
-  const threshold = 1.5; // Distancia umbral para el "contacto" con el portal
+  const threshold = 1; // Distancia umbral para el "contacto" con el portal
   const hasNavigated = useRef(false);
 
   useFrame((state, delta) => {
@@ -88,7 +88,6 @@ const Portal = ({ characterRef, redirectTo, eventId, size, route,  ...props }) =
  
       if (distance < threshold) {
         hasNavigated.current = true; // Evita navegar múltiples veces
-        console.log(eventId)
         navigate(route, { state: { eventId } });      }
     }
   });

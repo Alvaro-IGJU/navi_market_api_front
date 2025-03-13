@@ -7,7 +7,7 @@ const Joystick = ({ onChange }) => {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   
   // Reducir el valor para disminuir la sensibilidad.
-  const scaleFactor = 0.01; // Valor menor = menos sensibilidad.
+  const scaleFactor = 0.006; // Valor menor = menos sensibilidad.
   
   // Estos valores se usan para la lógica interna.
   const invertX = -1; 

@@ -29,17 +29,50 @@ import InterestedUsersTablePage from './pages/CompanyInterestedUsersTablePage';
 import ChatWidget from './components/ChatWidget';
 import CanvasEvent from './components/CanvasEvent';
 import { SocketProvider } from './contexts/SocketContext';
+import { LocalPlayerProvider } from './contexts/LocalPlayerContext';
+import VoiceChatManager from './components/VoiceChatManager';
+import FerrotallShowroom from './components/Ferrotall/FerrotallShowroom';
+import NaviOfficeRoom from './components/NaviOffice/NaviOfficeRoom';
 const App = () => {
   return (
     <Router>
         <AuthProvider>
         <Header /> {/* Mueve la lógica de AuthContext dentro del Header */}
-        <ChatWidget />
+        {/* <ChatWidget /> */}
 
         <Routes>
-          <Route path="/" element={<SocketProvider>
-                                    <CanvasWrapper />
-                                  </SocketProvider>} />
+          <Route path="/" element={
+                                       <LocalPlayerProvider>
+                                        <CanvasWrapper />
+
+                                    </LocalPlayerProvider>
+                                } />
+          <Route path="/showroom/demo" element={
+                                       <LocalPlayerProvider>
+            
+            <FerrotallShowroom />
+            </LocalPlayerProvider>
+
+            } />
+            <Route
+            path="/feria/demo"
+            element={
+              <PrivateRoute>
+                <LocalPlayerProvider>
+
+                <CanvasEvent />
+                </LocalPlayerProvider>
+
+              </PrivateRoute>
+            }
+          />
+            <Route path="/navioffice" element={
+            <LocalPlayerProvider>
+            
+            <NaviOfficeRoom />
+            </LocalPlayerProvider>
+
+            } />
           <Route path="/landing" element={<HomePage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route
@@ -89,7 +122,11 @@ const App = () => {
             path="/canvas/event"
             element={
               <PrivateRoute>
+                <LocalPlayerProvider>
+
                 <CanvasEvent />
+                </LocalPlayerProvider>
+
               </PrivateRoute>
             }
           />

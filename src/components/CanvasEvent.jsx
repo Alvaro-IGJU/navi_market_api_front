@@ -17,8 +17,16 @@ const keyboardMap = [
 
 const CanvasEvent = () => {
   const location = useLocation();
-  const eventId = location.state?.eventId; // Obtener el eventId del estado de navegación
-  const [loading, setLoading] = useState(true); // Estado para manejar el LoadingScreen
+
+  // Registrar location.pathname en consola para verificar su valor
+  useEffect(() => {
+    console.log("location.pathname:", location.pathname);
+  }, [location.pathname]);
+
+  const eventIdFromState = location.state?.eventId;
+  // Si la URL es "/feria/demo", asignamos eventId = 2, de lo contrario usamos el valor del estado.
+  const eventId = location.pathname === "/feria/demo" ? 2 : eventIdFromState;
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const header = document.querySelector("header");
@@ -28,28 +36,23 @@ const CanvasEvent = () => {
   }, []);
 
   if (!eventId) {
-    return <p>No se seleccionó ningún evento.</p>; // Mensaje si no hay evento seleccionado
+    return <p>No se seleccionó ningún evento.</p>;
   }
 
   return (
     <div className="fullscreen-canvas">
       <LoadingScreen isLoading={loading} />
-          
-      
-
       <KeyboardControls map={keyboardMap}>
         <Canvas
           camera={{ position: [0, 0.5, 5], fov: 42 }}
-          style={{
-            touchAction: "none",
-          }}
+          style={{ touchAction: "none" }}
           shadows
         >
           {/* Fondo degradado */}
           <GradientBackground />
           <Experience
             eventId={eventId}
-            onStandsLoaded={() => setLoading(false)} // Ocultar LoadingScreen cuando los stands estén cargados
+            onStandsLoaded={() => setLoading(false)}
           />
           <ambientLight intensity={0.3} />
           <directionalLight
@@ -63,8 +66,6 @@ const CanvasEvent = () => {
             shadow-camera-top={10}
             shadow-camera-bottom={-10}
           />
-
-   
         </Canvas>
       </KeyboardControls>
     </div>
@@ -72,4 +73,3 @@ const CanvasEvent = () => {
 };
 
 export default CanvasEvent;
-

@@ -7,7 +7,8 @@ import { useKeyboardControls } from "@react-three/drei";
 import { getAvatarInitialPosition } from "../utils/avatarPosition";
 import { useCameraManager } from "./CameraManager";
 import { useSocket } from "../contexts/SocketContext";
-import { AuthContext } from "../contexts/AuthContext"; // Importa el AuthContext
+import { AuthContext } from "../contexts/AuthContext";
+import { LocalPlayerContext } from "../contexts/LocalPlayerContext";
 
 const isMobile = /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 
@@ -32,7 +33,7 @@ const lerpAngle = (start, end, t) => {
 
 export const CharacterController = forwardRef(
   ({ eventId = 0, isInteracting = false, joystickOffset = { x: 0, y: 0 } }, ref) => {
-    const WALK_SPEED = isMobile ? 1.2 : 1.8;
+    const WALK_SPEED = isMobile ? 1.2 : 3;
     const RUN_SPEED = isMobile ? 2.0 : 2.7;
     const ROTATION_SPEED = isMobile ? 0.1 : 0.03;
 
@@ -57,6 +58,9 @@ export const CharacterController = forwardRef(
 
     // Extraemos el usuario del AuthContext
     const { user } = useContext(AuthContext);
+
+    // Extraemos el setter de posición local del LocalPlayerContext
+    const { setPosition: setLocalPosition } = useContext(LocalPlayerContext);
 
     useImperativeHandle(
       ref,
@@ -98,7 +102,8 @@ export const CharacterController = forwardRef(
 
         const isCurrentlyMoving = movement.x !== 0 || movement.z !== 0;
         if (isCurrentlyMoving) {
-          characterRotationTarget.current = Math.atan2(movement.x, movement.z);
+          const targetRotation = Math.atan2(movement.x, movement.z);
+          characterRotationTarget.current = targetRotation;
           vel.x = Math.sin(rotationTarget.current + characterRotationTarget.current) * speed;
           vel.z = Math.cos(rotationTarget.current + characterRotationTarget.current) * speed;
           if (animation !== "LOLO_Animation_Walk") {
@@ -154,9 +159,11 @@ export const CharacterController = forwardRef(
           position: pos.toArray(),
           rotation: rot,
           animation,
-          // Enviamos el nombre de usuario solo si existe.
           username: user ? user.username : undefined,
         });
+
+        // Actualizar la posición local en el contexto para el chat de voz
+        setLocalPosition(pos);
       }
     });
 

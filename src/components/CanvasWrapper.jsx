@@ -9,9 +9,10 @@ import { CameraManager } from "./CameraManager";
 import Portal from "./Portal";
 import OtherPlayers from "./OtherPlayers";
 import LoadingScreen from "./LoadingScreen";
-import { useSocket } from "../contexts/SocketContext";
+// import { useSocket } from "../contexts/SocketContext";
 import Joystick from "./Joystick";
 import CanvasInterface from "./CanvasInterface/CanvasInterface";
+import VoiceChatManager from "./VoiceChatManager"; // Importar el manager de voz
 
 const keyboardMap = [
   { name: "forward", keys: ["ArrowUp", "KeyW"] },
@@ -54,7 +55,7 @@ const CanvasWrapper = () => {
   const characterRef = useRef();
   const mainLightRef = useRef();
   const spotLightRef = useRef();
-  const socket = useSocket();
+  // const socket = useSocket();
   const [joystickOffset, setJoystickOffset] = useState({ x: 0, y: 0 });
 
   // Detecta la orientación del dispositivo
@@ -89,11 +90,11 @@ const CanvasWrapper = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (socket && eventId !== undefined) {
-      socket.emit("joinEvent", { eventId });
-    }
-  }, [socket, eventId]);
+  // useEffect(() => {
+  //   if (socket && eventId !== undefined) {
+  //     socket.emit("joinEvent", { eventId });
+  //   }
+  // }, [socket, eventId]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -175,7 +176,7 @@ const CanvasWrapper = () => {
                 <directionalLight position={[-9, 1, 1]} intensity={1.5} color="#ffcc99" />
               </group>
              
-              {socket && <OtherPlayers socket={socket} />}
+              {/* {socket && <OtherPlayers socket={socket} />} */}
               <Physics>
                 <group>
                   <Suspense fallback={null}>
@@ -184,17 +185,17 @@ const CanvasWrapper = () => {
                       position={[-17.5, 1.2, 2.58]}
                       rotation={[0, Math.PI / 2, 0]}
                       characterRef={characterRef}
-                      eventId={eventId}
-                      size = {[3,3]}
-                      route = {"/canvas/event"}
+                      eventId={2}
+                      size={[3, 3]}
+                      route={"/canvas/event"}
                     />
                     <Portal
                       position={[-10.85, 0.8, -3.4]}
                       rotation={[0, Math.PI / 200, 0]}
                       characterRef={characterRef}
                       eventId={eventId}
-                      size = {[2.5,2.1]}
-                      route = {"/landing"}
+                      size={[2.5, 2.1]}
+                      route={"/landing"}
                     />
                   </Suspense>
                 </group>
@@ -220,6 +221,7 @@ const CanvasWrapper = () => {
         </div>
       </KeyboardControls>
       {isMobile && <Joystick onChange={setJoystickOffset} />}
+      {/* Incluir el gestor de chat de voz */}
     </div>
   );
 };
